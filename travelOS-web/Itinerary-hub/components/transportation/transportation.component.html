@@ -1,0 +1,220 @@
+<div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-slate-100 animate-fade-in">
+  <header class="border-b border-slate-200 pb-4 mb-6 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+    <div>
+      <h2 class="text-2xl font-bold text-slate-800">Transportation Details</h2>
+      <p class="mt-1 text-slate-600">All your travel logistics in one place. Edit details in Maker mode.</p>
+    </div>
+    @if(mode() === 'maker') {
+        <div class="flex gap-2 self-start sm:self-center shrink-0">
+            <button (click)="addFlight()" class="px-3 py-1.5 text-xs font-medium rounded-md bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                Add Flight
+            </button>
+            <button (click)="addTrain()" class="px-3 py-1.5 text-xs font-medium rounded-md bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H5a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                Add Train
+            </button>
+             <button (click)="addOtherTransport()" class="px-3 py-1.5 text-xs font-medium rounded-md bg-sky-50 text-sky-700 hover:bg-sky-100 transition-colors flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+                Add Other
+            </button>
+        </div>
+    }
+  </header>
+
+  @if (!editableTransport() || (editableTransport()?.flights?.length === 0 && editableTransport()?.trains?.length === 0 && editableTransport()?.other?.length === 0)) {
+     <div class="text-center bg-white p-12 rounded-2xl">
+      <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-16 w-16 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /><path d="M16 8h-2a2 2 0 100 4h2v4h-4v-4H8v4h4a2 2 0 100-4h-2V8h4v.01z" /></svg>
+      <h3 class="mt-4 text-lg font-medium text-slate-800">No Transportation Details</h3>
+      @if (mode() === 'viewer') {
+        <p class="mt-1 text-slate-500">The AI did not suggest specific transport, or it has been removed.</p>
+      } @else {
+        <p class="mt-1 text-slate-500">Click "Add Flight" or "Add Train" to get started.</p>
+      }
+    </div>
+  } @else {
+    <div class="space-y-8">
+      <!-- Flights Section -->
+      @if(editableTransport()?.flights && editableTransport()!.flights!.length > 0) {
+        <div>
+          <h3 class="text-xl font-semibold text-slate-800 flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+            <span>Flights</span>
+          </h3>
+          <div class="mt-4 space-y-4">
+             @for(flight of editableTransport()!.flights!; track trackByIndex($index, flight)) {
+              <div class="p-4 border border-slate-200 rounded-lg relative group">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+                    <!-- Airline -->
+                    <div class="md:col-span-1">
+                        <label class="text-xs font-medium text-slate-500">Airline</label>
+                        @if(mode() === 'maker') {
+                           <div class="relative">
+                            <input type="text" [ngModel]="flight.airline" (ngModelChange)="onAirlineChange($event, $index)" (blur)="handleAirlineBlur()" class="mt-1 block w-full font-semibold text-slate-700 border-slate-300 rounded-md shadow-sm text-sm">
+                             @if(showAirlineSuggestions()) {
+                                <div class="absolute z-10 w-full bg-white border border-slate-300 rounded-md shadow-lg mt-1">
+                                    @for(suggestion of airlineSuggestions; track suggestion) {
+                                        <div (mousedown)="selectSuggestion(suggestion, $index, 'airline')" class="px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-100 cursor-pointer">
+                                            {{ suggestion }}
+                                        </div>
+                                    }
+                                </div>
+                              }
+                            </div>
+                        } @else { <p class="font-semibold text-slate-700">{{flight.airline}}</p> }
+                    </div>
+                    <!-- Departure -->
+                    <div class="md:col-span-1">
+                        <label class="text-xs font-medium text-slate-500">Departure</label>
+                        @if(mode() === 'maker') {
+                            <div class="relative">
+                                <input type="text" [ngModel]="flight.departureAirport" (ngModelChange)="onAirportChange($event, $index, 'dep')" (blur)="handleAirportBlur('dep')" class="mt-1 block w-full font-semibold text-slate-700 border-slate-300 rounded-md shadow-sm text-sm" placeholder="Airport Code">
+                                @if(showAirportSuggestions().dep) {
+                                    <div class="absolute z-10 w-full bg-white border border-slate-300 rounded-md shadow-lg mt-1">
+                                        @for(suggestion of airportSuggestions; track suggestion) {
+                                            <div (mousedown)="selectSuggestion(suggestion, $index, 'dep')" class="px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-100 cursor-pointer">{{ suggestion }}</div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                           <input type="datetime-local" [(ngModel)]="flight.departureTime" (ngModelChange)="notifyUpdate()" class="mt-1 block w-full text-xs text-slate-600 border-slate-300 rounded-md shadow-sm">
+                        } @else { 
+                            <p class="font-semibold text-slate-700">{{flight.departureAirport}}</p>
+                            <p class="text-xs text-slate-600">{{flight.departureTime | date:'medium'}}</p>
+                        }
+                    </div>
+                     <!-- Arrival -->
+                    <div class="md:col-span-1">
+                        <label class="text-xs font-medium text-slate-500">Arrival</label>
+                        @if(mode() === 'maker') {
+                             <div class="relative">
+                                <input type="text" [ngModel]="flight.arrivalAirport" (ngModelChange)="onAirportChange($event, $index, 'arr')" (blur)="handleAirportBlur('arr')" class="mt-1 block w-full font-semibold text-slate-700 border-slate-300 rounded-md shadow-sm text-sm" placeholder="Airport Code">
+                                @if(showAirportSuggestions().arr) {
+                                    <div class="absolute z-10 w-full bg-white border border-slate-300 rounded-md shadow-lg mt-1">
+                                        @for(suggestion of airportSuggestions; track suggestion) {
+                                            <div (mousedown)="selectSuggestion(suggestion, $index, 'arr')" class="px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-100 cursor-pointer">{{ suggestion }}</div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                           <input type="datetime-local" [(ngModel)]="flight.arrivalTime" (ngModelChange)="notifyUpdate()" class="mt-1 block w-full text-xs text-slate-600 border-slate-300 rounded-md shadow-sm">
+                        } @else { 
+                            <p class="font-semibold text-slate-700">{{flight.arrivalAirport}}</p>
+                            <p class="text-xs text-slate-600">{{flight.arrivalTime | date:'medium'}}</p>
+                        }
+                    </div>
+                    <!-- Price -->
+                     <div class="md:col-span-3 text-right">
+                        <label class="text-xs font-medium text-slate-500">Price per person (USD)</label>
+                        @if(mode() === 'maker') {
+                            <input type="number" [(ngModel)]="flight.price" (ngModelChange)="notifyUpdate()" class="mt-1 block w-full text-right font-semibold text-indigo-600 border-slate-300 rounded-md shadow-sm text-sm">
+                        } @else {
+                            <p class="font-semibold text-indigo-600 text-lg">{{ flight.price | currency:'USD' }}</p>
+                        }
+                    </div>
+                </div>
+                 @if(mode() === 'maker') {
+                    <button (click)="removeFlight($index)" title="Remove Flight" class="absolute -top-2 -right-2 p-1 bg-white rounded-full text-red-500 hover:bg-red-100 shadow border border-slate-200 opacity-0 group-hover:opacity-100 transition-opacity">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Trains Section -->
+       @if(editableTransport()?.trains && editableTransport()!.trains!.length > 0) {
+        <div>
+          <h3 class="text-xl font-semibold text-slate-800 flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H5a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+            <span>Trains</span>
+          </h3>
+           <div class="mt-4 space-y-4">
+             @for(train of editableTransport()!.trains!; track trackByIndex($index, train)) {
+              <div class="p-4 border border-slate-200 rounded-lg relative group">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+                    <div class="md:col-span-1"><label class="text-xs font-medium text-slate-500">Train Type</label>
+                        @if(mode() === 'maker') { <input type="text" [(ngModel)]="train.trainType" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" class="mt-1 block w-full font-semibold text-slate-700 border-slate-300 rounded-md shadow-sm text-sm"> } 
+                        @else { <p class="font-semibold text-slate-700">{{train.trainType}}</p> }
+                    </div>
+                    <div class="md:col-span-1"><label class="text-xs font-medium text-slate-500">Departure</label>
+                        @if(mode() === 'maker') { 
+                          <input type="text" [(ngModel)]="train.departureStation" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" class="mt-1 block w-full font-semibold text-slate-700 border-slate-300 rounded-md shadow-sm text-sm">
+                          <input type="datetime-local" [(ngModel)]="train.departureTime" (ngModelChange)="notifyUpdate()" class="mt-1 block w-full text-xs text-slate-600 border-slate-300 rounded-md shadow-sm">
+                        } @else { 
+                            <p class="font-semibold text-slate-700">{{train.departureStation}}</p>
+                            <p class="text-xs text-slate-600">{{train.departureTime | date:'medium'}}</p>
+                        }
+                    </div>
+                    <div class="md:col-span-1"><label class="text-xs font-medium text-slate-500">Arrival</label>
+                        @if(mode() === 'maker') {
+                           <input type="text" [(ngModel)]="train.arrivalStation" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" class="mt-1 block w-full font-semibold text-slate-700 border-slate-300 rounded-md shadow-sm text-sm">
+                           <input type="datetime-local" [(ngModel)]="train.arrivalTime" (ngModelChange)="notifyUpdate()" class="mt-1 block w-full text-xs text-slate-600 border-slate-300 rounded-md shadow-sm">
+                        } @else { 
+                            <p class="font-semibold text-slate-700">{{train.arrivalStation}}</p>
+                            <p class="text-xs text-slate-600">{{train.arrivalTime | date:'medium'}}</p>
+                        }
+                    </div>
+                     <div class="md:col-span-3 text-right">
+                        <label class="text-xs font-medium text-slate-500">Price per person (USD)</label>
+                        @if(mode() === 'maker') {
+                            <input type="number" [(ngModel)]="train.price" (ngModelChange)="notifyUpdate()" class="mt-1 block w-full text-right font-semibold text-emerald-600 border-slate-300 rounded-md shadow-sm text-sm">
+                        } @else {
+                            <p class="font-semibold text-emerald-600 text-lg">{{ train.price | currency:'USD' }}</p>
+                        }
+                    </div>
+                </div>
+                 @if(mode() === 'maker') {
+                    <button (click)="removeTrain($index)" title="Remove Train" class="absolute -top-2 -right-2 p-1 bg-white rounded-full text-red-500 hover:bg-red-100 shadow border border-slate-200 opacity-0 group-hover:opacity-100 transition-opacity">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                }
+              </div>
+             }
+          </div>
+        </div>
+      }
+
+       <!-- Other Transport Section -->
+      @if(editableTransport()?.other && editableTransport()!.other!.length > 0) {
+        <div>
+          <h3 class="text-xl font-semibold text-slate-800 flex items-center gap-3">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-500" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+            <span>Other Transport</span>
+          </h3>
+          <div class="mt-4 space-y-4">
+             @for(item of editableTransport()!.other!; track trackByIndex($index, item)) {
+              <div class="p-4 border border-slate-200 rounded-lg relative group">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+                    <div class="md:col-span-1"><label class="text-xs font-medium text-slate-500">Type</label>
+                        @if(mode() === 'maker') { <input type="text" [(ngModel)]="item.type" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" class="mt-1 block w-full font-semibold text-slate-700 border-slate-300 rounded-md shadow-sm text-sm"> } 
+                        @else { <p class="font-semibold text-slate-700">{{item.type}}</p> }
+                    </div>
+                    <div class="md:col-span-2"><label class="text-xs font-medium text-slate-500">Details</label>
+                        @if(mode() === 'maker') { <input type="text" [(ngModel)]="item.details" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" class="mt-1 block w-full text-slate-600 border-slate-300 rounded-md shadow-sm text-sm"> } 
+                        @else { <p class="text-slate-600">{{item.details}}</p> }
+                    </div>
+                     <div class="md:col-span-3 text-right">
+                        <label class="text-xs font-medium text-slate-500">Price per person (USD)</label>
+                        @if(mode() === 'maker') {
+                            <input type="number" [(ngModel)]="item.price" (ngModelChange)="notifyUpdate()" class="mt-1 block w-full text-right font-semibold text-sky-600 border-slate-300 rounded-md shadow-sm text-sm">
+                        } @else {
+                            <p class="font-semibold text-sky-600 text-lg">{{ item.price | currency:'USD' }}</p>
+                        }
+                    </div>
+                </div>
+                 @if(mode() === 'maker') {
+                    <button (click)="removeOtherTransport($index)" title="Remove Item" class="absolute -top-2 -right-2 p-1 bg-white rounded-full text-red-500 hover:bg-red-100 shadow border border-slate-200 opacity-0 group-hover:opacity-100 transition-opacity">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

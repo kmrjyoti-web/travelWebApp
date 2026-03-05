@@ -1,0 +1,66 @@
+
+/* Custom timeline styles */
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -2.375rem; /* Adjust based on icon size and desired position */
+  top: 0;
+  height: 100%;
+  border-left: 2px solid #e2e8f0; /* slate-200 */
+}
+
+.timeline-item:last-child::before {
+  display: none;
+}
+
+.timeline-icon {
+  position: absolute;
+  left: -3rem; /* Adjust to center on the timeline */
+  top: 0;
+}
+
+/* Drag and Drop Styles */
+.cursor-grab {
+  cursor: grab;
+}
+
+.cursor-grab:active {
+  cursor: grabbing;
+}
+
+.dragging {
+  opacity: 0.4;
+  transform: scale(0.98);
+}
+
+.drag-over {
+  border-top: 2px dashed #4f46e5; /* indigo-600 */
+  background-color: #eef2ff; /* indigo-50 */
+}
+
+
+@media print {
+  .timeline-item::before, .timeline-icon {
+    display: none;
+  }
+  
+  .timeline-item {
+     page-break-inside: avoid;
+  }
+  
+  .group {
+      page-break-inside: avoid;
+  }
+  
+  body {
+    font-size: 10pt;
+  }
+  
+  h2, .print\:text-4xl {
+    font-size: 22pt;
+  }
+  
+  h3, .print\:text-3xl {
+      font-size: 18pt;
+  }
+}

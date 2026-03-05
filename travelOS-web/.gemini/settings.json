@@ -1,0 +1,55 @@
+{
+  "project": "TravelOS-Web",
+  "version": "4.0",
+  "description": "FRESH START — shared/ folder pattern, direct development",
+  "CRITICAL_BOUNDARY": {
+    "rule": "GEMINI = UI ONLY",
+    "ALLOWED": [
+      "src/shared/components/**",
+      "src/shared/components/forms/**",
+      "src/shared/components/layout/**",
+      "src/features/*/components/**",
+      "src/styles/**",
+      "public/assets/**"
+    ],
+    "FORBIDDEN": [
+      "src/shared/services/**",
+      "src/shared/stores/**",
+      "src/shared/hooks/** (API hooks)",
+      "src/providers/**",
+      "src/config/**",
+      ".github/workflows/**",
+      "Dockerfile",
+      "*.service.ts"
+    ],
+    "onApiNeeded": "STOP. Log: API change needed [description]. Flagged for Claude Code."
+  },
+  "folderPlacement": {
+    "wrappers": "src/shared/components/",
+    "formWrappers": "src/shared/components/forms/",
+    "layoutComponents": "src/shared/components/layout/",
+    "featureUI": "src/features/{name}/components/",
+    "styles": "src/styles/"
+  },
+  "naming": {
+    "components": "PascalCase.tsx",
+    "css": "kebab-case.css",
+    "barrel": "index.ts in every folder"
+  },
+  "rules": [
+    "1. ALL reusable code in src/shared/",
+    "2. Build directly — no staging",
+    "3. Wrappers: forwardRef + spread",
+    "4. Icons via <Icon name /> from shared",
+    "5-6. ESLint blocks @coreui outside shared",
+    "7. Features: src/features/{name}/",
+    "8. CRUD: COffcanvas drawer",
+    "9. CSS: --tos-* tokens, order: tokens→coreui→overrides",
+    "10. Session log every session",
+    "⛔ 11. GEMINI = UI ONLY",
+    "12. Codex = plan first",
+    "13. Claude = 5-level test"
+  ],
+  "sessionLog": "docs/sessions/YYYY-MM-DD_HH-MM_gemini_{topic}.md",
+  "preFlight": ["Read last session log", "Create new log", "Confirm UI ONLY task", "Check folder placement"]
+}

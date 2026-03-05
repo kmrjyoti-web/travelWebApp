@@ -1,0 +1,307 @@
+/* === SELF ITINERARY DRAWER === */
+.tos-self-itinerary-drawer {
+  width: 560px !important;
+}
+
+.tos-self-itinerary-drawer__header {
+  background: var(--tos-header-bg);
+  color: #ffffff;
+  border-bottom: 1px solid var(--tos-border-color);
+}
+
+.tos-self-itinerary-drawer__title {
+  display: flex;
+  align-items: center;
+  gap: var(--tos-spacing-sm);
+  font-weight: 600;
+}
+
+.tos-self-itinerary-drawer__body {
+  background: var(--tos-body-bg);
+  padding: var(--tos-spacing-lg) !important;
+}
+
+@media (max-width: 767px) {
+  .tos-self-itinerary-drawer {
+    width: 100% !important;
+  }
+}
+
+/* === FORM GRID === */
+.tos-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--tos-spacing-md);
+}
+
+.tos-form-grid--3col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.tos-form-grid__full {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 575px) {
+  .tos-form-grid,
+  .tos-form-grid--3col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === FORM SECTIONS === */
+.tos-form-section {
+  margin-bottom: var(--tos-spacing-lg);
+}
+
+.tos-form-section__title {
+  display: flex;
+  align-items: center;
+  gap: var(--tos-spacing-sm);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tos-text-muted);
+  margin-bottom: var(--tos-spacing-md);
+  padding-bottom: var(--tos-spacing-xs);
+  border-bottom: 1px solid var(--tos-border-color);
+}
+
+/* === NUMBER STEPPER === */
+.tos-stepper__label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tos-text-muted);
+  margin-bottom: var(--tos-spacing-xs);
+}
+
+.tos-number-stepper {
+  display: flex;
+  align-items: center;
+  gap: var(--tos-spacing-sm);
+}
+
+.tos-number-stepper__btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--tos-border-radius);
+  border: 1px solid var(--tos-input-border);
+  background: var(--tos-card-bg);
+  color: var(--tos-text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.tos-number-stepper__btn:hover:not(:disabled) {
+  background: var(--tos-accent, #1b6563);
+  color: #ffffff;
+  border-color: var(--tos-accent, #1b6563);
+}
+
+.tos-number-stepper__btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.tos-number-stepper__value {
+  min-width: 36px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--tos-text-primary);
+}
+
+/* === SERVICES CHECKBOX GRID === */
+.tos-services-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--tos-spacing-sm);
+}
+
+/* === CITY SEARCH AUTOCOMPLETE === */
+.tos-city-search {
+  position: relative;
+}
+
+.tos-city-search__wrap {
+  position: relative;
+}
+
+.tos-city-search__dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  background: var(--tos-card-bg);
+  border: 1px solid var(--tos-border-color);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16), 0 2px 8px rgba(0, 0, 0, 0.08);
+  max-height: 280px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Thin scrollbar */
+.tos-city-search__dropdown::-webkit-scrollbar {
+  width: 4px;
+}
+.tos-city-search__dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+.tos-city-search__dropdown::-webkit-scrollbar-thumb {
+  background: var(--tos-border-color);
+  border-radius: 2px;
+}
+
+/* Item base */
+.tos-city-search__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--tos-text-primary);
+  border-left: 2px solid transparent;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.tos-city-search__item:hover,
+.tos-city-search__item--active {
+  background: var(--tos-input-focus-bg, rgba(27, 79, 114, 0.07));
+  border-left-color: var(--tos-primary, #1b4f72);
+}
+
+/* Loading state */
+.tos-city-search__item--loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: default;
+  color: var(--tos-text-muted);
+  font-size: 13px;
+  border-left-color: transparent !important;
+}
+
+/* Empty state */
+.tos-city-search__item--empty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: default;
+  color: var(--tos-text-muted);
+  font-size: 13px;
+  border-left-color: transparent !important;
+  padding: 12px 14px;
+}
+
+/* Spinner for loading */
+.tos-city-search__spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--tos-border-color);
+  border-top-color: var(--tos-primary, #1b4f72);
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: tos-spin 0.7s linear infinite;
+}
+
+@keyframes tos-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Flag emoji */
+.tos-city-search__flag {
+  font-size: 20px;
+  flex-shrink: 0;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Info column (name + meta) */
+.tos-city-search__info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+/* City name row */
+.tos-city-search__name {
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Capital badge */
+.tos-city-search__badge {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--tos-primary, #1b4f72);
+  color: #ffffff;
+  padding: 1px 5px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* State · Country subtitle */
+.tos-city-search__meta {
+  font-size: 11px;
+  color: var(--tos-text-muted);
+  margin-top: 2px;
+}
+
+/* MapPin reveal on hover */
+.tos-city-search__pin {
+  color: var(--tos-text-muted);
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.tos-city-search__item:hover .tos-city-search__pin,
+.tos-city-search__item--active .tos-city-search__pin {
+  opacity: 1;
+}
+
+/* === FORM API ERROR === */
+.tos-form-error {
+  display: flex;
+  align-items: center;
+  gap: var(--tos-spacing-xs);
+  font-size: 13px;
+  color: var(--tos-danger, #dc3545);
+  margin-top: var(--tos-spacing-sm);
+  padding: var(--tos-spacing-xs) var(--tos-spacing-sm);
+  background: rgba(220, 53, 69, 0.08);
+  border-radius: var(--tos-border-radius);
+  border-left: 3px solid var(--tos-danger, #dc3545);
+}
+
+/* === FORM FOOTER === */
+.tos-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--tos-spacing-sm);
+  padding-top: var(--tos-spacing-lg);
+  border-top: 1px solid var(--tos-border-color);
+  margin-top: var(--tos-spacing-md);
+}

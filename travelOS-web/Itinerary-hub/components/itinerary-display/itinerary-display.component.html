@@ -1,0 +1,357 @@
+
+@if (isLoading()) {
+  <!-- Skeleton Loader -->
+  <div class="space-y-8 animate-pulse">
+    <div class="bg-slate-200 h-10 w-3/4 rounded-lg"></div>
+    <div class="bg-slate-200 h-6 w-full rounded-lg"></div>
+    <div class="bg-slate-200 h-6 w-5/6 rounded-lg"></div>
+    @for (_ of [1, 2]; track $index) {
+      <div class="pt-8">
+        <div class="bg-slate-300 h-8 w-1/2 rounded-lg mb-6"></div>
+        <div class="space-y-6">
+          @for (_ of [1, 2, 3]; track $index) {
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+              <div class="bg-slate-200 h-5 w-1/4 rounded-lg mb-3"></div>
+              <div class="bg-slate-200 h-6 w-3/4 rounded-lg mb-4"></div>
+              <div class="bg-slate-200 h-4 w-full rounded-lg"></div>
+              <div class="bg-slate-200 h-4 w-5/6 rounded-lg mt-2"></div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+} @else if (error(); as errorMessage) {
+  <!-- Error Display -->
+  <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg" role="alert">
+    <div class="flex">
+      <div class="py-1"><svg class="h-6 w-6 text-red-400 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+      <div>
+        <p class="font-bold text-red-800">Error Generating Itinerary</p>
+        <p class="text-sm text-red-700">{{ errorMessage }}</p>
+      </div>
+    </div>
+  </div>
+} @else if (trip(); as tripData) {
+  @if(isMapView()) {
+    <app-itinerary-map-view [trip]="tripData" (viewChanged)="isMapView.set(false)"></app-itinerary-map-view>
+  } @else if (editableItinerary; as editable) {
+    <!-- Itinerary List Display -->
+    <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-slate-100 print:shadow-none print:border-none">
+      <header class="border-b border-slate-200 pb-6 mb-8 print:border-b-2 print:border-slate-800">
+        <div class="flex justify-between items-start gap-4">
+          <div class="flex-grow">
+            @if(mode() === 'maker') {
+              <input type="text" [(ngModel)]="editable.title" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" class="text-3xl font-bold tracking-tight text-slate-900 bg-transparent focus:bg-white p-1 -m-1 rounded w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 print:text-4xl print:p-0">
+              <textarea [(ngModel)]="editable.summary" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" rows="3" class="mt-2 text-slate-600 max-w-2xl bg-transparent focus:bg-white p-1 -m-1 rounded w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 print:p-0"></textarea>
+            } @else {
+              <h2 class="text-3xl font-bold tracking-tight text-slate-900 print:text-4xl">{{ editable.title }}</h2>
+              <p class="mt-2 text-slate-600 max-w-2xl">{{ editable.summary }}</p>
+            }
+             <div class="mt-4 flex flex-wrap gap-x-4 gap-y-2 items-center print:hidden">
+                <span class="text-sm font-medium text-slate-600">Travelers: {{ tripData.preferences.adults }} Adult(s)
+                    @if(tripData.preferences.children > 0) {
+                        , {{ tripData.preferences.children }} Child(ren)
+                    }
+                </span>
+             </div>
+          </div>
+          <div class="flex gap-2 shrink-0 print:hidden">
+           @if(mode() === 'maker') {
+              <button (click)="createItinerary()" [disabled]="createStatus() !== 'idle'" [class]="createStatus() === 'created' ? 'bg-green-600 text-white' : 'bg-indigo-600 text-white hover:bg-indigo-700'" class="flex items-center gap-2 px-4 py-2 rounded-md font-medium shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-sm disabled:opacity-60">
+                @if(createStatus() === 'created') {
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                  <span>Created!</span>
+                } @else if (createStatus() === 'creating') {
+                  <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  <span>Creating...</span>
+                } @else {
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                  <span>Create</span>
+                }
+              </button>
+              <button (click)="saveTrip()" [disabled]="saveStatus() !== 'idle'" [class]="saveStatus() === 'saved' ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-slate-100 text-slate-800 hover:bg-slate-200'" class="flex items-center gap-2 px-4 py-2 rounded-md font-medium shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-sm disabled:opacity-60">
+                @if(saveStatus() === 'saved') {
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                  <span>Saved!</span>
+                } @else if (saveStatus() === 'saving') {
+                  <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  <span>Saving...</span>
+                } @else {
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+                  <span>Save</span>
+                }
+              </button>
+            }
+            <button (click)="isShareModalOpen.set(true)" class="flex items-center gap-2 px-4 py-2 rounded-md font-medium shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 bg-indigo-600 text-white hover:bg-indigo-700 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" /></svg>
+                <span>Share</span>
+            </button>
+             <!-- Actions Dropdown -->
+            <div class="relative">
+                <button (click)="isActionsMenuOpen.set(!isActionsMenuOpen())" class="p-2 rounded-md font-medium shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 bg-slate-100 text-slate-800 hover:bg-slate-200 text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                    </svg>
+                </button>
+                @if(isActionsMenuOpen()) {
+                    <div class="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20" role="menu" aria-orientation="vertical" (click)="isActionsMenuOpen.set(false)">
+                        <div class="py-1" role="none">
+                            <button (click)="viewAsHtmlPage()" class="text-slate-700 block w-full text-left px-4 py-2 text-sm hover:bg-slate-100" role="menuitem">View as Page</button>
+                            <button (click)="saveAsTripIdea()" class="text-slate-700 block w-full text-left px-4 py-2 text-sm hover:bg-slate-100" role="menuitem">Save as Trip Idea</button>
+                            <button (click)="exportAsPdf()" class="text-slate-700 block w-full text-left px-4 py-2 text-sm hover:bg-slate-100" role="menuitem">Export as PDF</button>
+                            <button (click)="exportAsHtml()" class="text-slate-700 block w-full text-left px-4 py-2 text-sm hover:bg-slate-100" role="menuitem">Export as HTML (Offline)</button>
+                            <button (click)="exportAsJson()" class="text-slate-700 block w-full text-left px-4 py-2 text-sm hover:bg-slate-100" role="menuitem">Export as JSON</button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            </div>
+          </div>
+      </header>
+
+      <!-- Print-only Header -->
+       <div class="hidden print:block mb-8 text-sm">
+          <div class="grid grid-cols-3 gap-4">
+              <div><strong>Destination:</strong> {{ tripData.preferences.to }}</div>
+              <div><strong>Dates:</strong> {{ tripData.preferences.startDate }} to {{ tripData.preferences.endDate }}</div>
+              <div><strong>Travelers:</strong> {{ tripData.preferences.adults }} Adult(s)@if(tripData.preferences.children > 0){, {{ tripData.preferences.children }} Child(ren)}</div>
+              <div><strong>Est. Total Cost:</strong> {{ totalCostWithMarkup() | currencyConverter : currency() }}</div>
+          </div>
+      </div>
+
+      <!-- View & Mode Toggles -->
+      <div class="flex justify-between items-center mb-4 print:hidden">
+        <div class="flex items-center gap-2 bg-slate-100 p-1 rounded-full">
+            <button (click)="modeChanged.emit('maker')" [class]="mode() === 'maker' ? 'bg-white text-indigo-600 shadow' : 'text-slate-600'" class="px-4 py-1.5 text-sm font-medium rounded-full transition-colors flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z" /></svg>
+              Maker
+            </button>
+            <button (click)="modeChanged.emit('viewer')" [class]="mode() === 'viewer' ? 'bg-white text-indigo-600 shadow' : 'text-slate-600'" class="px-4 py-1.5 text-sm font-medium rounded-full transition-colors flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+              Viewer
+            </button>
+        </div>
+        <div class="flex items-center">
+          <input id="map-view-toggle" type="checkbox" [checked]="isMapView()" (change)="isMapView.set(!isMapView())" class="h-4 w-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 cursor-pointer">
+          <label for="map-view-toggle" class="ml-2 block text-sm font-medium text-slate-700 cursor-pointer">Show Map View</label>
+        </div>
+      </div>
+      
+      <!-- Cost Management -->
+      @if(mode() === 'maker') {
+        <div class="mb-8 bg-white border border-slate-200 p-4 rounded-lg print:hidden">
+            <h3 class="font-bold text-slate-800">Cost Management</h3>
+            <div class="mt-3 grid grid-cols-4 md:grid-cols-4 gap-4 items-center">
+                <div>
+                  <label for="displayCurrency" class="block text-sm font-medium text-slate-600">Display Currency</label>
+                  <select id="displayCurrency" [ngModel]="currency()" (ngModelChange)="currencyChanged.emit($event)" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                    @for(c of config.formOptions.currencies; track c.code) {
+                      <option [value]="c.code">{{ c.code }}</option>
+                    }
+                  </select>
+                </div>
+                <div>
+                    <label for="markup" class="block text-sm font-medium text-slate-600">Cost Markup ({{ markupPercentage() }}%)</label>
+                    <input type="range" id="markup" min="0" max="100" [ngModel]="markupPercentage()" (ngModelChange)="markupChanged.emit(+$event)" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                </div>
+                <div class="text-center">
+                    <p class="text-sm text-slate-500">Base Total</p>
+                    <p class="text-xl font-semibold text-slate-800">{{ totalBaseCost() | currencyConverter : currency() }}</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-sm font-medium text-indigo-600">Total with Markup</p>
+                    <p class="text-xl font-bold text-indigo-700">{{ totalCostWithMarkup() | currencyConverter : currency() }}</p>
+                </div>
+            </div>
+        </div>
+      }
+
+      <app-map-display 
+        [activities]="currentDayActivities()" 
+        [highlightedActivity]="highlightedActivity()"
+        (markerClicked)="onMarkerClicked($event)"
+        class="print:hidden"></app-map-display>
+
+      <!-- Day Navigation -->
+      <div class="my-6 p-4 bg-slate-100 rounded-lg flex justify-between items-center sticky top-4 z-10 shadow-sm border border-slate-200 print:hidden">
+        <button (click)="goToDay('prev')" [disabled]="currentDayIndex() === 0" class="px-4 py-2 text-sm font-medium rounded-md bg-white border border-slate-300 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+            Prev Day
+        </button>
+        
+        @if(currentDay(); as day) {
+            <div class="text-center">
+                <p class="font-bold text-slate-800">Day {{ day.day }} of {{ editable.days.length }}</p>
+                <p class="text-sm text-slate-600 hidden sm:block">{{ day.theme }}</p>
+            </div>
+        }
+
+        <button (click)="goToDay('next')" [disabled]="currentDayIndex() >= editable.days.length - 1" class="px-4 py-2 text-sm font-medium rounded-md bg-white border border-slate-300 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors">
+            Next Day
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+        </button>
+      </div>
+      
+      @if (currentDay(); as day) {
+        <div class="relative pl-12 md:pl-16 print:pl-0">
+          <div class="timeline-icon bg-indigo-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg ring-8 ring-white print:hidden">{{ day.day }}</div>
+          <div class="timeline-item">
+            <h3 class="text-2xl font-semibold text-slate-800 print:text-3xl print:mt-12 print:pt-4 print:border-t print:border-slate-300">Day {{day.day}}: <span class="font-normal">{{ day.theme }}</span></h3>
+            
+            <!-- Accommodation Selector -->
+             @if(mode() === 'maker' && tripData.accommodation && tripData.accommodation.length > 0) {
+              <div class="my-4">
+                <label [for]="'day-accommodation-' + day.day" class="block text-sm font-medium text-slate-700">Accommodation</label>
+                <select [id]="'day-accommodation-' + day.day" [(ngModel)]="day.accommodationId" (ngModelChange)="notifyUpdate()" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                  <option [ngValue]="undefined">None Selected</option>
+                  @for(acc of tripData.accommodation; track acc.id) {
+                    <option [value]="acc.id">{{ acc.hotelName }} ({{ acc.type }})</option>
+                  }
+                </select>
+              </div>
+            } @else if (mode() === 'viewer' && day.accommodationId) {
+                <div class="my-4 p-3 bg-indigo-50 rounded-lg flex items-center gap-3 text-sm text-indigo-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                    <p><span class="font-semibold">Staying at:</span> {{ getAccommodationName(day.accommodationId) }}</p>
+                </div>
+            }
+
+
+            <div class="mt-6 space-y-6">
+              @for (activity of day.activities; track activity; let activityIndex = $index) {
+                <div
+                  [id]="'activity-' + currentDayIndex() + '-' + activityIndex"
+                  [class.ring-2]="highlightedActivity() === activity"
+                  [class.ring-indigo-500]="highlightedActivity() === activity"
+                  [class.opacity-60]="activity.completed && mode() === 'viewer'"
+                  [class.cursor-grab]="mode() === 'maker'"
+                  [class.dragging]="isBeingDragged(currentDayIndex(), activityIndex)"
+                  [class.drag-over]="isDropTarget(currentDayIndex(), activityIndex)"
+                  class="group bg-slate-50 border border-slate-200/80 rounded-xl p-5 transition-all duration-200 relative print:border-none print:p-0 print:bg-transparent print:rounded-none"
+                  [draggable]="mode() === 'maker'"
+                  (dragstart)="onDragStart($event, currentDayIndex(), activityIndex)"
+                  (dragover)="onDragOver($event)"
+                  (dragenter)="onDragEnter(currentDayIndex(), activityIndex)"
+                  (dragleave)="onDragLeave()"
+                  (drop)="onDrop($event, currentDayIndex(), activityIndex)"
+                  (dragend)="onDragEnd()">
+                  <div class="absolute top-4 -left-7 print:hidden">
+                    @if(mode() === 'maker') {
+                      <input type="checkbox" [checked]="activity.completed" (change)="toggleActivityCompletion(activity)" class="h-5 w-5 rounded-full border-slate-400 text-green-600 focus:ring-green-500 cursor-pointer">
+                    }
+                  </div>
+                  <div (click)="onActivityClick(activity)" [class.cursor-pointer]="mode() === 'maker'">
+                    <div class="flex gap-4">
+                      <div class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-xl shrink-0 print:hidden">{{ getActivityIcon(activity.activityType) }}</div>
+                      <div class="flex-grow">
+                        <div class="flex justify-between items-start gap-3">
+                          @if(mode() === 'maker') {
+                            <input type="text" [(ngModel)]="activity.title" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" [class.line-through]="activity.completed" class="text-lg font-semibold text-slate-900 bg-transparent focus:bg-white p-1 -m-1 rounded w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 print:p-0 print:text-xl">
+                            <input type="text" [(ngModel)]="activity.time" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" class="bg-indigo-100 text-indigo-700 text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 w-24 text-center focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400 print:hidden">
+                          } @else {
+                            <span [class.line-through]="activity.completed" class="text-lg font-semibold text-slate-900 print:text-xl">{{ activity.title }}</span>
+                             <div class="flex items-center gap-2 shrink-0 print:hidden">
+                                <span class="capitalize text-xs font-medium bg-slate-100 text-slate-700 px-2 py-1 rounded-full">{{ activity.activityType }}</span>
+                                <span class="bg-indigo-100 text-indigo-700 text-xs font-semibold px-2.5 py-1 rounded-full">{{ activity.time }}</span>
+                            </div>
+                          }
+                        </div>
+                        @if(mode() === 'maker') {
+                          <textarea [(ngModel)]="activity.description" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" rows="2" class="mt-1 text-slate-600 bg-transparent focus:bg-white p-1 -m-1 rounded w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 print:p-0"></textarea>
+                        } @else {
+                          <p class="mt-1 text-slate-600">{{ activity.description }}</p>
+                        }
+                        <div class="flex items-center gap-4 text-sm text-slate-500 mt-2">
+                          <div class="flex items-center gap-2 flex-grow">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400 shrink-0 print:hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
+                             @if(mode() === 'maker') {
+                                <input type="text" [(ngModel)]="activity.location" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" placeholder="Location" class="font-medium bg-transparent focus:bg-white p-1 -m-1 rounded w-full focus:outline-none focus:ring-2 focus:ring-indigo-400 print:p-0">
+                             } @else {
+                                <span class="font-medium print:before:content-['Location:__']">{{ activity.location }}</span>
+                             }
+                          </div>
+                          @if(mode() === 'maker') {
+                            <div class="flex items-center gap-2 print:hidden">
+                                <span class="text-slate-400">$</span>
+                                <input type="number" min="0" [(ngModel)]="activity.cost" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" class="w-16 p-1 text-sm font-medium bg-transparent focus:bg-white rounded focus:outline-none focus:ring-2 focus:ring-indigo-400 text-right">
+                                @if(markupPercentage() > 0) {
+                                  <span class="text-xs text-indigo-600 font-medium whitespace-nowrap p-1 bg-indigo-50 rounded">
+                                      → {{ (activity.cost || 0) * (1 + markupPercentage() / 100) | currencyConverter : currency() }}
+                                  </span>
+                                }
+                            </div>
+                          } @else {
+                             @if(activity.cost !== undefined) {
+                                <span class="font-medium text-slate-700 print:before:content-['Cost:__']">{{ (markupPercentage() > 0 ? ((activity.cost || 0) * (1 + markupPercentage() / 100)) : (activity.cost || 0)) > 0 ? ((markupPercentage() > 0 ? ((activity.cost || 0) * (1 + markupPercentage() / 100)) : (activity.cost || 0)) | currencyConverter : currency()) : 'Free' }}</span>
+                            }
+                          }
+                        </div>
+                         @if(mode() === 'maker') {
+                            <div class="mt-2 print:hidden">
+                              <label [for]="'activity-type-' + activityIndex" class="sr-only">Activity Type</label>
+                              <select [id]="'activity-type-' + activityIndex" [(ngModel)]="activity.activityType" (ngModelChange)="notifyUpdate()" class="mt-1 block w-full pl-3 pr-10 py-1.5 border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md capitalize">
+                                @for(category of activityCategories; track category) {
+                                    <option [value]="category">{{ getActivityIcon(category) }} {{ category | titlecase }}</option>
+                                }
+                              </select>
+                            </div>
+                          }
+                      </div>
+                    </div>
+                  </div>
+                   @if(mode() === 'maker') {
+                    <div class="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 print:hidden">
+                      <button (click)="moveActivityUpDown(currentDayIndex(), activityIndex, 'up')" [disabled]="activityIndex === 0" class="p-1.5 rounded-md bg-white/50 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" /></svg></button>
+                      <button (click)="moveActivityUpDown(currentDayIndex(), activityIndex, 'down')" [disabled]="activityIndex === day.activities.length - 1" class="p-1.5 rounded-md bg-white/50 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed text-slate-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></button>
+                      <button (click)="removeActivity(currentDayIndex(), activityIndex)" class="p-1.5 rounded-md bg-white/50 hover:bg-red-200 text-red-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                    </div>
+                  }
+                </div>
+              }
+              
+              <!-- Nearby Places -->
+              @if(day.nearbyPlaces && day.nearbyPlaces.length > 0) {
+                <div class="mt-8 pt-6 border-t border-dashed border-slate-300 print:hidden">
+                  <h4 class="text-lg font-semibold text-slate-700 mb-3">Nearby Places to Consider</h4>
+                  <div class="grid grid-cols-2 sm:grid-cols-2 gap-4">
+                    @for(place of day.nearbyPlaces; track place.name) {
+                      <div class="bg-white p-3 rounded-lg border border-slate-200 flex gap-3">
+                        <div class="shrink-0 text-xl pt-1">{{ getActivityIcon(place.category) }}</div>
+                        <div>
+                          <p class="font-semibold text-slate-800">{{ place.name }}</p>
+                          <p class="text-xs text-slate-500">{{ place.description }}</p>
+                           @if(mode() === 'maker') {
+                            <button (click)="addNearbyPlaceToItinerary(currentDayIndex(), place)" class="mt-2 text-xs font-medium text-indigo-600 hover:text-indigo-800">Add to Itinerary</button>
+                          }
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+
+              @if(mode() === 'maker') {
+                <div class="mt-6 text-center print:hidden">
+                  <button (click)="addActivity(currentDayIndex())" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+                    Add Activity
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+} @else {
+  <!-- Initial Placeholder -->
+  <div class="text-center bg-white p-12 rounded-2xl shadow-lg border border-slate-100 print:hidden">
+     <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-16 w-16 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 16.382V5.618a1 1 0 00-1.447-.894L15 7m-6 13v-6m0 0l6-3m-6 3L3 16m6 4l6-3m6 3L9 16" /></svg>
+    <h3 class="mt-4 text-lg font-medium text-slate-800">{{ config.uiText.initialDisplayTitle }}</h3>
+    <p class="mt-1 text-slate-500">{{ config.uiText.initialDisplaySubtitle }}</p>
+  </div>
+}
+<app-share-modal [trip]="trip()" [isOpen]="isShareModalOpen()" (close)="isShareModalOpen.set(false)"></app-share-modal>

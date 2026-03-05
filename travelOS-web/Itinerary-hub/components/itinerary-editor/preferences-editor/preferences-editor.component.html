@@ -1,0 +1,119 @@
+<div class="space-y-8" *ngIf="trip().preferences; let pref">
+    <!-- Header -->
+    <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
+        <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
+            <i class="pi pi-sliders-h text-xl"></i>
+        </div>
+        <div>
+            <h2 class="text-xl font-bold text-slate-800">Trip Filters & Preferences</h2>
+            <p class="text-sm text-slate-500">Criteria used to generate this itinerary.</p>
+        </div>
+    </div>
+
+    <!-- Basic Info -->
+    <div class="space-y-6">
+        <h3 class="text-sm font-bold text-slate-700 uppercase">Destinations & Dates</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 border border-slate-200 rounded-xl shadow-sm">
+            <p-floatlabel class="w-full">
+                <input pInputText id="from" [(ngModel)]="pref.from" (ngModelChange)="notifyUpdate()" class="w-full" />
+                <label for="from">Origin (From)</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+                <input pInputText id="to" [(ngModel)]="pref.to" (ngModelChange)="notifyUpdate()" class="w-full" />
+                <label for="to">Destination (To)</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+                 <input pInputText id="startDate" [(ngModel)]="pref.startDate" (ngModelChange)="notifyUpdate()" class="w-full" placeholder="YYYY-MM-DD" />
+                <label for="startDate">Start Date</label>
+            </p-floatlabel>
+
+            <div class="grid grid-cols-2 gap-4">
+                <p-floatlabel class="w-full">
+                    <input pInputText id="endDate" [(ngModel)]="pref.endDate" (ngModelChange)="notifyUpdate()" class="w-full" placeholder="YYYY-MM-DD" />
+                    <label for="endDate">End Date</label>
+                </p-floatlabel>
+                 <p-floatlabel class="w-full">
+                    <p-inputNumber id="days" [(ngModel)]="pref.days" (ngModelChange)="notifyUpdate()" [min]="1" styleClass="w-full" class="w-full block"></p-inputNumber>
+                    <label for="days">Duration (Days)</label>
+                </p-floatlabel>
+            </div>
+        </div>
+    </div>
+
+    <!-- Group Information -->
+    <div class="space-y-6">
+        <h3 class="text-sm font-bold text-slate-700 uppercase">Travelers & Nature</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white p-6 border border-slate-200 rounded-xl shadow-sm">
+            <p-floatlabel class="w-full">
+                <p-inputNumber id="adults" [(ngModel)]="pref.adults" (ngModelChange)="notifyUpdate()" [min]="1" styleClass="w-full" class="w-full block"></p-inputNumber>
+                <label for="adults">Adults</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+                <p-inputNumber id="children" [(ngModel)]="pref.children" (ngModelChange)="notifyUpdate()" [min]="0" styleClass="w-full" class="w-full block"></p-inputNumber>
+                <label for="children">Children</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+                <p-dropdown [options]="tripNatureOptions" [(ngModel)]="pref.tripNature" (ngModelChange)="notifyUpdate()" appendTo="body" id="nature" styleClass="w-full"></p-dropdown>
+                <label for="nature">Trip Nature</label>
+            </p-floatlabel>
+        </div>
+    </div>
+
+    <!-- Budget & Accommodation -->
+    <div class="space-y-6">
+         <h3 class="text-sm font-bold text-slate-700 uppercase">Budget & Stay</h3>
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 border border-slate-200 rounded-xl shadow-sm">
+            <p-floatlabel class="w-full">
+               <p-dropdown [options]="budgetOptions" [(ngModel)]="pref.budget" (ngModelChange)="notifyUpdate()" appendTo="body" id="budget" styleClass="w-full"></p-dropdown>
+                <label for="budget">Budget Level</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+               <input pInputText id="currency" [(ngModel)]="pref.currency" (ngModelChange)="notifyUpdate()" class="w-full" />
+                <label for="currency">Currency</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+               <p-dropdown [options]="accommodationTypeOptions" [(ngModel)]="pref.accommodationType" (ngModelChange)="notifyUpdate()" appendTo="body" id="accType" styleClass="w-full"></p-dropdown>
+                <label for="accType">Accommodation Type</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+               <p-dropdown [options]="starRatingOptions" [(ngModel)]="pref.starRating" (ngModelChange)="notifyUpdate()" appendTo="body" id="rating" styleClass="w-full"></p-dropdown>
+                <label for="rating">Star Rating</label>
+            </p-floatlabel>
+         </div>
+    </div>
+
+    <!-- Interests & Services -->
+     <div class="space-y-6">
+         <h3 class="text-sm font-bold text-slate-700 uppercase">Interests & Services</h3>
+         <div class="bg-white p-6 border border-slate-200 rounded-xl shadow-sm space-y-6">
+            <div class="flex flex-col gap-1">
+                <label class="text-xs text-slate-500 ml-1">Included Services</label>
+                <p-multiSelect [options]="serviceOptions" [(ngModel)]="pref.services" (ngModelChange)="notifyUpdate()" 
+                    display="chip" styleClass="w-full" placeholder="Select services"></p-multiSelect>
+            </div>
+
+            <p-floatlabel class="w-full">
+                <input pInputText id="food" [(ngModel)]="pref.food" (ngModelChange)="notifyUpdate()" class="w-full" />
+                <label for="food">Food Preferences</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+                <textarea pInputTextarea id="interests" [(ngModel)]="pref.interests" (ngModelChange)="notifyUpdate()" 
+                    [rows]="3" class="w-full"></textarea>
+                <label for="interests">Interests (Free Text)</label>
+            </p-floatlabel>
+
+            <div class="flex items-center gap-2">
+                <p-checkbox [(ngModel)]="pref.includeNightlife" (ngModelChange)="notifyUpdate()" [binary]="true" inputId="nightlife"></p-checkbox>
+                <label for="nightlife" class="text-slate-700 font-medium">Include Nightlife</label>
+            </div>
+         </div>
+    </div>
+</div>

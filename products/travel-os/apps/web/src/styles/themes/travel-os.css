@@ -1,0 +1,83 @@
+/**
+ * TravelOS — Product theme: Travel OS
+ *
+ * Palette: Deep ocean blues (#1B4F72) + teals (#008080)
+ * Applied when <html data-product="travel-os">.
+ *
+ * These values patch the color tokens defined in default.css.
+ * Dark mode adjustments appear under [data-product="travel-os"][data-theme="dark"].
+ *
+ * Color scale reference:
+ *   Blue 50: #e8f1f8  100: #c5d8ec  200: #9fbde0  300: #78a2d3
+ *        400: #5a8dc9  500: #3d79c0  600: #2980B9  700: #1B4F72
+ *        800: #154060  900: #0d2a40  950: #071520
+ *   Teal 600: #00a0a0  700: #008080  800: #006060
+ */
+
+/* ── Light mode (default) ───────────────────────────────────────────────────── */
+
+[data-product="travel-os"],
+:root {
+  /* Primary — deep ocean blue */
+  --tos-color-primary:       #1B4F72;
+  --tos-color-primary-light: #2980B9;
+  --tos-color-primary-dark:  #154060;
+  --tos-color-accent:        #2980B9;
+  --tos-color-accent-hover:  #1B4F72;
+
+  /* Secondary — teal */
+  --tos-color-secondary:       #008080;
+  --tos-color-secondary-light: #00a0a0;
+  --tos-color-secondary-dark:  #006060;
+
+  /* Header */
+  --tos-header-bg:        #1B4F72;
+  --tos-header-text:      #ffffff;
+
+  /* Sidebar */
+  --tos-sidebar-bg:        #1a2332;
+  --tos-sidebar-active-bg: #2980B9;
+  --tos-sidebar-hover-bg:  #243447;
+  --tos-sidebar-border-right: 1px solid #243447;
+
+  /* Focus ring uses primary accent */
+  --tos-focus-ring:       0 0 0 3px rgba(41,128,185,0.4);
+  --tos-focus-ring-color: rgba(41,128,185,0.4);
+
+  /* Text link */
+  --tos-color-text-link:       #2980B9;
+  --tos-color-text-link-hover: #1B4F72;
+
+  /* App background */
+  --tos-app-bg:     #eef2f5;
+  --tos-content-bg: #f0f4f8;
+
+  /* Legacy token support */
+  --tos-accent: #2980B9;
+  --tos-icon:   #64748b;
+}
+
+/* ── Dark mode overrides ────────────────────────────────────────────────────── */
+
+[data-product="travel-os"][data-theme="dark"],
+[data-product="travel-os"][data-coreui-theme="dark"],
+[data-theme="dark"],
+[data-coreui-theme="dark"] {
+  --tos-app-bg: #111827;
+}
+
+[data-product="travel-os"][data-theme="dark"],
+[data-product="travel-os"][data-coreui-theme="dark"] {
+  /* Header stays dark blue */
+  --tos-header-bg:        #0d2a40;
+
+  /* Sidebar darker */
+  --tos-sidebar-bg:        #071520;
+  --tos-sidebar-active-bg: #1B4F72;
+  --tos-sidebar-hover-bg:  #0d2a40;
+  --tos-sidebar-border-right: 1px solid #0d2a40;
+
+  /* Focus ring slightly more visible */
+  --tos-focus-ring:       0 0 0 3px rgba(41,128,185,0.55);
+  --tos-focus-ring-color: rgba(41,128,185,0.55);
+}

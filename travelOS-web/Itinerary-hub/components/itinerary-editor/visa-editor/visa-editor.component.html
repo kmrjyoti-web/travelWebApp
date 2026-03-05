@@ -1,0 +1,130 @@
+<div class="space-y-8" *ngIf="trip().visaInfo; let visa">
+    <!-- Header -->
+    <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
+        <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+            <i class="pi pi-id-card text-xl"></i>
+        </div>
+        <div>
+            <h2 class="text-xl font-bold text-slate-800">Visa Requirements</h2>
+            <p class="text-sm text-slate-500">Manage visa process, requirements and sources.</p>
+        </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="bg-white p-6 border border-slate-200 rounded-xl shadow-sm space-y-4">
+        <h3 class="text-sm font-bold text-slate-700 uppercase">General Summary</h3>
+        <p-floatlabel class="w-full">
+            <textarea pInputTextarea id="visaSummary" [(ngModel)]="visa.summary" (ngModelChange)="notifyUpdate()"
+                [rows]="4" class="w-full"></textarea>
+            <label for="visaSummary">Visa Summary & Overview</label>
+        </p-floatlabel>
+    </div>
+
+    <!-- Process Steps -->
+    <div class="space-y-4">
+        <div class="flex justify-between items-center">
+            <h3 class="text-sm font-bold text-slate-700 uppercase">Application Process</h3>
+            <button pButton label="Add Step" icon="pi pi-plus" class="p-button-outlined p-button-sm"
+                (click)="openAddStep()"></button>
+        </div>
+
+        <div class="space-y-3">
+            @if (!visa.processSteps?.length) {
+            <div class="text-center py-8 text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                <p>No process steps defined.</p>
+            </div>
+            } @else {
+            @for (step of visa.processSteps; track $index) {
+            <div
+                class="bg-white p-4 border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all flex gap-4">
+                <div
+                    class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center">
+                    {{ step.step }}
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-start">
+                        <h4 class="font-bold text-slate-800">{{ step.title }}</h4>
+                        <div class="flex gap-2">
+                            <button pButton icon="pi pi-pencil"
+                                class="p-button-text p-button-secondary p-button-sm h-8 w-8"
+                                (click)="editStep($index)"></button>
+                            <button pButton icon="pi pi-trash" class="p-button-text p-button-danger p-button-sm h-8 w-8"
+                                (click)="removeStep($index)"></button>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-2">{{ step.description }}</p>
+
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span *ngIf="step.duration"
+                            class="bg-slate-100 px-2 py-1 rounded text-slate-600 border border-slate-200">
+                            <i class="pi pi-clock mr-1"></i> {{ step.duration }}
+                        </span>
+                        @for (doc of step.documents; track $index) {
+                        <span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded border border-indigo-100">
+                            <i class="pi pi-file mr-1"></i> {{ doc }}
+                        </span>
+                        }
+                    </div>
+                </div>
+            </div>
+            }
+            }
+        </div>
+    </div>
+
+    <!-- Sources -->
+    <div class="bg-white p-6 border border-slate-200 rounded-xl shadow-sm space-y-4">
+        <div class="flex justify-between items-center mb-2">
+            <h3 class="text-sm font-bold text-slate-700 uppercase">Official Sources</h3>
+            <button pButton icon="pi pi-plus" class="p-button-text p-button-sm" (click)="addSource()"></button>
+        </div>
+
+        <div class="space-y-3">
+            @for (source of visa.sources; track $index) {
+            <div class="flex gap-3 items-start">
+                <input pInputText placeholder="Source Title" [(ngModel)]="source.title" (ngModelChange)="notifyUpdate()"
+                    class="flex-1" />
+                <input pInputText placeholder="URL" [(ngModel)]="source.uri" (ngModelChange)="notifyUpdate()"
+                    class="flex-1" />
+                <button pButton icon="pi pi-trash" class="p-button-text p-button-danger"
+                    (click)="removeSource($index)"></button>
+            </div>
+            }
+            @if (!visa.sources?.length) {
+            <p class="text-sm text-slate-400 italic">No sources added.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Step Dialog -->
+<p-dialog [(visible)]="showStepDialog" [header]="(editingStepIndex() > -1 ? 'Edit' : 'Add') + ' Process Step'"
+    [modal]="true" [style]="{width: '500px'}">
+    <div class="grid grid-cols-1 gap-6 pt-4" *ngIf="currentStep">
+        <p-floatlabel class="w-full">
+            <input pInputText id="stepTitle" [(ngModel)]="currentStep.title" class="w-full" />
+            <label for="stepTitle">Step Title</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="w-full">
+            <textarea pInputTextarea id="stepDesc" [(ngModel)]="currentStep.description" [rows]="3"
+                class="w-full"></textarea>
+            <label for="stepDesc">Description</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="w-full">
+            <input pInputText id="stepDuration" [(ngModel)]="currentStep.duration" class="w-full"
+                placeholder="e.g. 2-3 Weeks" />
+            <label for="stepDuration">Estimated Duration</label>
+        </p-floatlabel>
+
+        <div class="flex flex-col gap-1">
+            <label class="text-xs text-slate-500 ml-1">Required Documents</label>
+            <p-chips [(ngModel)]="currentStep.documents" placeholder="Add document..."></p-chips>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton label="Cancel" class="p-button-text" (click)="showStepDialog=false"></button>
+        <button pButton label="Save" (click)="saveStep()"></button>
+    </ng-template>
+</p-dialog>

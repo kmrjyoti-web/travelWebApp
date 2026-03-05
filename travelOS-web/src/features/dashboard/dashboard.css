@@ -1,0 +1,187 @@
+/* ============================================================
+   DASHBOARD STYLES — TravelOS v4.0
+   All dashboard cards use SOLID backgrounds for font visibility.
+   Overrides [data-card-bg='child'] transparency when bg image is set.
+   ============================================================ */
+
+/* === AI ITINERARY GENERATOR === */
+.tos-ai-generator {
+  background: linear-gradient(135deg, var(--tos-primary) 0%, #2980b9 100%);
+  border-radius: var(--tos-border-radius-lg);
+  padding: var(--tos-spacing-lg);
+  color: #ffffff;
+  margin-bottom: var(--tos-spacing-lg);
+}
+
+.tos-ai-generator__title {
+  display: flex;
+  align-items: center;
+  gap: var(--tos-spacing-sm);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: var(--tos-spacing-sm);
+}
+
+.tos-ai-generator__subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: var(--tos-spacing-md);
+  line-height: 1.5;
+}
+
+.tos-ai-generator__form {
+  display: flex;
+  gap: var(--tos-spacing-md);
+  align-items: center;
+}
+
+.tos-ai-generator__input {
+  flex: 1;
+  padding: 12px var(--tos-spacing-md);
+  border-radius: var(--tos-border-radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--tos-transition-fast);
+}
+
+.tos-ai-generator__input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.tos-ai-generator__input:focus {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tos-ai-generator__btn {
+  display: flex;
+  align-items: center;
+  gap: var(--tos-spacing-sm);
+  padding: 12px var(--tos-spacing-lg);
+  border-radius: var(--tos-border-radius-full);
+  border: none;
+  background: #ffffff;
+  color: var(--tos-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--tos-transition-fast), transform var(--tos-transition-fast);
+}
+
+.tos-ai-generator__btn:hover {
+  background: #f0f4f8;
+  transform: translateY(-1px);
+}
+
+/* === KPI CARDS ROW === */
+.tos-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--tos-spacing-md);
+  margin-bottom: var(--tos-spacing-lg);
+}
+
+/* SOLID background override — ensures visibility over any bg image */
+.tos-kpi-card {
+  background: var(--tos-card-bg) !important;
+  border: 1px solid var(--tos-card-border) !important;
+  border-radius: var(--tos-border-radius) !important;
+  box-shadow: var(--tos-card-shadow) !important;
+  padding: var(--tos-spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--tos-spacing-md);
+  transition: box-shadow var(--tos-transition-fast), transform var(--tos-transition-fast);
+}
+
+.tos-kpi-card:hover {
+  box-shadow: var(--tos-card-shadow-hover) !important;
+  transform: translateY(-2px);
+}
+
+.tos-kpi-card__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--tos-border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tos-kpi-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.tos-kpi-card__label {
+  font-size: 12px;
+  color: var(--tos-text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tos-kpi-card__value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--tos-text-primary);
+  line-height: 1.2;
+}
+
+/* === CHART CARDS — SOLID background === */
+.tos-chart-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: var(--tos-spacing-lg);
+  margin-bottom: var(--tos-spacing-lg);
+}
+
+.tos-chart-card {
+  background: var(--tos-card-bg) !important;
+  border: 1px solid var(--tos-card-border) !important;
+  border-radius: var(--tos-border-radius) !important;
+  box-shadow: var(--tos-card-shadow) !important;
+  padding: var(--tos-spacing-lg);
+}
+
+.tos-chart-card__title {
+  display: flex;
+  align-items: center;
+  gap: var(--tos-spacing-sm);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--tos-text-primary);
+  margin-bottom: var(--tos-spacing-md);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .tos-kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tos-chart-row {
+    grid-template-columns: 1fr;
+  }
+
+  .tos-ai-generator__form {
+    flex-direction: column;
+  }
+
+  .tos-ai-generator__btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .tos-kpi-row {
+    grid-template-columns: 1fr;
+  }
+}

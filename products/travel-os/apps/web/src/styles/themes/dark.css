@@ -1,0 +1,65 @@
+/**
+ * TravelOS — Dark mode overrides
+ *
+ * Applied when <html data-theme="dark"> is set by ThemeProvider.
+ * Also sets data-coreui-theme="dark" for CoreUI component compat.
+ *
+ * Only tokens that differ from light mode need to appear here.
+ */
+
+[data-theme="dark"],
+[data-coreui-theme="dark"] {
+  /* ── Surfaces / backgrounds ───────────────────────────────────────────── */
+  --tos-color-background:       #0f172a;
+  --tos-color-surface:          #1e293b;
+  --tos-color-surface-elevated: #243447;
+  --tos-color-surface-sunken:   #0f172a;
+  --tos-app-bg:                 #111827;
+
+  /* ── Borders ──────────────────────────────────────────────────────────── */
+  --tos-color-border:        #334155;
+  --tos-color-border-strong: #475569;
+
+  /* ── Text ─────────────────────────────────────────────────────────────── */
+  --tos-color-text:           #f1f5f9;
+  --tos-color-text-muted:     #94a3b8;
+  --tos-color-text-disabled:  #475569;
+  --tos-color-text-inverse:   #1e293b;
+  --tos-color-text-link:      #60a5fa;
+  --tos-color-text-link-hover:#93c5fd;
+
+  /* ── Icons ────────────────────────────────────────────────────────────── */
+  --tos-icon:      #94a3b8;
+  --tos-icon-muted:#475569;
+
+  /* ── Header ───────────────────────────────────────────────────────────── */
+  --tos-header-bg:         #0f172a;
+  --tos-header-shadow:     0 2px 4px rgba(0,0,0,0.4);
+
+  /* ── Sidebar ──────────────────────────────────────────────────────────── */
+  --tos-sidebar-bg:         #0f172a;
+  --tos-sidebar-text:       #cbd5e1;
+  --tos-sidebar-text-muted: #475569;
+  --tos-sidebar-hover-bg:   #1e293b;
+  --tos-sidebar-border-right: 1px solid #1e293b;
+
+  /* ── Content ──────────────────────────────────────────────────────────── */
+  --tos-content-bg: #111827;
+
+  /* ── Footer ───────────────────────────────────────────────────────────── */
+  --tos-footer-bg:         #1e293b;
+  --tos-footer-text:       #94a3b8;
+  --tos-footer-border-top: 1px solid #334155;
+
+  /* ── Borders ──────────────────────────────────────────────────────────── */
+  --tos-border-color:        #334155;
+  --tos-border-color-strong: #475569;
+
+  /* ── Shadows (more opaque in dark mode) ──────────────────────────────── */
+  --tos-shadow-xs:    0 1px 2px rgba(0,0,0,0.3);
+  --tos-shadow-sm:    0 1px 2px rgba(0,0,0,0.4);
+  --tos-shadow-md:    0 4px 6px rgba(0,0,0,0.5);
+  --tos-shadow-lg:    0 10px 15px rgba(0,0,0,0.6);
+  --tos-shadow-xl:    0 20px 25px rgba(0,0,0,0.65);
+  --tos-shadow-inner: inset 0 2px 4px rgba(0,0,0,0.4);
+}

@@ -1,0 +1,73 @@
+
+@if (isOpen()) {
+  <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 animate-fade-in" (click)="resetAndClose()"></div>
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+    @if (trip(); as tripData) {
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-fade-in-up" (click)="$event.stopPropagation()">
+        <header class="p-5 border-b border-slate-200 flex justify-between items-center shrink-0">
+          <h2 class="text-xl font-semibold text-slate-800">Share Itinerary</h2>
+          <button (click)="resetAndClose()" class="p-2 rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </header>
+
+        <main class="p-5 overflow-y-auto grow">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="share-language" class="block text-sm font-medium text-slate-700">Language</label>
+              <select id="share-language" [(ngModel)]="selectedLanguage" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                @for(lang of config.languages; track lang.code) {
+                  <option [value]="lang.code">{{ lang.name }}</option>
+                }
+              </select>
+            </div>
+            <div>
+              <label for="share-currency" class="block text-sm font-medium text-slate-700">Currency</label>
+              <select id="share-currency" [(ngModel)]="selectedCurrency" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                 @for(c of config.formOptions.currencies; track c.code) {
+                  <option [value]="c.code">{{ c.name }} ({{ c.code }})</option>
+                }
+              </select>
+            </div>
+          </div>
+          
+          <div class="mt-4 p-3 bg-slate-50 rounded-md text-xs text-slate-600">
+            <h4 class="font-semibold text-slate-700 mb-1">Live Conversion Rates (from USD)</h4>
+            <div class="flex flex-wrap gap-x-4 gap-y-1">
+                @for(c of config.formOptions.currencies; track c.code) {
+                    <span>{{ c.code }}: {{ c.rate }}</span>
+                }
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <button (click)="generateShareableText()" [disabled]="!canGenerate()" class="w-full flex justify-center items-center gap-2 py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed">
+              @if (isTranslating()) {
+                <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <span>Translating...</span>
+              } @else {
+                <span>Generate Shareable Text</span>
+              }
+            </button>
+          </div>
+          
+          @if (translatedText()) {
+            <div class="mt-4">
+              <textarea readonly [value]="translatedText()" rows="10" class="w-full p-3 bg-slate-100 border border-slate-300 rounded-md text-sm font-mono focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+            </div>
+          }
+        </main>
+
+        <footer class="p-5 border-t border-slate-200 shrink-0 text-right">
+           <button (click)="copyToClipboard()" [disabled]="!translatedText() || isTranslating()" class="px-5 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-green-400 disabled:cursor-not-allowed">
+             @if (copyStatus() === 'copied') {
+              <span>✓ Copied!</span>
+             } @else {
+              <span>Copy to Clipboard</span>
+             }
+           </button>
+        </footer>
+      </div>
+    }
+  </div>
+}

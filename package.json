@@ -1,0 +1,12 @@
+{
+  "name": "travel-os-root",
+  "version": "4.0.0",
+  "private": true,
+  "scripts": {
+    "dev:all":     "node scripts/dev.js",
+    "dev:web":     "PORT=9200 npm run dev --prefix travelOS-web",
+    "dev:api":     "PORT=9201 npm run dev --workspace=apps/travel-os --prefix SharedCore",
+    "stop:all":    "node scripts/dev.js stop",
+    "restart:all": "node scripts/dev.js restart"
+  }
+}

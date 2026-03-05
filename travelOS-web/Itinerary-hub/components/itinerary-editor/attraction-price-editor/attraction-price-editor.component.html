@@ -1,0 +1,87 @@
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
+                <i class="pi pi-tag text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-slate-800">Attraction Price Reference</h3>
+                <p class="text-slate-500 text-sm">List of entrance fees and prices for reference.</p>
+            </div>
+        </div>
+        <button pButton label="Add Price" icon="pi pi-plus" class="p-button-outlined p-button-primary p-button-sm"
+            (click)="openAdd()"></button>
+    </div>
+
+    <!-- Prices Table -->
+    <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+        <p-table [value]="trip().attractionPrices || []" [tableStyle]="{ 'min-width': '50rem' }"
+            styleClass="p-datatable-sm">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="w-1/3">Attraction Name</th>
+                    <th class="w-1/4">Price / Fee</th>
+                    <th>Notes</th>
+                    <th class="w-24"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-i="rowIndex">
+                <tr>
+                    <td class="font-medium text-slate-800">{{ item.name }}</td>
+                    <td>
+                        <span class="bg-slate-100 text-slate-700 font-bold px-2 py-1 rounded text-xs">
+                            {{ item.price }}
+                        </span>
+                    </td>
+                    <td class="text-slate-500 text-sm">{{ item.notes || '-' }}</td>
+                    <td>
+                        <div class="flex gap-2 justify-end">
+                            <button pButton icon="pi pi-pencil"
+                                class="p-button-text p-button-secondary p-button-sm h-8 w-8" (click)="edit(i)"
+                                pTooltip="Edit"></button>
+                            <button pButton icon="pi pi-trash" class="p-button-text p-button-danger p-button-sm h-8 w-8"
+                                (click)="remove(i)" pTooltip="Delete"></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="4">
+                        <div class="text-center py-8 text-slate-400">
+                            <i class="pi pi-tag mb-2 text-2xl block"></i>
+                            <p>No price references added yet.</p>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+<!-- Edit Dialog -->
+<p-dialog [(visible)]="showDialog" [header]="(editingIndex() > -1 ? 'Edit' : 'Add') + ' Price Reference'" [modal]="true"
+    [style]="{width: '450px'}">
+    <div class="grid grid-cols-1 gap-6 pt-4" *ngIf="currentPrice">
+        <p-floatlabel class="w-full">
+            <input pInputText id="attrName" [(ngModel)]="currentPrice.name" class="w-full" />
+            <label for="attrName">Attraction Name</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="w-full">
+            <input pInputText id="attrPrice" [(ngModel)]="currentPrice.price" class="w-full"
+                placeholder="e.g. $25 or Free" />
+            <label for="attrPrice">Price / Fee</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="w-full">
+            <input pInputText id="attrNotes" [(ngModel)]="currentPrice.notes" class="w-full" />
+            <label for="attrNotes">Notes (Optional)</label>
+        </p-floatlabel>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton label="Cancel" class="p-button-text" (click)="showDialog=false"></button>
+        <button pButton label="Save" (click)="save()"></button>
+    </ng-template>
+</p-dialog>

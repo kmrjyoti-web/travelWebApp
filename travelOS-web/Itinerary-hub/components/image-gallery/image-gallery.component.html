@@ -1,0 +1,174 @@
+<div class="space-y-6">
+    <!-- Header / Configuration -->
+    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 space-y-4">
+        <div class="flex justify-between items-center">
+            <div>
+                <h3 class="text-xl font-bold text-slate-800">Image Gallery Settings</h3>
+                <p class="text-slate-500 text-sm">Configure and generate AI image prompts.</p>
+            </div>
+             <button pButton label="Generate Content (AI)" icon="pi pi-bolt" 
+                class="p-button-primary" 
+                [loading]="isGenerating()"
+                (click)="openModelDialog('gallery')">
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            <!-- Part 1: General Gallery -->
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                <h4 class="font-semibold text-slate-700 mb-2">1. General Gallery</h4>
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm text-slate-600">Number of Images (Landscape 16:9)</label>
+                    <div class="flex gap-2">
+                         <p-inputNumber 
+                            [ngModel]="galleryCount()" 
+                            (ngModelChange)="onCountChange($event)"
+                            [min]="0" [max]="10" 
+                            [showButtons]="true" buttonLayout="horizontal" 
+                            spinnerMode="horizontal" inputStyleClass="w-12 text-center font-bold">
+                        </p-inputNumber>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Part 2: Marketing Assets -->
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                <h4 class="font-semibold text-slate-700 mb-2">2. Marketing Assets</h4>
+                <p class="text-xs text-slate-500 mb-3 block">Select specific sizes to generate.</p>
+                <div class="grid grid-cols-2 gap-2">
+                    @for (ratio of marketingRatios; track ratio.value) {
+                        <div class="flex items-center">
+                             <p-checkbox [binary]="true" [inputId]="ratio.value" 
+                                [ngModel]="selectedImages()[ratio.value]"
+                                (onChange)="toggleSelection(ratio.value)"></p-checkbox>
+                             <label [for]="ratio.value" class="ml-2 text-sm text-slate-600 cursor-pointer">{{ ratio.label }}</label>
+                        </div>
+                    }
+                </div>
+            </div>
+            
+            <!-- Part 3: Cover Image -->
+             <div class="bg-slate-50 p-4 rounded-lg border border-slate-100 md:col-span-2 flex items-center gap-4">
+                <div class="w-32 h-20 bg-slate-200 rounded-lg overflow-hidden border border-slate-300 relative flex-shrink-0">
+                    @if (headerImageUrl()) {
+                        <img [src]="headerImageUrl()" class="w-full h-full object-cover">
+                    } @else {
+                        <div class="flex items-center justify-center h-full text-slate-400">
+                            <i class="pi pi-image text-2xl"></i>
+                        </div>
+                    }
+                     <!-- Spinner Overlay -->
+                    @if (headerUploading()) {
+                        <div class="absolute inset-0 bg-white/80 flex items-center justify-center">
+                            <i class="pi pi-spin pi-spinner"></i>
+                        </div>
+                    }
+                </div>
+                <div class="flex-1">
+                    <h4 class="font-semibold text-slate-700">Trip Cover Image</h4>
+                    <p class="text-xs text-slate-500 mb-2">Main slider image for the itinerary (1920x600 recommended).</p>
+                    <input type="file" id="header-upload" style="display: none" (change)="onHeaderFileSelected($event)" accept="image/*">
+                    <div class="flex gap-2">
+                        <button pButton label="Upload Cover" icon="pi pi-upload" class="p-button-sm p-button-outlined" (click)="triggerHeaderUpload()"></button>
+                         <button pButton label="Generate AI" icon="pi pi-bolt" class="p-button-sm p-button-secondary p-button-outlined" (click)="openModelDialog('cover')"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (galleryItems().length === 0) {
+        <div class="text-center py-12 text-slate-400 bg-slate-50 rounded-xl border-2 border-dashed border-slate-200">
+            <i class="pi pi-image text-3xl mb-3"></i>
+            <p class="font-medium text-slate-600">No image prompts available.</p>
+            <p class="text-xs">Generate a new itinerary to get AI-suggested image prompts.</p>
+        </div>
+    } @else {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (item of galleryItems(); track $index; let i = $index) {
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full relative"
+                     [class.ring-2]="selectedImages()[item.aspectRatio]"
+                     [class.ring-indigo-500]="selectedImages()[item.aspectRatio]">
+                    
+                    <!-- Aspect Ratio Label -->
+                    <div class="bg-slate-100 px-4 py-2 border-b border-slate-100 font-bold text-slate-700 flex justify-between items-center">
+                        <span>{{ item.aspectRatio }}</span>
+                        <span class="text-xs font-normal text-slate-500 bg-white px-2 py-1 rounded border border-slate-200">
+                            Marketing Asset
+                        </span>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-4 flex-1 flex flex-col gap-3">
+                        @if (item.imageUrl) {
+                            <div class="aspect-video w-full rounded-lg overflow-hidden bg-slate-100 border border-slate-200">
+                                <img [src]="item.imageUrl" [alt]="item.altText" class="w-full h-full object-cover">
+                            </div>
+                        } @else {
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+                                    {{ item.prompt === 'Placeholder' ? 'Empty Slot' : 'AI Prompt' }}
+                                </span>
+                                @if (item.prompt === 'Placeholder') {
+                                    <div class="h-20 flex flex-col items-center justify-center text-slate-400 bg-slate-50 rounded mt-2 border border-dashed border-slate-200">
+                                        <span class="text-xs">Waiting for Content...</span>
+                                        <span class="text-[10px] opacity-70">Upload Image or Click Generate</span>
+                                    </div>
+                                } @else {
+                                    <p class="text-sm text-slate-600 line-clamp-4 mt-1 italic">
+                                        "{{ item.prompt }}"
+                                    </p>
+                                }
+                            </div>
+                        }
+                        
+                        <div>
+                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Alt Text</span>
+                            <p class="text-xs text-slate-500 mt-1">
+                                {{ item.altText }}
+                            </p>
+                        </div>
+                    </div>
+                    
+
+                    
+                    <!-- Footer Info & Actions -->
+                    <div class="bg-slate-50 px-4 py-3 border-t border-slate-100 flex justify-between items-center text-xs">
+                         <span class="text-slate-400">Prefix: {{ item.aspectRatio }}_</span>
+                         
+                         <div class="flex items-center gap-2">
+                            <input type="file" [id]="'file-upload-' + i" style="display: none" 
+                                (change)="onFileSelected($event, i)" accept="image/*">
+                                
+                             <button pButton icon="pi pi-upload" 
+                                class="p-button-rounded p-button-text p-button-sm" 
+                                [loading]="uploadingState()['item-' + i]"
+                                (click)="triggerUpload(i)"
+                                pTooltip="Upload Image" tooltipPosition="top">
+                             </button>
+                         </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<p-dialog header="Select AI Model" [(visible)]="showModelDialog" [modal]="true" [style]="{width: '400px'}" [draggable]="false" [resizable]="false">
+    <div class="flex flex-col gap-4 py-4">
+        <p class="text-slate-600 text-sm">Choose an AI model for generation. "Flux" and "Turbo" will generate and upload actual images.</p>
+        
+        <div class="flex flex-col gap-3">
+            @for (model of aiModels; track model.key) {
+                <div class="flex align-items-center">
+                    <p-radioButton name="aiModel" [value]="model.key" [(ngModel)]="selectedModel" [inputId]="model.key"></p-radioButton>
+                    <label [for]="model.key" class="ml-2 cursor-pointer text-slate-700">{{ model.name }}</label>
+                </div>
+            }
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton label="Cancel" class="p-button-text" (click)="showModelDialog.set(false)"></button>
+        <button pButton label="Generate" class="p-button-primary" (click)="confirmGeneration()"></button>
+    </ng-template>
+</p-dialog>

@@ -1,0 +1,88 @@
+<div class="space-y-8" *ngIf="trip().seo_detail; let seo">
+    <!-- Header -->
+    <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
+        <div class="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
+            <i class="pi pi-globe text-xl"></i>
+        </div>
+        <div>
+            <h2 class="text-xl font-bold text-slate-800">SEO Settings</h2>
+            <p class="text-sm text-slate-500">Search Engine Optimization and Social Sharing details.</p>
+        </div>
+    </div>
+
+    <!-- Basic SEO -->
+    <div class="space-y-6">
+        <h3 class="text-sm font-bold text-slate-700 uppercase">General Meta Tags</h3>
+        <div class="bg-white p-6 border border-slate-200 rounded-xl shadow-sm space-y-6">
+            <p-floatlabel class="w-full">
+                <input pInputText id="seoTitle" [(ngModel)]="seo.title" (ngModelChange)="notifyUpdate()" class="w-full" maxlength="70" />
+                <label for="seoTitle">Page Title</label>
+            </p-floatlabel>
+            <small class="text-slate-400 block -mt-4 text-xs">Recommended length: 50-60 characters</small>
+
+            <p-floatlabel class="w-full">
+                <textarea pInputTextarea id="metaDesc" [(ngModel)]="seo.metaDescription" (ngModelChange)="notifyUpdate()" 
+                    [rows]="3" class="w-full" maxlength="160"></textarea>
+                <label for="metaDesc">Meta Description</label>
+            </p-floatlabel>
+            <small class="text-slate-400 block -mt-4 text-xs">Recommended length: 150-160 characters</small>
+
+             <div class="flex flex-col gap-2">
+                <label class="text-xs text-slate-500 ml-1">Keywords</label>
+                <p-chips [(ngModel)]="seo.keywords" (ngModelChange)="notifyUpdate()" 
+                    placeholder="Enter keyword..." styleClass="w-full"></p-chips>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social / Open Graph -->
+    <div class="space-y-6">
+        <h3 class="text-sm font-bold text-slate-700 uppercase">Social Sharing (Open Graph)</h3>
+        <div class="bg-white p-6 border border-slate-200 rounded-xl shadow-sm space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <p-floatlabel class="w-full">
+                    <input pInputText id="ogTitle" [(ngModel)]="seo.ogTitle" (ngModelChange)="notifyUpdate()" class="w-full" />
+                    <label for="ogTitle">OG Title</label>
+                </p-floatlabel>
+                
+                 <div class="w-full">
+                     <div class="h-6"></div> <!-- Spacing filler -->
+                     <button pButton label="Copy from Basic SEO" class="p-button-text p-button-sm" 
+                        (click)="seo.ogTitle = seo.title; seo.ogDescription = seo.metaDescription; notifyUpdate()"></button>
+                 </div>
+            </div>
+
+            <p-floatlabel class="w-full">
+                <textarea pInputTextarea id="ogDesc" [(ngModel)]="seo.ogDescription" (ngModelChange)="notifyUpdate()" 
+                    [rows]="3" class="w-full"></textarea>
+                <label for="ogDesc">OG Description</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+                <input pInputText id="ogImage" [(ngModel)]="seo.ogImage" (ngModelChange)="notifyUpdate()" class="w-full" />
+                <label for="ogImage">OG Image URL</label>
+            </p-floatlabel>
+        </div>
+    </div>
+
+    <!-- Advanced -->
+    <div class="space-y-6">
+        <h3 class="text-sm font-bold text-slate-700 uppercase">Advanced Settings</h3>
+        <div class="bg-white p-6 border border-slate-200 rounded-xl shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6">
+            <p-floatlabel class="w-full">
+                <input pInputText id="canonical" [(ngModel)]="seo.canonicalUrl" (ngModelChange)="notifyUpdate()" class="w-full" />
+                <label for="canonical">Canonical URL</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+                <p-dropdown [options]="robotOptions" [(ngModel)]="seo.robots" (ngModelChange)="notifyUpdate()" appendTo="body" id="robots" styleClass="w-full"></p-dropdown>
+                <label for="robots">Robots Meta Tag</label>
+            </p-floatlabel>
+
+             <p-floatlabel class="w-full">
+                <p-dropdown [options]="twitterCardOptions" [(ngModel)]="seo.twitterCard" (ngModelChange)="notifyUpdate()" appendTo="body" id="twCard" styleClass="w-full"></p-dropdown>
+                <label for="twCard">Twitter Card Type</label>
+            </p-floatlabel>
+        </div>
+    </div>
+</div>

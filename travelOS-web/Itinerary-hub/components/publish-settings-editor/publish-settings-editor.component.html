@@ -1,0 +1,357 @@
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 animate-fade-in">
+    <div class="flex items-center justify-between mb-6 border-b border-slate-100 pb-4">
+        <div>
+            <h3 class="text-lg font-bold text-slate-800">Publish Settings</h3>
+            <p class="text-sm text-slate-500">Configure how this package appears when published.</p>
+        </div>
+        <div class="text-right">
+            <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Total Package Price</p>
+            <p class="text-2xl font-bold text-emerald-600">{{ currency() }} {{ displayPrice() | number:'1.2-2' }}</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Left Column: Basic Settings -->
+        <div class="space-y-6">
+            <!-- URL & Language -->
+            <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 space-y-4">
+                <h4 class="font-semibold text-slate-800 border-b border-slate-200 pb-2">Publication Config</h4>
+
+                <div class="flex flex-col gap-2">
+                    <label class="font-semibold text-slate-700 text-sm">Publish URL Slug</label>
+                    <div class="flex items-center">
+                        <span
+                            class="bg-slate-100 border border-r-0 border-slate-300 text-slate-500 p-2 rounded-l-md text-sm">travtech/t/</span>
+                        <input type="text" [ngModel]="publishUrl()"
+                            (ngModelChange)="publishUrl.set($event); onSettingsChange()"
+                            class="p-2 border border-slate-300 rounded-r-md w-full focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            placeholder="my-awesome-trip">
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label class="font-semibold text-slate-700 text-sm">Publish Heading</label>
+                    <input type="text" [ngModel]="publishHeading()"
+                        (ngModelChange)="publishHeading.set($event); onSettingsChange()"
+                        class="p-2 border border-slate-300 rounded-md w-full focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="e.g. Majestic Paris Tour">
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label class="font-semibold text-slate-700 text-sm">Content Language</label>
+                    <select [ngModel]="language()" (ngModelChange)="language.set($event); onSettingsChange()"
+                        class="p-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full bg-white">
+                        <option value="en">English (Default)</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="hi">Hindi</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- SEO & Search Keys -->
+            <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                    <h4 class="font-semibold text-slate-800">Search Optimization</h4>
+                    <div class="flex items-center gap-2">
+                        @if (isGeneratingKeys()) {
+                        <span class="text-xs text-indigo-500 animate-pulse">AI Generating...</span>
+                        }
+                        <button (click)="generateSearchKeysWithAI()" [disabled]="isGeneratingKeys()"
+                            class="text-xs bg-indigo-50 text-indigo-600 w-8 h-8 rounded-full hover:bg-indigo-100 transition-colors flex items-center justify-center relative group"
+                            title="Generate with AI">
+                            <i class="pi pi-sparkles" [class.animate-spin]="isGeneratingKeys()"></i>
+                            <span
+                                class="absolute -top-8 bg-slate-800 text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                                AI Generate
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold text-slate-700 text-sm">From Search Keys</label>
+                        <textarea [ngModel]="fromSearchKeys()"
+                            (ngModelChange)="fromSearchKeys.set($event); onSettingsChange()" rows="2"
+                            class="p-2 border border-slate-300 rounded-md text-sm w-full"></textarea>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold text-slate-700 text-sm">To Search Keys</label>
+                        <textarea [ngModel]="toSearchKeys()"
+                            (ngModelChange)="toSearchKeys.set($event); onSettingsChange()" rows="2"
+                            class="p-2 border border-slate-300 rounded-md text-sm w-full"></textarea>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label class="font-semibold text-slate-700 text-sm">General Search Keys</label>
+                    <textarea [ngModel]="searchKeys()" (ngModelChange)="searchKeys.set($event); onSettingsChange()"
+                        rows="2" class="p-2 border border-slate-300 rounded-md text-sm w-full"
+                        placeholder="adventure, family, budget..."></textarea>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label class="font-semibold text-slate-700 text-sm">Offer Search Keys</label>
+                    <textarea [ngModel]="offerSearchKeys()"
+                        (ngModelChange)="offerSearchKeys.set($event); onSettingsChange()" rows="2"
+                        class="p-2 border border-slate-300 rounded-md text-sm w-full"
+                        placeholder="discount, special..."></textarea>
+                </div>
+            </div>
+
+            <!-- Tags & Card Image -->
+            <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 space-y-4">
+                <h4 class="font-semibold text-slate-800 border-b border-slate-200 pb-2">Discovery & Tags</h4>
+
+                <div class="flex flex-col gap-2">
+                    <label class="font-semibold text-slate-700 text-sm">Tags</label>
+                    <p-chips [ngModel]="tags()" (ngModelChange)="tags.set($event); onSettingsChange()"
+                        placeholder="Add tags (e.g. Summer, Beach)..."></p-chips>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label class="font-semibold text-slate-700 text-sm">Itinerary Card Image</label>
+                    <div class="border-2 border-dashed border-slate-300 rounded-lg p-4 text-center hover:bg-slate-100 transition-colors cursor-pointer"
+                        (click)="fileInput.click()">
+                        @if (cardImageUrl()) {
+                        <div class="relative w-full h-32 mb-2">
+                            <img [src]="cardImageUrl()" class="w-full h-full object-cover rounded-lg">
+                            <button (click)="$event.stopPropagation(); cardImageUrl.set('')"
+                                class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 w-6 h-6 text-xs flex items-center justify-center">
+                                <i class="pi pi-times"></i>
+                            </button>
+                        </div>
+                        } @else {
+                        <i class="pi pi-image text-3xl text-slate-400 mb-2"></i>
+                        <p class="text-xs text-slate-500">Click to upload card image</p>
+                        }
+                        <input #fileInput type="file" (change)="onCardImageSelect($event)" class="hidden"
+                            accept="image/*">
+                    </div>
+                    <input type="text" [ngModel]="cardImageUrl()"
+                        (ngModelChange)="cardImageUrl.set($event); onSettingsChange()" placeholder="Or paste image URL"
+                        class="text-xs p-2 border border-slate-300 rounded-md">
+                </div>
+            </div>
+
+            <!-- Package Duration & Constraints -->
+            <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 space-y-4">
+                <h4 class="font-semibold text-slate-800 border-b border-slate-200 pb-2">Constraints</h4>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold text-slate-700 text-sm">Duration (Days)</label>
+                        <p-inputNumber [ngModel]="durationDays()"
+                            (ngModelChange)="durationDays.set($event); onSettingsChange()" [min]="1"
+                            [showButtons]="true"></p-inputNumber>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold text-slate-700 text-sm">Duration (Nights)</label>
+                        <p-inputNumber [ngModel]="durationNights()"
+                            (ngModelChange)="durationNights.set($event); onSettingsChange()" [min]="0"
+                            [showButtons]="true"></p-inputNumber>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold text-slate-700 text-sm">Travelers Min</label>
+                        <p-inputNumber [ngModel]="travelerMin()"
+                            (ngModelChange)="travelerMin.set($event); onSettingsChange()" [min]="1"
+                            [showButtons]="true"></p-inputNumber>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold text-slate-700 text-sm">Travelers Max</label>
+                        <p-inputNumber [ngModel]="travelerMax()"
+                            (ngModelChange)="travelerMax.set($event); onSettingsChange()" [min]="1"
+                            [showButtons]="true"></p-inputNumber>
+                    </div>
+                </div>
+
+
+
+                <div class="flex items-center justify-between pt-2">
+                    <label class="font-semibold text-slate-700 text-sm">Pause Theme?</label>
+                    <p-inputSwitch [ngModel]="pauseTheme()"
+                        (ngModelChange)="pauseTheme.set($event); onSettingsChange()"></p-inputSwitch>
+                </div>
+            </div>
+
+            <!-- Recurring Package -->
+            <div class="bg-indigo-50 p-5 rounded-lg border border-indigo-100 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h4 class="font-semibold text-indigo-900">Repeating Package</h4>
+                    <p-inputSwitch [ngModel]="recurringPackageEnabled()"
+                        (ngModelChange)="recurringPackageEnabled.set($event); onSettingsChange()"></p-inputSwitch>
+                </div>
+                @if (recurringPackageEnabled()) {
+                <div class="animate-fade-in">
+                    <label class="font-semibold text-indigo-800 text-sm block mb-1">Reset Frequency</label>
+                    <p-dropdown [options]="['daily', 'weekly', 'monthly']" [ngModel]="recurringPackageFrequency()"
+                        (ngModelChange)="recurringPackageFrequency.set($event); onSettingsChange()"
+                        styleClass="w-full"></p-dropdown>
+                    <p class="text-xs text-indigo-600 mt-2">Package availability will automatically reset based on this
+                        frequency.</p>
+                </div>
+                }
+            </div>
+        </div>
+
+        <!-- Right Column: Pricing & Offers -->
+        <div class="space-y-6">
+
+            <!-- Pricing Config -->
+            <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 space-y-4">
+                <h4 class="font-semibold text-slate-800 border-b border-slate-200 pb-2">Pricing & Logic</h4>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label class="text-slate-500 text-xs uppercase font-bold tracking-wider">Base Cost
+                            (Calc)</label>
+                        <div class="p-2 bg-slate-200 rounded text-slate-600 font-mono">{{ displayPrice() |
+                            number:'1.2-2' }}</div>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold text-slate-700 text-sm">Current Selling Price</label>
+                        <p-inputNumber [ngModel]="currentPrice()"
+                            (ngModelChange)="currentPrice.set($event); onSettingsChange()" mode="currency"
+                            [currency]="currency()" class="w-full"></p-inputNumber>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label class="font-semibold text-slate-700 text-sm text-emerald-600">Offer Price
+                        (Discounted)</label>
+                    <p-inputNumber [ngModel]="offerPrice()" (ngModelChange)="offerPrice.set($event); onSettingsChange()"
+                        mode="currency" [currency]="currency()" class="w-full"></p-inputNumber>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold text-slate-700 text-sm">Budget Min</label>
+                        <p-inputNumber [ngModel]="budgetMin()"
+                            (ngModelChange)="budgetMin.set($event); onSettingsChange()" mode="currency"
+                            [currency]="currency()" [min]="0"></p-inputNumber>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold text-slate-700 text-sm">Budget Max</label>
+                        <p-inputNumber [ngModel]="budgetMax()"
+                            (ngModelChange)="budgetMax.set($event); onSettingsChange()" mode="currency"
+                            [currency]="currency()" [min]="0"></p-inputNumber>
+                    </div>
+                </div>
+
+                <!-- Currency Conversion Settings (Original) -->
+                <div class="pt-4 border-t border-slate-200 mt-2">
+                    <label class="font-semibold text-slate-700 text-sm mb-2 block">Currency Conversion</label>
+                    <div class="flex flex-col gap-2 mb-2">
+                        <select [ngModel]="currency()" (ngModelChange)="currency.set($event); onSettingsChange()"
+                            class="p-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-indigo-500 w-full bg-white">
+                            <option value="USD">USD ($)</option>
+                            <option value="INR">INR (₹)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="AUD">AUD ($)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-2 mb-3">
+                        <p-checkbox [ngModel]="conversionEnabled()"
+                            (ngModelChange)="conversionEnabled.set($event); onSettingsChange()" binary="true"
+                            label="Enable Auto-Conversion"></p-checkbox>
+                    </div>
+
+                    @if (conversionEnabled() || currency() !== 'USD') {
+                    <div class="grid grid-cols-2 gap-4 animate-fade-in">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs text-slate-500">Rate (1 USD = )</label>
+                            <p-inputNumber [ngModel]="conversionRate()"
+                                (ngModelChange)="conversionRate.set($event); onSettingsChange()"
+                                [minFractionDigits]="2"></p-inputNumber>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs text-slate-500">Markup %</label>
+                            <p-inputNumber [ngModel]="markupPercentage()"
+                                (ngModelChange)="markupPercentage.set($event); onSettingsChange()"
+                                suffix="%"></p-inputNumber>
+                        </div>
+                    </div>
+                    <button (click)="applyConversionToTrip()"
+                        class="w-full mt-3 bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1 rounded text-xs transition-colors">
+                        Apply Conversion to Itinerary
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <!-- Special Offer Section -->
+            <div class="bg-gradient-to-br from-orange-50 to-amber-50 p-5 rounded-lg border border-orange-100 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h4 class="font-semibold text-orange-900 flex items-center gap-2"><i class="pi pi-bolt"></i> Special
+                        Offer</h4>
+                    <p-inputSwitch [ngModel]="offerEnabled()"
+                        (ngModelChange)="offerEnabled.set($event); onSettingsChange()"></p-inputSwitch>
+                </div>
+
+                @if (offerEnabled()) {
+                <div class="space-y-4 animate-fade-in">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold text-orange-800 text-sm">Offer Title</label>
+                        <input type="text" [ngModel]="offerTitle()"
+                            (ngModelChange)="offerTitle.set($event); onSettingsChange()"
+                            class="p-2 border border-orange-200 rounded-md w-full focus:ring-2 focus:ring-orange-500"
+                            placeholder="e.g. Early Bird Special">
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold text-orange-800 text-sm">Offer Heading</label>
+                        <input type="text" [ngModel]="offerHeading()"
+                            (ngModelChange)="offerHeading.set($event); onSettingsChange()"
+                            class="p-2 border border-orange-200 rounded-md w-full focus:ring-2 focus:ring-orange-500"
+                            placeholder="e.g. Limited Time Deal!">
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold text-orange-800 text-sm">Valid For / Until</label>
+                        <div class="flex gap-2">
+                            <select [ngModel]="offerValidityType()"
+                                (ngModelChange)="offerValidityType.set($event); onSettingsChange()"
+                                class="p-2 border border-orange-200 rounded-md bg-white text-sm">
+                                <option value="24h">24 Hours</option>
+                                <option value="48h">48 Hours</option>
+                                <option value="days">Custom Days</option>
+                                <option value="custom">Specific Date</option>
+                            </select>
+
+                            @if (offerValidityType() === 'days') {
+                            <input type="number" [ngModel]="offerValidityValue()"
+                                (ngModelChange)="offerValidityValue.set($event); onSettingsChange()" placeholder="Days"
+                                class="p-2 border border-orange-200 rounded-md w-20">
+                            }
+                            @if (offerValidityType() === 'custom') {
+                            <p-calendar [ngModel]="offerValidUntilDate()"
+                                (ngModelChange)="offerValidUntilDate.set($event); onSettingsChange()" appendTo="body"
+                                styleClass="w-full"></p-calendar>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label class="font-semibold text-orange-800 text-sm">Offer Tags</label>
+                        <p-chips [ngModel]="offerTags()" (ngModelChange)="offerTags.set($event); onSettingsChange()"
+                            placeholder="e.g. newyear, christmas"></p-chips>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2 border-t border-orange-200 py-2">
+                        <span class="text-sm font-medium text-orange-800">Repeat Offer (Daily Reset)</span>
+                        <p-inputSwitch [ngModel]="offerRecurring()"
+                            (ngModelChange)="offerRecurring.set($event); onSettingsChange()"></p-inputSwitch>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

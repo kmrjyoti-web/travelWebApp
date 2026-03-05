@@ -1,0 +1,72 @@
+<div class="space-y-8">
+    <!-- Header -->
+    <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
+        <div class="w-10 h-10 rounded-full bg-sky-50 flex items-center justify-center text-sky-600">
+            <i class="pi pi-cloud text-xl"></i>
+        </div>
+        <div>
+            <h2 class="text-xl font-bold text-slate-800">Weather Details & Advice</h2>
+            <p class="text-sm text-slate-500">Manage overall outlook and daily forecasts.</p>
+        </div>
+    </div>
+
+    <!-- Overall Outlook -->
+    <div class="space-y-2">
+        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Overall Weather Outlook</h3>
+        <p-floatlabel variant="on" class="w-full">
+            <textarea pInputTextarea id="overallWeather" [(ngModel)]="trip().itinerary.weather"
+                (ngModelChange)="notifyUpdate()" [autoResize]="true" rows="4"
+                class="w-full p-3 text-sm leading-relaxed"></textarea>
+            <label for="overallWeather">General Weather Summary</label>
+        </p-floatlabel>
+        <p class="text-xs text-slate-400">Describe the general climate, season, and what to expect.</p>
+    </div>
+
+    <!-- Daily Forecasts -->
+    <div class="space-y-4">
+        <div class="flex items-center gap-2 mb-2">
+            <span class="bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Daily
+                Forecast & Attire</span>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4">
+            @for (day of trip().itinerary.days; track day.day) {
+            <div class="bg-white border border-slate-200 rounded-xl p-5 hover:shadow-md transition-shadow">
+                <!-- Day Header -->
+                <h4 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="text-indigo-600">Day {{ day.day }}:</span>
+                    <span>{{ day.theme || 'No theme set' }}</span>
+                </h4>
+
+                <div class="space-y-4 pl-4 border-l-2 border-indigo-50">
+                    <!-- Forecast -->
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2 text-sm font-semibold text-slate-700">
+                            <i class="pi pi-sun text-yellow-500"></i>
+                            Forecast
+                        </div>
+                        <input pInputText [(ngModel)]="day.weather!.forecast" (ngModelChange)="notifyUpdate()"
+                            class="w-full text-sm p-2 border-0 border-b border-slate-200 focus:border-indigo-500 focus:ring-0 bg-transparent placeholder-slate-300"
+                            placeholder="e.g. Sunny with a high of 25°C">
+                    </div>
+
+                    <!-- Dress Code / Attire -->
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2 text-sm font-semibold text-slate-700">
+                            <i class="pi pi-user text-indigo-500"></i>
+                            Suggested Attire
+                        </div>
+                        <input pInputText [(ngModel)]="day.weather!.dressCode" (ngModelChange)="notifyUpdate()"
+                            class="w-full text-sm p-2 border-0 border-b border-slate-200 focus:border-indigo-500 focus:ring-0 bg-transparent placeholder-slate-300"
+                            placeholder="e.g. Light cotton clothes, comfortable walking shoes">
+                    </div>
+                </div>
+            </div>
+            } @empty {
+            <div class="text-center py-8 text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                No days added to the itinerary yet. Go to "Daily Itinerary" to add days.
+            </div>
+            }
+        </div>
+    </div>
+</div>

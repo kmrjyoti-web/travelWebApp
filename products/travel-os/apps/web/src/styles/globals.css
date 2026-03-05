@@ -1,0 +1,21 @@
+/* TravelOS Global Styles
+ * Using CoreUI built-in + --tos-* custom properties
+ * NO Tailwind — use --tos-* tokens for theming
+ *
+ * Import order:
+ *   1. CoreUI — base component styles
+ *   2. default.css — all --tos-* tokens (light mode baseline)
+ *   3. Product themes — patch color tokens per product (via data-product attr)
+ *   4. dark.css — dark mode overrides (via data-theme="dark" attr)
+ *   5. base/ — reset & typography
+ *   6. components/overrides.css — tos-* BEM component classes
+ */
+@import '@coreui/coreui/dist/css/coreui.min.css';
+@import './themes/default.css';
+@import './themes/travel-os.css';
+@import './themes/food-os.css';
+@import './themes/crm-os.css';
+@import './themes/dark.css';
+@import './base/reset.css';
+@import './base/typography.css';
+@import './components/overrides.css';

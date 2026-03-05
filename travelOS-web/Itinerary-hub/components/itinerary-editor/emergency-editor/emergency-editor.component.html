@@ -1,0 +1,86 @@
+<div class="space-y-8" *ngIf="trip().emergencyInfo; let info">
+    <!-- Header -->
+    <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
+        <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600">
+            <i class="pi pi-shield text-xl"></i>
+        </div>
+        <div>
+            <h2 class="text-xl font-bold text-slate-800">Support & Emergency</h2>
+            <p class="text-sm text-slate-500">Contact details for emergencies.</p>
+        </div>
+    </div>
+
+    <!-- Embassy Details -->
+    <div class="space-y-6">
+        <div class="flex items-center gap-2">
+            <span class="bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Embassy
+                Contact</span>
+        </div>
+
+        <div class="bg-white p-6 border border-slate-200 rounded-xl shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6">
+            <p-floatlabel class="w-full">
+                <input pInputText id="embassyName" [(ngModel)]="info.embassy.name" (ngModelChange)="notifyUpdate()"
+                    class="w-full" />
+                <label for="embassyName">Consulate / Embassy Name</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+                <input pInputText id="embassyPhone" [(ngModel)]="info.embassy.phone" (ngModelChange)="notifyUpdate()"
+                    class="w-full" />
+                <label for="embassyPhone">Phone</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full md:col-span-2">
+                <input pInputText id="embassyAddress" [(ngModel)]="info.embassy.address"
+                    (ngModelChange)="notifyUpdate()" class="w-full" />
+                <label for="embassyAddress">Address</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+                <input pInputText id="embassyWebsite" [(ngModel)]="info.embassy.website"
+                    (ngModelChange)="notifyUpdate()" class="w-full" />
+                <label for="embassyWebsite">Website</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full md:col-span-2">
+                <textarea pInputTextarea id="embassyDetails" [(ngModel)]="info.embassy.details"
+                    (ngModelChange)="notifyUpdate()" [rows]="3" class="w-full"></textarea>
+                <label for="embassyDetails">Additional Details</label>
+            </p-floatlabel>
+        </div>
+    </div>
+
+    <!-- Local Services -->
+    <div class="space-y-6">
+        <div class="flex items-center gap-2">
+            <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Local
+                Emergency Numbers</span>
+        </div>
+
+        <div class="bg-white p-6 border border-slate-200 rounded-xl shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6">
+            <p-floatlabel class="w-full">
+                <input pInputText id="police" [(ngModel)]="info.localServices.police" (ngModelChange)="notifyUpdate()"
+                    class="w-full" placeholder="e.g. 100" />
+                <label for="police">Police</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+                <input pInputText id="ambulance" [(ngModel)]="info.localServices.ambulance"
+                    (ngModelChange)="notifyUpdate()" class="w-full" placeholder="e.g. 108" />
+                <label for="ambulance">Ambulance</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+                <input pInputText id="fire" [(ngModel)]="info.localServices.fire" (ngModelChange)="notifyUpdate()"
+                    class="w-full" placeholder="e.g. 101" />
+                <label for="fire">Fire</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="w-full">
+                <input pInputText id="medical" [(ngModel)]="info.localServices.medical" (ngModelChange)="notifyUpdate()"
+                    class="w-full" placeholder="General Medical Help" />
+                <label for="medical">Medical / General</label>
+            </p-floatlabel>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="space-y-8">
+    <!-- Header -->
+    <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
+        <div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
+            <i class="pi pi-check-circle text-xl"></i>
+        </div>
+        <div>
+            <h2 class="text-xl font-bold text-slate-800">Inclusions & Exclusions</h2>
+            <p class="text-sm text-slate-500">Define what is included and excluded in this package.</p>
+        </div>
+    </div>
+
+    <!-- Inclusions -->
+    <div class="space-y-4">
+        <div class="flex items-center gap-2">
+            <span
+                class="bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Inclusions</span>
+        </div>
+        <p class="text-xs text-slate-400 mb-2">Add items one by one. Press Enter to add.</p>
+
+        <div class="bg-white p-4 border border-emerald-100 rounded-xl shadow-sm">
+            <p-chips [(ngModel)]="trip().itinerary.inclusions" (ngModelChange)="notifyUpdate()"
+                placeholder="Add inclusion..." styleClass="w-full" class="w-full block"></p-chips>
+        </div>
+    </div>
+
+    <!-- Exclusions -->
+    <div class="space-y-4 pt-4 border-t border-slate-100">
+        <div class="flex items-center gap-2">
+            <span
+                class="bg-rose-600 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Exclusions</span>
+        </div>
+        <p class="text-xs text-slate-400 mb-2">Add items one by one. Press Enter to add.</p>
+
+        <div class="bg-white p-4 border border-rose-100 rounded-xl shadow-sm">
+            <p-chips [(ngModel)]="trip().itinerary.exclusions" (ngModelChange)="notifyUpdate()"
+                placeholder="Add exclusion..." styleClass="w-full" class="w-full block"></p-chips>
+        </div>
+    </div>
+</div>

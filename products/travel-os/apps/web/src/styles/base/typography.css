@@ -1,0 +1,6 @@
+/* Base typography — controlled via --tos-* tokens */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}

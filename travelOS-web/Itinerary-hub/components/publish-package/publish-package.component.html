@@ -1,0 +1,268 @@
+<div class="flex h-screen bg-slate-50 overflow-hidden">
+    <!-- Sidebar / Navigation -->
+    <aside class="w-64 bg-white border-r border-slate-200 flex-shrink-0 flex flex-col">
+        <div class="p-4 border-b border-slate-200 bg-indigo-50">
+            <h2 class="text-xl font-bold text-indigo-900">Publish Package</h2>
+            <p class="text-xs text-indigo-600 mt-1">Packaging: {{ mutableTrip()?.itinerary?.title }}</p>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+
+            <button (click)="activeSection.set('gallery')" [class.bg-blue-50]="activeSection() === 'gallery'"
+                [class.text-blue-600]="activeSection() === 'gallery'"
+                [class.border-blue-200]="activeSection() === 'gallery'"
+                class="w-full text-left px-4 py-3 rounded-lg hover:bg-slate-50 transition-colors flex items-center justify-between group border border-transparent">
+                <span class="font-medium text-slate-700 group-hover:text-slate-900">Image Gallery</span>
+                <i class="pi pi-images text-slate-400"></i>
+            </button>
+            <button (click)="activeSection.set('general')"
+                [class]="activeSection() === 'general' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-info-circle"></i>
+                General Info
+            </button>
+
+            <button (click)="activeSection.set('days')"
+                [class]="activeSection() === 'days' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-calendar"></i>
+                Daily Itinerary
+            </button>
+
+            <button (click)="activeSection.set('accommodation')"
+                [class]="activeSection() === 'accommodation' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-home"></i>
+                Accommodation
+            </button>
+
+            <button (click)="activeSection.set('transport')"
+                [class]="activeSection() === 'transport' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-car"></i>
+                Transportation
+            </button>
+
+            <button (click)="activeSection.set('weather')"
+                [class]="activeSection() === 'weather' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-cloud"></i>
+                Weather & Attire
+            </button>
+
+            <button (click)="activeSection.set('policy')"
+                [class]="activeSection() === 'policy' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-check-circle"></i>
+                Inclusions & Exclusions
+            </button>
+
+            <button (click)="activeSection.set('events')"
+                [class]="activeSection() === 'events' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-calendar-times"></i>
+                Local Events
+            </button>
+
+            <button (click)="activeSection.set('places')"
+                [class]="activeSection() === 'places' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-images"></i>
+                Popular Places
+            </button>
+
+            <button (click)="activeSection.set('emergency')"
+                [class]="activeSection() === 'emergency' ? 'bg-red-50 text-red-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-shield"></i>
+                Support & Emergency
+            </button>
+
+            <button (click)="activeSection.set('price-ref')"
+                [class]="activeSection() === 'price-ref' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-tag"></i>
+                Price Reference
+            </button>
+
+            <button (click)="activeSection.set('visa')"
+                [class]="activeSection() === 'visa' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-id-card"></i>
+                Visa Requirements
+            </button>
+
+            <button (click)="activeSection.set('preferences')"
+                [class]="activeSection() === 'preferences' ? 'bg-orange-50 text-orange-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-sliders-h"></i>
+                Trip Filter / Preferences
+            </button>
+
+            <button (click)="activeSection.set('search')"
+                [class]="activeSection() === 'search' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-search"></i>
+                Search Details & Locations
+            </button>
+
+            <button (click)="activeSection.set('seo')"
+                [class]="activeSection() === 'seo' ? 'bg-purple-50 text-purple-700' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-globe"></i>
+                SEO Settings
+            </button>
+
+            <button (click)="activeSection.set('mapping')"
+                [class]="activeSection() === 'mapping' ? 'bg-slate-100 text-slate-900 border-l-4 border-indigo-500' : 'text-slate-600 hover:bg-slate-50'"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <i class="pi pi-map"></i>
+                Itinerary Mapping
+            </button>
+
+            <button (click)="activeSection.set('settings')" [class.bg-blue-50]="activeSection() === 'settings'"
+                [class.text-blue-600]="activeSection() === 'settings'"
+                [class.border-blue-200]="activeSection() === 'settings'"
+                class="w-full text-left px-4 py-3 rounded-lg hover:bg-slate-50 transition-colors flex items-center justify-between group border border-transparent">
+                <span class="font-medium text-slate-700 group-hover:text-slate-900">Publish Settings</span>
+                <i class="pi pi-cog text-slate-400"></i>
+            </button>
+
+            <div class="pt-4 mt-4 border-t border-slate-100">
+                <h3 class="xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-2">Publishing</h3>
+                <button (click)="onPublishClick()"
+                    class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-4 py-3 rounded-lg text-sm font-bold transition-all shadow-md hover:shadow-lg mb-3 flex items-center justify-center gap-2">
+                    <i class="pi pi-cloud-upload"></i>
+                    Publish Package
+                </button>
+                <button (click)="onCancel()"
+                    class="w-full bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Cancel / Go Back
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto p-8">
+        @if (mutableTrip()) {
+        @switch (activeSection()) {
+        @case ('settings') {
+        <div class="max-w-4xl mx-auto">
+            <app-publish-settings-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)"
+                (settingsChange)="currentPublishSettings.set($event)">
+            </app-publish-settings-editor>
+        </div>
+        }
+        @case ('gallery') {
+        <div class="max-w-4xl mx-auto">
+            <app-image-gallery [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-image-gallery>
+        </div>
+        }
+        @case ('general') {
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6">General Information</h2>
+            <app-general-info-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-general-info-editor>
+        </div>
+        }
+        @case ('days') {
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6">Daily Itinerary</h2>
+            <app-day-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-day-editor>
+        </div>
+        }
+        @case ('accommodation') {
+        <div class="max-w-4xl mx-auto">
+            <app-accommodation-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-accommodation-editor>
+        </div>
+        }
+        @case ('transport') {
+        <div class="max-w-4xl mx-auto">
+            <app-transportation-editor [trip]="mutableTrip()!"
+                (tripChange)="updateTrip($event)"></app-transportation-editor>
+        </div>
+        }
+        @case ('weather') {
+        <div class="max-w-4xl mx-auto">
+            <app-weather-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-weather-editor>
+        </div>
+        }
+        @case ('policy') {
+        <div class="max-w-4xl mx-auto">
+            <app-policy-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-policy-editor>
+        </div>
+        }
+        @case ('events') {
+        <div class="max-w-4xl mx-auto">
+            <app-events-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-events-editor>
+        </div>
+        }
+        @case ('places') {
+        <div class="max-w-4xl mx-auto">
+            <app-popular-places-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-popular-places-editor>
+        </div>
+        }
+        @case ('emergency') {
+        <div class="max-w-4xl mx-auto">
+            <app-emergency-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-emergency-editor>
+        </div>
+        }
+        @case ('price-ref') {
+        <div class="max-w-4xl mx-auto">
+            <app-attraction-price-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-attraction-price-editor>
+        </div>
+        }
+        @case ('visa') {
+        <div class="max-w-4xl mx-auto">
+            <app-visa-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-visa-editor>
+        </div>
+        }
+        @case ('preferences') {
+        <div class="max-w-4xl mx-auto">
+            <app-preferences-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-preferences-editor>
+        </div>
+        }
+        @case ('search') {
+        <div class="max-w-4xl mx-auto">
+            <app-search-details-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-search-details-editor>
+        </div>
+        }
+        @case ('seo') {
+        <div class="max-w-4xl mx-auto">
+            <app-seo-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-seo-editor>
+        </div>
+        }
+        @case ('mapping') {
+        <div class="max-w-5xl mx-auto">
+            <app-mapping-editor [trip]="mutableTrip()!" (tripChange)="updateTrip($event)">
+            </app-mapping-editor>
+        </div>
+        }
+
+        }
+        } @else {
+        <div class="flex items-center justify-center h-full">
+            <p class="text-slate-400">Loading trip data for publishing...</p>
+        </div>
+        }
+    </main>
+</div>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+<!-- Publish Settings Modal -->
+<!-- Publish Settings Modal Removed - Now a Tab -->

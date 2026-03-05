@@ -1,0 +1,121 @@
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+                <i class="pi pi-map text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-slate-800">Trip Attractions</h3>
+                <p class="text-slate-500 text-sm">Top sights and popular places to visit.</p>
+            </div>
+        </div>
+        <button pButton label="Add Place" icon="pi pi-plus" class="p-button-outlined p-button-primary p-button-sm"
+            (click)="openAdd()"></button>
+    </div>
+
+    <!-- Places List -->
+    <div class="space-y-4">
+        @if (!trip().attractions?.length) {
+        <div class="text-center py-12 text-slate-400 bg-slate-50 rounded-xl border-2 border-dashed border-slate-200 hover:bg-slate-100 transition-colors cursor-pointer"
+            (click)="openAdd()">
+            <div
+                class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-slate-300">
+                <i class="pi pi-images text-2xl"></i>
+            </div>
+            <p class="font-medium text-slate-600">No popular places added.</p>
+            <p class="text-xs">Click to recommend a sight</p>
+        </div>
+        } @else {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @for (place of trip().attractions; track $index) {
+            <div
+                class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group relative flex flex-col h-full">
+                <!-- Image Placeholder if needed, or simple header -->
+                <div class="bg-slate-50 border-b border-slate-100 p-3 flex justify-between items-start">
+                    <div>
+                        <h4 class="font-bold text-slate-800">{{ place.name }}</h4>
+                        <span class="text-xs text-slate-500">{{ place.category }}</span>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <p-rating [ngModel]="place.rating" [readonly]="true" class="scale-75 origin-right"></p-rating>
+                    </div>
+                </div>
+
+                <div class="p-4 flex-1">
+                    <p class="text-sm text-slate-600 line-clamp-3 mb-3">{{ place.description }}</p>
+
+                    <div class="flex flex-wrap gap-2 text-xs text-slate-500">
+                        <span class="bg-slate-100 px-2 py-1 rounded flex items-center gap-1">
+                            <i class="pi pi-clock"></i> {{ place.estimatedDuration }}
+                        </span>
+                        <span class="bg-slate-100 px-2 py-1 rounded flex items-center gap-1">
+                            <i class="pi pi-dollar"></i> {{ place.estimatedCost }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div
+                    class="border-t border-slate-100 p-2 flex justify-end bg-slate-50 gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button pButton icon="pi pi-pencil" class="p-button-text p-button-secondary p-button-sm h-8 w-8"
+                        (click)="edit($index)" pTooltip="Edit"></button>
+                    <button pButton icon="pi pi-trash" class="p-button-text p-button-danger p-button-sm h-8 w-8"
+                        (click)="remove($index)" pTooltip="Delete"></button>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>
+
+<!-- Place Dialog -->
+<p-dialog [(visible)]="showDialog" [header]="(editingIndex() > -1 ? 'Edit' : 'Add') + ' Place'" [modal]="true"
+    [style]="{width: '500px'}">
+    <div class="grid grid-cols-1 gap-6 pt-4" *ngIf="currentPlace">
+        <p-floatlabel class="w-full">
+            <input pInputText id="placeName" [(ngModel)]="currentPlace.name" class="w-full" />
+            <label for="placeName">Place Name</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="w-full">
+            <input pInputText id="category" [(ngModel)]="currentPlace.category" class="w-full"
+                placeholder="e.g. Hiking, Museum" />
+            <label for="category">Category</label>
+        </p-floatlabel>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1">
+                <label class="text-xs text-slate-500 ml-1">Cost Level</label>
+                <p-dropdown [options]="costOptions" [(ngModel)]="currentPlace.estimatedCost" appendTo="body"
+                    styleClass="w-full"></p-dropdown>
+            </div>
+            <p-floatlabel class="w-full mt-auto">
+                <input pInputText id="duration" [(ngModel)]="currentPlace.estimatedDuration" class="w-full"
+                    placeholder="e.g. 2 hours" />
+                <label for="duration">Est. Duration</label>
+            </p-floatlabel>
+        </div>
+
+        <div class="flex flex-col gap-1">
+            <label class="text-xs text-slate-500 ml-1">Rating</label>
+            <p-rating [(ngModel)]="currentPlace.rating"></p-rating>
+        </div>
+
+        <p-floatlabel class="w-full">
+            <textarea pInputTextarea id="placeDesc" [(ngModel)]="currentPlace.description" [rows]="4"
+                class="w-full"></textarea>
+            <label for="placeDesc">Description</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="w-full">
+            <input pInputText id="imgQuery" [(ngModel)]="currentPlace.imageQuery" class="w-full" />
+            <label for="imgQuery">Image Query / URL</label>
+        </p-floatlabel>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton label="Cancel" class="p-button-text" (click)="showDialog=false"></button>
+        <button pButton label="Save" (click)="save()"></button>
+    </ng-template>
+</p-dialog>

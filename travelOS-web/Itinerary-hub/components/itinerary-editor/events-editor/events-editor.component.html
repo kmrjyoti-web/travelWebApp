@@ -1,0 +1,110 @@
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-600">
+                <i class="pi pi-calendar-times text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-slate-800">Local Events & Happenings</h3>
+                <p class="text-slate-500 text-sm">Add cultural events, festivals, or local happenings.</p>
+            </div>
+        </div>
+        <button pButton label="Add Event" icon="pi pi-plus" class="p-button-outlined p-button-primary p-button-sm"
+            (click)="openAdd()"></button>
+    </div>
+
+    <!-- Events List -->
+    <div class="space-y-4">
+        @if (!trip().events?.length) {
+        <div class="text-center py-12 text-slate-400 bg-slate-50 rounded-xl border-2 border-dashed border-slate-200 hover:bg-slate-100 transition-colors cursor-pointer"
+            (click)="openAdd()">
+            <div
+                class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-slate-300">
+                <i class="pi pi-star text-2xl"></i>
+            </div>
+            <p class="font-medium text-slate-600">No events added yet.</p>
+            <p class="text-xs">Click to add a local event</p>
+        </div>
+        } @else {
+        <div class="grid grid-cols-1 gap-4">
+            @for (event of trip().events; track $index) {
+            <div
+                class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group relative">
+                <div class="p-5 flex gap-5 items-start">
+                    <!-- Date Box -->
+                    <div class="flex-shrink-0 w-16 text-center bg-orange-50 rounded-lg p-2 border border-orange-100">
+                        <div class="text-xs font-bold text-orange-600 uppercase">{{ parsedDate(event.date) | date:'MMM' }}</div>
+                        <div class="text-xl font-bold text-slate-800">{{ parsedDate(event.date) | date:'dd' }}</div>
+                        <div class="text-xs text-slate-400">{{ parsedDate(event.date) | date:'EEE' }}</div>
+                    </div>
+
+                    <!-- Details -->
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-bold text-lg text-slate-800 mb-1">{{ event.name }}</h4>
+                            <div class="font-bold text-slate-700 bg-slate-100 px-2 py-1 rounded text-xs">
+                                {{ event.cost ? (event.cost | currency:'USD') : 'Free' }}
+                            </div>
+                        </div>
+
+                        <p class="text-sm text-slate-500 mb-2 flex items-center gap-1">
+                            <i class="pi pi-map-marker text-xs"></i>
+                            {{ event.venue || 'TBA' }}
+                        </p>
+                        <p class="text-sm text-slate-600 line-clamp-2">{{ event.description }}</p>
+
+                        <!-- Actions (Hover Only on Desktop) -->
+                        <div
+                            class="flex gap-2 mt-4 md:opacity-0 group-hover:opacity-100 transition-opacity justify-end">
+                            <button pButton icon="pi pi-pencil" class="p-button-text p-button-secondary p-button-sm"
+                                (click)="edit($index)" pTooltip="Edit"></button>
+                            <button pButton icon="pi pi-trash" class="p-button-text p-button-danger p-button-sm"
+                                (click)="remove($index)" pTooltip="Delete"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>
+
+<!-- Event Dialog -->
+<p-dialog [(visible)]="showDialog" [header]="(editingIndex() > -1 ? 'Edit' : 'Add') + ' Event'" [modal]="true"
+    [style]="{width: '500px'}">
+    <div class="grid grid-cols-1 gap-6 pt-4" *ngIf="currentEvent">
+        <p-floatlabel class="w-full">
+            <input pInputText id="eventName" [(ngModel)]="currentEvent.name" class="w-full" />
+            <label for="eventName">Event Name</label>
+        </p-floatlabel>
+
+        <div class="grid grid-cols-2 gap-4">
+            <p-floatlabel class="w-full">
+                <input pInputText id="eventDate" [(ngModel)]="currentEvent.date" class="w-full"
+                    placeholder="YYYY-MM-DD" />
+                <label for="eventDate">Date</label>
+            </p-floatlabel>
+            <p-floatlabel class="w-full">
+                <input pInputText type="number" id="eventCost" [(ngModel)]="currentEvent.cost" class="w-full" min="0" />
+                <label for="eventCost">Cost (USD)</label>
+            </p-floatlabel>
+        </div>
+
+        <p-floatlabel class="w-full">
+            <input pInputText id="eventVenue" [(ngModel)]="currentEvent.venue" class="w-full" />
+            <label for="eventVenue">Venue / Location</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="w-full">
+            <textarea pInputTextarea id="eventDesc" [(ngModel)]="currentEvent.description" [rows]="4"
+                class="w-full"></textarea>
+            <label for="eventDesc">Description</label>
+        </p-floatlabel>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton label="Cancel" class="p-button-text" (click)="showDialog=false"></button>
+        <button pButton label="Save" (click)="save()"></button>
+    </ng-template>
+</p-dialog>

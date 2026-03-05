@@ -1,0 +1,197 @@
+/**
+ * TravelOS — Default (light) theme baseline
+ *
+ * All --tos-* custom properties used across the app are defined here
+ * with their light-mode values. Product-specific overrides (travel-os.css,
+ * food-os.css, crm-os.css) then patch the color tokens for that palette.
+ * Dark mode overrides live in dark.css under [data-theme="dark"].
+ *
+ * Import order in globals.css:
+ *   1. default.css   ← this file (baseline)
+ *   2. travel-os.css / food-os.css / crm-os.css  (product colors, via data-product)
+ *   3. dark.css      (dark-mode overrides)
+ */
+
+/* ─── Smooth theme transitions ──────────────────────────────────────────────── */
+
+.tos-theme-transitioning,
+.tos-theme-transitioning *,
+.tos-theme-transitioning *::before,
+.tos-theme-transitioning *::after {
+  transition:
+    color            var(--tos-transition-base),
+    background-color var(--tos-transition-base),
+    border-color     var(--tos-transition-base),
+    fill             var(--tos-transition-base),
+    stroke           var(--tos-transition-base),
+    box-shadow       var(--tos-transition-base) !important;
+}
+
+/* ─── Root tokens ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Transitions (defined first — used in above rule) ─────────────────── */
+  --tos-transition-fast:      100ms ease;
+  --tos-transition-base:      200ms ease;
+  --tos-transition-slow:      300ms ease;
+  --tos-transition-colors:    color 200ms ease, background-color 200ms ease, border-color 200ms ease;
+  --tos-transition-transform: transform 200ms ease;
+
+  /* ── Primary colors (overridden by product themes) ────────────────────── */
+  --tos-color-primary:       #1B4F72;
+  --tos-color-primary-light: #2980B9;
+  --tos-color-primary-dark:  #154060;
+  --tos-color-accent:        #2980B9;
+  --tos-color-accent-hover:  #1B4F72;
+
+  /* ── Secondary colors ─────────────────────────────────────────────────── */
+  --tos-color-secondary:       #008080;
+  --tos-color-secondary-light: #00a0a0;
+  --tos-color-secondary-dark:  #006060;
+
+  /* ── Semantic / intent ────────────────────────────────────────────────── */
+  --tos-color-success:       #16a34a;
+  --tos-color-success-light: #dcfce7;
+  --tos-color-warning:       #d97706;
+  --tos-color-warning-light: #fef3c7;
+  --tos-color-error:         #dc2626;
+  --tos-color-error-light:   #fee2e2;
+  --tos-color-info:          #0284c7;
+  --tos-color-info-light:    #e0f2fe;
+
+  /* ── Surfaces / backgrounds ───────────────────────────────────────────── */
+  --tos-color-background:       #f0f4f8;
+  --tos-color-surface:          #ffffff;
+  --tos-color-surface-elevated: #ffffff;
+  --tos-color-surface-sunken:   #f1f5f9;
+  --tos-app-bg:                 #eef2f5;
+
+  /* ── Borders ──────────────────────────────────────────────────────────── */
+  --tos-color-border:        #e2e8f0;
+  --tos-color-border-strong: #cbd5e1;
+
+  /* ── Text ─────────────────────────────────────────────────────────────── */
+  --tos-color-text:           #1e293b;
+  --tos-color-text-muted:     #64748b;
+  --tos-color-text-disabled:  #94a3b8;
+  --tos-color-text-inverse:   #ffffff;
+  --tos-color-text-link:      #2980B9;
+  --tos-color-text-link-hover:#1B4F72;
+
+  /* ── Icons ────────────────────────────────────────────────────────────── */
+  --tos-icon:      #64748b;
+  --tos-icon-muted:#94a3b8;
+
+  /* ── Header ───────────────────────────────────────────────────────────── */
+  --tos-header-bg:            #1B4F72;
+  --tos-header-text:          #ffffff;
+  --tos-header-height:        56px;
+  --tos-header-shadow:        0 2px 4px rgba(0,0,0,0.15);
+  --tos-header-border-bottom: none;
+
+  /* ── Sidebar ──────────────────────────────────────────────────────────── */
+  --tos-sidebar-bg-color:        #1B1F6B;
+  --tos-sidebar-bg:              #1a2332;
+  --tos-sidebar-text:            #cbd5e1;
+  --tos-sidebar-text-muted:      #64748b;
+  --tos-sidebar-active-text:     #ffffff;
+  --tos-sidebar-active-bg:       #2980B9;
+  --tos-sidebar-hover-bg:        #243447;
+  --tos-sidebar-width:           256px;
+  --tos-sidebar-collapsed-width: 64px;
+  --tos-sidebar-border-right:    1px solid #243447;
+  --tos-sidebar-transition:      width 200ms ease;
+
+  /* ── Content ──────────────────────────────────────────────────────────── */
+  --tos-content-bg:      #f0f4f8;
+  --tos-content-padding: 24px;
+
+  /* ── Footer ───────────────────────────────────────────────────────────── */
+  --tos-footer-bg:         #ffffff;
+  --tos-footer-text:       #64748b;
+  --tos-footer-border-top: 1px solid #e2e8f0;
+  --tos-footer-height:     48px;
+
+  /* ── Spacing ──────────────────────────────────────────────────────────── */
+  --tos-spacing-1:  4px;
+  --tos-spacing-2:  8px;
+  --tos-spacing-3:  12px;
+  --tos-spacing-4:  16px;
+  --tos-spacing-5:  20px;
+  --tos-spacing-6:  24px;
+  --tos-spacing-8:  32px;
+  --tos-spacing-10: 40px;
+  --tos-spacing-12: 48px;
+  --tos-spacing-16: 64px;
+  /* Legacy aliases */
+  --tos-spacing-xs: 4px;
+  --tos-spacing-sm: 8px;
+  --tos-spacing-md: 16px;
+  --tos-spacing-lg: 24px;
+  --tos-spacing-xl: 32px;
+
+  /* ── Typography ───────────────────────────────────────────────────────── */
+  --tos-font-family:      -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  --tos-font-family-base: Roboto, sans-serif;
+  --tos-font-family-mono: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --tos-font-weight-base: normal;
+
+  --tos-font-size-xs:   0.6875rem;  /* 11px */
+  --tos-font-size-sm:   0.75rem;    /* 12px */
+  --tos-font-size-base: 0.875rem;   /* 14px */
+  --tos-font-size-lg:   1rem;       /* 16px */
+  --tos-font-size-xl:   1.125rem;   /* 18px */
+  --tos-font-size-2xl:  1.25rem;    /* 20px */
+  --tos-font-size-3xl:  1.5rem;     /* 24px */
+
+  --tos-font-weight-normal:   400;
+  --tos-font-weight-medium:   500;
+  --tos-font-weight-semibold: 600;
+  --tos-font-weight-bold:     700;
+
+  --tos-line-height-tight:   1.25;
+  --tos-line-height-base:    1.5;
+  --tos-line-height-relaxed: 1.75;
+
+  /* ── Borders ──────────────────────────────────────────────────────────── */
+  --tos-border-width:        1px;
+  --tos-border-color:        #e2e8f0;
+  --tos-border-color-strong: #cbd5e1;
+  --tos-border-radius:       6px;
+  --tos-radius-sm:           4px;
+  --tos-radius-md:           6px;
+  --tos-radius-lg:           8px;
+  --tos-radius-xl:           12px;
+  --tos-radius-full:         9999px;
+
+  /* ── Shadows ──────────────────────────────────────────────────────────── */
+  --tos-shadow-xs:    0 1px 2px rgba(0,0,0,0.04);
+  --tos-shadow-sm:    0 1px 2px rgba(0,0,0,0.06);
+  --tos-shadow-md:    0 4px 6px rgba(0,0,0,0.10);
+  --tos-shadow-lg:    0 10px 15px rgba(0,0,0,0.12);
+  --tos-shadow-xl:    0 20px 25px rgba(0,0,0,0.15);
+  --tos-shadow-inner: inset 0 2px 4px rgba(0,0,0,0.06);
+
+  /* ── Focus ────────────────────────────────────────────────────────────── */
+  --tos-focus-ring:        0 0 0 3px rgba(41,128,185,0.4);
+  --tos-focus-ring-color:  rgba(41,128,185,0.4);
+  --tos-focus-ring-offset: 2px;
+
+  /* ── Z-index ──────────────────────────────────────────────────────────── */
+  --tos-z-base:     0;
+  --tos-z-dropdown: 150;
+  --tos-z-sticky:   80;
+  --tos-z-sidebar:  90;
+  --tos-z-header:   100;
+  --tos-z-overlay:  200;
+  --tos-z-modal:    300;
+  --tos-z-toast:    400;
+  --tos-z-tooltip:  500;
+
+  /* ── Breakpoints (reference values) ──────────────────────────────────── */
+  --tos-breakpoint-sm:  640px;
+  --tos-breakpoint-md:  768px;
+  --tos-breakpoint-lg:  1024px;
+  --tos-breakpoint-xl:  1280px;
+  --tos-breakpoint-2xl: 1536px;
+}

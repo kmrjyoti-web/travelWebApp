@@ -1,0 +1,8 @@
+Login Credentials
+Email	Password	Role
+admin@travelos.com	Password@123	PLATFORM_ADMIN
+dmc@travelos.com	Password@123	DMC_OWNER
+agent@travelos.com	Password@123	AGENT
+vikram@example.com	Password@123	CUSTOMER
+Scalar API Docs
+http://localhost:3500/docs (make sure the API server is running)

@@ -1,0 +1,175 @@
+/* ============================================================
+   TRAVELOS DESIGN TOKENS — v4.0
+   All --tos-* custom properties. Adapted from UI-KIT theme system.
+   DO NOT hardcode colors in components. Reference these tokens only.
+   ============================================================ */
+
+:root {
+  /* === BRAND === */
+  --tos-primary: #1b4f72;
+  --tos-primary-hover: #154360;
+  --tos-accent: #1b6563;
+  --tos-accent-hover: #16524f;
+
+  /* === HEADER (mapped from UI-KIT --header-bg) === */
+  --tos-header-bg: #1b6563;
+  --tos-header-text: #ffffff;
+  --tos-header-height: 56px;
+  --tos-header-border: rgba(255, 255, 255, 0.1);
+
+  /* === SIDEBAR (mapped from UI-KIT --sidebar-bg) === */
+  --tos-sidebar-bg: #222d32;
+  --tos-sidebar-text: #d1d5db;
+  --tos-sidebar-text-muted: #9ca3af;
+  --tos-sidebar-active-bg: rgba(255, 255, 255, 0.1);
+  --tos-sidebar-active-border: #1b6563;
+  --tos-sidebar-width-open: 256px;
+  --tos-sidebar-width-closed: 64px;
+  --tos-sidebar-bg-image: none;
+  --tos-sidebar-bg-opacity: 1;
+
+  /* === ICON (mapped from UI-KIT --icon-color) === */
+  --tos-icon-color: #9ca3af;
+  --tos-icon-color-active: #ffffff;
+
+  /* === SURFACE === */
+  --tos-body-bg: #eef2f5;
+  --tos-card-bg: #ffffff;
+  --tos-card-border: #e5e7eb;
+  --tos-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --tos-card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --tos-input-bg: #ffffff;
+  --tos-input-border: #d1d5db;
+  --tos-input-focus-border: #1b6563;
+
+  /* === TEXT === */
+  --tos-text-primary: #111827;
+  --tos-text-secondary: #6b7280;
+  --tos-text-muted: #9ca3af;
+  --tos-text-inverse: #ffffff;
+
+  /* === TYPOGRAPHY (mapped from UI-KIT font controls) === */
+  --tos-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --tos-font-weight: 400;
+  --tos-font-size: 14px;
+  --tos-zoom: 1;
+
+  /* === APP BACKGROUND (mapped from UI-KIT --app-bg-image) === */
+  --tos-app-bg-image: none;
+  --tos-app-bg-color: #eef2f5;
+  --tos-app-bg-opacity: 1;
+
+  /* === FOOTER === */
+  --tos-footer-bg: rgba(255, 255, 255, 0.85);
+  --tos-footer-height: 40px;
+  --tos-footer-text: #6b7280;
+  --tos-footer-border: #e5e7eb;
+
+  /* === TOOLTIP / CHART === */
+  --tos-tooltip-bg: #ffffff;
+  --tos-tooltip-text: #111827;
+  --tos-tooltip-border: #e5e7eb;
+
+  /* === STATUS === */
+  --tos-success: #10b981;
+  --tos-success-bg: #ecfdf5;
+  --tos-warning: #f59e0b;
+  --tos-warning-bg: #fffbeb;
+  --tos-danger: #ef4444;
+  --tos-danger-bg: #fef2f2;
+  --tos-info: #3b82f6;
+  --tos-info-bg: #eff6ff;
+
+  /* === BORDER & RADIUS === */
+  --tos-border-color: #e5e7eb;
+  --tos-border-radius: 8px;
+  --tos-border-radius-sm: 4px;
+  --tos-border-radius-lg: 12px;
+  --tos-border-radius-xl: 16px;
+  --tos-border-radius-full: 9999px;
+
+  /* === SPACING === */
+  --tos-spacing-xs: 4px;
+  --tos-spacing-sm: 8px;
+  --tos-spacing-md: 16px;
+  --tos-spacing-lg: 24px;
+  --tos-spacing-xl: 32px;
+  --tos-spacing-2xl: 48px;
+
+  /* === TRANSITIONS === */
+  --tos-transition-fast: 150ms ease;
+  --tos-transition-base: 250ms ease;
+  --tos-transition-slow: 400ms ease;
+
+  /* === SHADOWS === */
+  --tos-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --tos-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --tos-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --tos-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+  /* === COLOR PRESETS (14 from UI-KIT ThemeSettings) === */
+  --tos-preset-0-header: #0f4c75;
+  --tos-preset-0-sidebar: #3282b8;
+  --tos-preset-1-header: #1a237e;
+  --tos-preset-1-sidebar: #3949ab;
+  --tos-preset-2-header: #1b5e20;
+  --tos-preset-2-sidebar: #43a047;
+  --tos-preset-3-header: #b71c1c;
+  --tos-preset-3-sidebar: #e53935;
+  --tos-preset-4-header: #4a148c;
+  --tos-preset-4-sidebar: #8e24aa;
+  --tos-preset-5-header: #01579b;
+  --tos-preset-5-sidebar: #039be5;
+  --tos-preset-6-header: #263238;
+  --tos-preset-6-sidebar: #546e7a;
+  --tos-preset-7-header: #e65100;
+  --tos-preset-7-sidebar: #fb8c00;
+  --tos-preset-8-header: #1b6563;
+  --tos-preset-8-sidebar: #222d32;
+  --tos-preset-9-header: #880e4f;
+  --tos-preset-9-sidebar: #d81b60;
+  --tos-preset-10-header: #000000;
+  --tos-preset-10-sidebar: #212121;
+  --tos-preset-11-header: #3e2723;
+  --tos-preset-11-sidebar: #6d4c41;
+  --tos-preset-12-header: #006064;
+  --tos-preset-12-sidebar: #00acc1;
+  --tos-preset-13-header: #212121;
+  --tos-preset-13-sidebar: #ffb300;
+
+  /* === LAYOUT === */
+  --tos-layout-max-width: 1600px;
+  --tos-content-padding: var(--tos-spacing-lg);
+}
+
+/* ============================================================
+   DARK MODE — triggers via [data-coreui-theme='dark']
+   ============================================================ */
+[data-coreui-theme='dark'] {
+  --tos-body-bg: #111827;
+  --tos-card-bg: #1f2937;
+  --tos-card-border: #374151;
+  --tos-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --tos-input-bg: #1f2937;
+  --tos-input-border: #374151;
+
+  --tos-text-primary: #f9fafb;
+  --tos-text-secondary: #d1d5db;
+  --tos-text-muted: #9ca3af;
+
+  --tos-app-bg-color: #111827;
+
+  --tos-footer-bg: rgba(31, 41, 55, 0.85);
+  --tos-footer-text: #9ca3af;
+  --tos-footer-border: #374151;
+
+  --tos-tooltip-bg: #1f2937;
+  --tos-tooltip-text: #f3f4f6;
+  --tos-tooltip-border: #374151;
+
+  --tos-border-color: #374151;
+
+  --tos-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --tos-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
+  --tos-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+}

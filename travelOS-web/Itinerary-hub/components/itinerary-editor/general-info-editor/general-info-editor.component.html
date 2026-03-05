@@ -1,0 +1,35 @@
+<div class="p-4">
+    <form [formGroup]="form" class="formvalidation grid gap-6">
+
+        <div class="w-full">
+            <p-floatlabel variant="on" class="required w-full">
+                <input pInputText id="title" type="text" formControlName="title" class="w-full" />
+                <label for="title">Trip Title</label>
+            </p-floatlabel>
+        </div>
+
+        <div class="w-full">
+            <p-floatlabel variant="on" class="required w-full">
+                <textarea pInputTextarea id="summary" formControlName="summary" [autoResize]="false" rows="5"
+                    style="height: 200px !important;" class="w-full"></textarea>
+                <label for="summary">Trip Summary</label>
+            </p-floatlabel>
+            <p class="text-xs text-slate-400 mt-1">A brief overview of the trip.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <p-floatlabel variant="on" class="w-full">
+                <textarea pInputTextarea id="weather" formControlName="weather" [autoResize]="false" rows="8"
+                    style="height: 200px !important;" class="w-full"></textarea>
+                <label for="weather">General Weather</label>
+            </p-floatlabel>
+
+            <p-floatlabel variant="on" class="w-full">
+                <textarea pInputTextarea id="notes" formControlName="notes" [autoResize]="false" rows="8"
+                    style="height: 200px !important;" class="w-full"></textarea>
+                <label for="notes">Travel Notes</label>
+            </p-floatlabel>
+        </div>
+
+    </form>
+</div>

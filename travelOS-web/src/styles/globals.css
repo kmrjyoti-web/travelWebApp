@@ -1,0 +1,58 @@
+/* ============================================================
+   TRAVELOS GLOBAL STYLES — v4.0
+   Order is critical:
+   0. Tailwind CSS (loaded first — lowest priority)
+   1. Design tokens (--tos-* variables)
+   2. CoreUI base CSS
+   3. Overrides using --tos-* tokens (highest priority)
+   ============================================================ */
+
+/* 0. Tailwind CSS — utilities for UIKitMain components */
+@import "tailwindcss";
+
+/* Tailwind v4 dark mode via .dark class */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 1. TravelOS Design Tokens */
+@import './theme-tokens.css';
+
+/* 2. CoreUI Base */
+@import '@coreui/coreui/dist/css/coreui.min.css';
+
+/* 3. Overrides */
+@import './overrides.css';
+
+/* === RESET & BASE === */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Remove default margins */
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--tos-border-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tos-text-muted);
+}

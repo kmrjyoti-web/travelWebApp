@@ -1,0 +1,3 @@
+#!/bin/sh
+# Enforce conventional commits: feat|fix|chore|docs|style|refactor|test|perf|ci
+npx --no-install commitlint --edit "$1"

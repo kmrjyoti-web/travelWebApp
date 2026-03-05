@@ -1,0 +1,155 @@
+
+<div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-slate-100 animate-fade-in">
+  <header class="border-b border-slate-200 pb-4 mb-6 flex justify-between items-center">
+    <div>
+      <h2 class="text-2xl font-bold text-slate-800">Accommodation Details</h2>
+      <p class="mt-1 text-slate-600">Manage all your stays for the trip. Edit details in Maker mode.</p>
+    </div>
+    @if(mode() === 'maker') {
+        <button (click)="addAccommodation()" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+            Add Stay
+        </button>
+    }
+  </header>
+
+  @if (editableAccommodations(); as accommodations) {
+    @if (accommodations.length > 0) {
+      <div class="space-y-8">
+        @for(accommodation of accommodations; track trackById($index, accommodation); let i = $index) {
+          <div class="p-6 border border-slate-200 rounded-lg relative group">
+              @if(mode() === 'maker') {
+                <button (click)="removeAccommodation(accommodation.id)" title="Remove Accommodation" class="absolute -top-3 -right-3 p-1.5 bg-white rounded-full text-red-500 hover:bg-red-100 shadow-md border border-slate-200 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                </button>
+              }
+            <div class="grid grid-cols-2 lg:grid-cols-5 gap-8">
+              <!-- Image & Details Column -->
+              <div class="lg:col-span-3">
+                 <div class="mb-6">
+                    <img [src]="getImageUrl(accommodation.imageQuery)" [alt]="accommodation.hotelName" class="w-full h-80 object-cover rounded-lg shadow-md">
+                    @if(mode() === 'maker') {
+                        <div class="mt-2">
+                            <label [for]="'imageQuery-' + i" class="block text-xs font-medium text-slate-600">Image Search Query</label>
+                            <input [id]="'imageQuery-' + i" type="text" [(ngModel)]="accommodation.imageQuery" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" class="mt-1 block w-full text-xs border-slate-300 rounded-md shadow-sm">
+                        </div>
+                    }
+                </div>
+                <!-- Facilities -->
+                <div>
+                  <h4 class="text-lg font-semibold text-slate-800 mb-3">Facilities</h4>
+                  <div class="flex flex-wrap gap-2">
+                    @for(facility of accommodation.facilities; track trackByIndex($index, facility); let fIndex = $index) {
+                      <div class="flex items-center gap-2 text-sm text-slate-700 bg-slate-100 rounded-full px-3 py-1">
+                        <span class="text-green-500">✓</span>
+                        @if(mode() === 'maker') {
+                          <input type="text" [(ngModel)]="accommodation.facilities[fIndex]" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" class="bg-transparent focus:outline-none w-full">
+                          <button (click)="removeFacility(i, fIndex)" class="p-0.5 rounded-full hover:bg-red-200 text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                          </button>
+                        } @else {
+                          <span>{{ facility }}</span>
+                        }
+                      </div>
+                    }
+                  </div>
+                  @if(mode() === 'maker') {
+                      <button (click)="addFacility(i)" class="mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-800">+ Add Facility</button>
+                  }
+                </div>
+              </div>
+              <!-- Main Info Column -->
+              <div class="lg:col-span-2 space-y-4">
+                 <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label [for]="'hotelName-' + i" class="text-xs font-medium text-slate-500">Name</label>
+                        @if(mode() === 'maker') {
+                            <input [id]="'hotelName-' + i" type="text" [(ngModel)]="accommodation.hotelName" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" class="mt-1 block w-full font-semibold text-slate-700 border-slate-300 rounded-md shadow-sm text-sm">
+                        } @else {
+                            <p class="font-semibold text-slate-700">{{ accommodation.hotelName }}</p>
+                        }
+                    </div>
+                    <div>
+                        <label [for]="'acc-type-' + i" class="text-xs font-medium text-slate-500">Type</label>
+                        @if(mode() === 'maker') {
+                            <select [id]="'acc-type-' + i" [(ngModel)]="accommodation.type" (ngModelChange)="notifyUpdate()" class="mt-1 block w-full text-sm border-slate-300 rounded-md shadow-sm">
+                                @for(option of config.formOptions.accommodation; track option) {
+                                  <option [value]="option">{{ option }}</option>
+                                }
+                            </select>
+                        } @else {
+                            <p class="font-semibold text-slate-700">{{ accommodation.type }}</p>
+                        }
+                    </div>
+                </div>
+                <div>
+                    <label [for]="'address-' + i" class="text-xs font-medium text-slate-500">Address</label>
+                    @if(mode() === 'maker') {
+                        <textarea [id]="'address-' + i" [(ngModel)]="accommodation.address" (ngModelChange)="notifyUpdate()" [ngModelOptions]="{updateOn: 'blur'}" rows="2" class="mt-1 block w-full text-sm border-slate-300 rounded-md shadow-sm"></textarea>
+                    } @else {
+                        <p class="text-sm text-slate-700">{{ accommodation.address }}</p>
+                    }
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label [for]="'checkInDate-' + i" class="text-xs font-medium text-slate-500">Check-in</label>
+                      @if(mode() === 'maker') {
+                          <input [id]="'checkInDate-' + i" type="date" [(ngModel)]="accommodation.checkInDate" (ngModelChange)="notifyUpdate()" class="mt-1 block w-full text-sm border-slate-300 rounded-md shadow-sm">
+                      } @else {
+                          <p class="text-sm font-semibold text-slate-700">{{ accommodation.checkInDate | date: 'mediumDate' }}</p>
+                      }
+                    </div>
+                     <div>
+                      <label [for]="'checkOutDate-' + i" class="text-xs font-medium text-slate-500">Check-out</label>
+                      @if(mode() === 'maker') {
+                          <input [id]="'checkOutDate-' + i" type="date" [(ngModel)]="accommodation.checkOutDate" (ngModelChange)="notifyUpdate()" class="mt-1 block w-full text-sm border-slate-300 rounded-md shadow-sm">
+                      } @else {
+                          <p class="text-sm font-semibold text-slate-700">{{ accommodation.checkOutDate | date: 'mediumDate' }}</p>
+                      }
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-medium text-slate-500">Rating</label>
+                    <div class="flex items-center gap-2 mt-1">
+                        <div class="flex items-center text-amber-500">
+                            @for(star of getRatingAsStars(accommodation.rating); track $index) {
+                                @if(star === 'full') { <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg> }
+                                @if(star === 'half') { <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292zM10 5.163L8.513 9.654h-4.832l3.906 2.838L6.51 16.92l3.49-2.532v-9.225z" /></svg> }
+                                @if(star === 'empty') { <svg class="w-5 h-5 text-slate-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg> }
+                            }
+                        </div>
+                        @if(mode() === 'maker') {
+                            <input type="number" step="0.5" min="0" max="5" [(ngModel)]="accommodation.rating" (ngModelChange)="notifyUpdate()" class="w-16 p-1 text-sm bg-transparent focus:bg-white rounded border-transparent focus:border-slate-300">
+                        } @else {
+                            @if(accommodation.rating) {
+                                <span class="text-sm font-bold text-slate-600">{{ accommodation.rating }} / 5</span>
+                            }
+                        }
+                    </div>
+                </div>
+                 <div>
+                  <label class="text-sm font-medium text-slate-500">Total Price (USD)</label>
+                  @if(mode() === 'maker') {
+                    <input type="number" [(ngModel)]="accommodation.price" (ngModelChange)="notifyUpdate()" class="mt-1 block w-full text-2xl font-bold text-indigo-600 border-slate-300 rounded-md shadow-sm">
+                  } @else {
+                    <p class="text-3xl font-bold text-indigo-600">{{ accommodation.price | currency:'USD' }}</p>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+        <div class="text-center bg-white p-12 rounded-2xl">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-16 w-16 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+            <h3 class="mt-4 text-lg font-medium text-slate-800">No Accommodation Details</h3>
+            @if (mode() === 'viewer') {
+              <p class="mt-1 text-slate-500">No accommodation details were provided for this trip.</p>
+            } @else {
+              <p class="mt-1 text-slate-500">Click "Add Stay" to get started.</p>
+            }
+        </div>
+    }
+  }
+</div>

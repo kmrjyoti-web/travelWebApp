@@ -1,0 +1,49 @@
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+                <i class="pi pi-map text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-slate-800">Itinerary Mapping</h3>
+                <p class="text-slate-500 text-sm">Categorize this itinerary for internal tracking and organization.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mapping Categories -->
+    <div class="space-y-4">
+        @for(category of categories(); track category.id) {
+        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm transition-all">
+            <button (click)="toggleCategory(category.code)" 
+                class="w-full flex justify-between items-center p-4 text-left hover:bg-slate-50 transition-colors group">
+                <div class="flex items-center gap-3">
+                    <span class="w-2 h-2 rounded-full bg-indigo-400 group-hover:scale-125 transition-transform"></span>
+                    <h4 class="font-bold text-slate-800">{{ category.name }}</h4>
+                </div>
+                <i class="pi pi-chevron-down text-slate-400 transition-transform duration-300" 
+                    [class.rotate-180]="openCategories()[category.code]"></i>
+            </button>
+            
+            @if (openCategories()[category.code]) {
+            <div class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 border-t border-slate-100 bg-slate-50/30">
+                @for(item of category.items; track item.id) {
+                <label [for]="item.id" 
+                    class="flex items-start p-3 bg-white rounded-lg border border-slate-200 hover:border-indigo-400 has-[:checked]:bg-indigo-50/50 has-[:checked]:border-indigo-400 transition-all cursor-pointer shadow-sm">
+                    <input [id]="item.id" type="checkbox" 
+                        [checked]="isChecked(category.code, item.code)" 
+                        (change)="onCheckboxChange(category.code, item.code, $event)" 
+                        class="h-4 w-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 mt-1 shrink-0">
+                    <div class="ml-3">
+                        <span class="font-semibold text-sm text-slate-800 block">{{ item.name }}</span>
+                        <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">{{ item.description }}</p>
+                    </div>
+                </label>
+                }
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>

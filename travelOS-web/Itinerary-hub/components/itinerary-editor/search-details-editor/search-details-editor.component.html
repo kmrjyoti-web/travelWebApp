@@ -1,0 +1,137 @@
+<div class="space-y-8" *ngIf="trip(); let t">
+    <!-- Header -->
+    <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
+        <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+            <i class="pi pi-search text-xl"></i>
+        </div>
+        <div>
+            <h2 class="text-xl font-bold text-slate-800">Search Details & Locations</h2>
+            <p class="text-sm text-slate-500">Fine-tune the search context and location parameters.</p>
+        </div>
+    </div>
+
+    <!-- Search Keys -->
+    <div class="space-y-4">
+        <h3 class="text-sm font-bold text-slate-700 uppercase">Search Keywords</h3>
+        <div class="bg-white p-6 border border-slate-200 rounded-xl shadow-sm">
+             <div class="flex flex-col gap-2">
+                <label class="text-xs text-slate-500 ml-1">Contextual Search Terms</label>
+                <p-chips [(ngModel)]="t.search_keys" (ngModelChange)="notifyUpdate()" 
+                    placeholder="Add keyword..." styleClass="w-full"></p-chips>
+                <small class="text-slate-400">Used for generating relevant content and recommendations.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- From Location -->
+        <div class="space-y-4" *ngIf="t.fromLocation">
+            <div class="flex items-center gap-2">
+                <span class="bg-slate-100 text-slate-600 px-2 py-1 rounded text-xs font-bold uppercase">From Location</span>
+            </div>
+            <div class="bg-white p-6 border border-slate-200 rounded-xl shadow-sm space-y-6">
+                <p-floatlabel class="w-full">
+                    <input pInputText id="fromCity" [(ngModel)]="t.fromLocation.city" (ngModelChange)="notifyUpdate()" class="w-full" />
+                    <label for="fromCity">City</label>
+                </p-floatlabel>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <p-floatlabel class="w-full">
+                        <input pInputText id="fromCityCode" [(ngModel)]="t.fromLocation.cityCode" (ngModelChange)="notifyUpdate()" class="w-full" />
+                        <label for="fromCityCode">City Code</label>
+                    </p-floatlabel>
+                    <p-floatlabel class="w-full">
+                        <input pInputText id="fromStateCode" [(ngModel)]="t.fromLocation.stateCode" (ngModelChange)="notifyUpdate()" class="w-full" />
+                        <label for="fromStateCode">State Code</label>
+                    </p-floatlabel>
+                </div>
+
+                <p-floatlabel class="w-full">
+                    <input pInputText id="fromState" [(ngModel)]="t.fromLocation.state" (ngModelChange)="notifyUpdate()" class="w-full" />
+                    <label for="fromState">State</label>
+                </p-floatlabel>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <p-floatlabel class="w-full">
+                        <input pInputText id="fromCountry" [(ngModel)]="t.fromLocation.country" (ngModelChange)="notifyUpdate()" class="w-full" />
+                        <label for="fromCountry">Country</label>
+                    </p-floatlabel>
+                    <p-floatlabel class="w-full">
+                        <input pInputText id="fromCountryCode" [(ngModel)]="t.fromLocation.countryCode" (ngModelChange)="notifyUpdate()" class="w-full" />
+                        <label for="fromCountryCode">Country Code</label>
+                    </p-floatlabel>
+                </div>
+
+                <!-- Custom Fields -->
+                <div class="space-y-3 pt-2 border-t border-slate-100">
+                    <div class="flex justify-between items-center">
+                        <label class="text-xs font-bold text-slate-500 uppercase">Additional Properties</label>
+                        <button pButton icon="pi pi-plus" class="p-button-text p-button-sm p-button-rounded" (click)="addCustomField(t.fromLocation)"></button>
+                    </div>
+                    @for (field of t.fromLocation.customFields; track $index) {
+                        <div class="flex gap-2">
+                             <input pInputText placeholder="Key" [(ngModel)]="field.key" (ngModelChange)="notifyUpdate()" class="w-1/3 text-sm" />
+                             <input pInputText placeholder="Value" [(ngModel)]="field.value" (ngModelChange)="notifyUpdate()" class="w-2/3 text-sm" />
+                             <button pButton icon="pi pi-trash" class="p-button-text p-button-danger p-button-sm" (click)="removeCustomField(t.fromLocation, $index)"></button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- To Location -->
+        <div class="space-y-4" *ngIf="t.toLocation">
+            <div class="flex items-center gap-2">
+                <span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-xs font-bold uppercase">To Location</span>
+            </div>
+             <div class="bg-white p-6 border border-slate-200 rounded-xl shadow-sm space-y-6">
+                 <p-floatlabel class="w-full">
+                    <input pInputText id="toCity" [(ngModel)]="t.toLocation.city" (ngModelChange)="notifyUpdate()" class="w-full" />
+                    <label for="toCity">City</label>
+                </p-floatlabel>
+
+                 <div class="grid grid-cols-2 gap-4">
+                    <p-floatlabel class="w-full">
+                        <input pInputText id="toCityCode" [(ngModel)]="t.toLocation.cityCode" (ngModelChange)="notifyUpdate()" class="w-full" />
+                        <label for="toCityCode">City Code</label>
+                    </p-floatlabel>
+                    <p-floatlabel class="w-full">
+                        <input pInputText id="toStateCode" [(ngModel)]="t.toLocation.stateCode" (ngModelChange)="notifyUpdate()" class="w-full" />
+                        <label for="toStateCode">State Code</label>
+                    </p-floatlabel>
+                </div>
+
+                <p-floatlabel class="w-full">
+                    <input pInputText id="toState" [(ngModel)]="t.toLocation.state" (ngModelChange)="notifyUpdate()" class="w-full" />
+                    <label for="toState">State</label>
+                </p-floatlabel>
+
+                <div class="grid grid-cols-2 gap-4">
+                     <p-floatlabel class="w-full">
+                        <input pInputText id="toCountry" [(ngModel)]="t.toLocation.country" (ngModelChange)="notifyUpdate()" class="w-full" />
+                        <label for="toCountry">Country</label>
+                    </p-floatlabel>
+                    <p-floatlabel class="w-full">
+                        <input pInputText id="toCountryCode" [(ngModel)]="t.toLocation.countryCode" (ngModelChange)="notifyUpdate()" class="w-full" />
+                        <label for="toCountryCode">Country Code</label>
+                    </p-floatlabel>
+                </div>
+
+                <!-- Custom Fields -->
+                <div class="space-y-3 pt-2 border-t border-slate-100">
+                    <div class="flex justify-between items-center">
+                        <label class="text-xs font-bold text-slate-500 uppercase">Additional Properties</label>
+                        <button pButton icon="pi pi-plus" class="p-button-text p-button-sm p-button-rounded" (click)="addCustomField(t.toLocation)"></button>
+                    </div>
+                    @for (field of t.toLocation.customFields; track $index) {
+                        <div class="flex gap-2">
+                             <input pInputText placeholder="Key" [(ngModel)]="field.key" (ngModelChange)="notifyUpdate()" class="w-1/3 text-sm" />
+                             <input pInputText placeholder="Value" [(ngModel)]="field.value" (ngModelChange)="notifyUpdate()" class="w-2/3 text-sm" />
+                             <button pButton icon="pi pi-trash" class="p-button-text p-button-danger p-button-sm" (click)="removeCustomField(t.toLocation, $index)"></button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

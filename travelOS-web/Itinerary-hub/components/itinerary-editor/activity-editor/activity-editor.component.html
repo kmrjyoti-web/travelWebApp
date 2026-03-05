@@ -1,0 +1,67 @@
+<div class="relative bg-white border border-slate-200 rounded-lg p-6 hover:border-indigo-300 transition-colors group">
+
+    <!-- Time & Title Row -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <p-floatlabel variant="on" class="w-full">
+            <p-dropdown [options]="['Morning', 'Late Morning', 'Afternoon', 'Late Afternoon', 'Evening', 'Night']"
+                [(ngModel)]="activity().time" (ngModelChange)="notifyUpdate()" [style]="{'width':'100%'}"
+                inputId="time">
+            </p-dropdown>
+            <label for="time">Time</label>
+        </p-floatlabel>
+
+        <p-floatlabel variant="on" class="w-full">
+            <input pInputText id="title" type="text" [(ngModel)]="activity().title" (ngModelChange)="notifyUpdate()"
+                class="w-full" />
+            <label for="title">Activity Title</label>
+        </p-floatlabel>
+
+        <p-floatlabel variant="on" class="w-full">
+            <p-dropdown
+                [options]="['Sightseeing', 'Dining', 'Culture', 'Outdoor', 'Shopping', 'Entertainment', 'Transport']"
+                [(ngModel)]="activity().activityType" (ngModelChange)="notifyUpdate()" [style]="{'width':'100%'}"
+                inputId="type">
+            </p-dropdown>
+            <label for="type">Type</label>
+        </p-floatlabel>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-6 w-full">
+        <p-floatlabel variant="on" class="w-full">
+            <textarea pInputTextarea id="description" [(ngModel)]="activity().description"   style="height: 100px !important;"
+                      (ngModelChange)="notifyUpdate()" rows="4" class="w-full h-32" [autoResize]="false"></textarea>
+            <label for="description">Description</label>
+        </p-floatlabel>
+    </div>
+
+    <!-- Location & Cost Row -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-2">
+        <p-floatlabel variant="on" class="w-full">
+            <input pInputText id="location" type="text" [(ngModel)]="activity().location"
+                (ngModelChange)="notifyUpdate()" class="w-full" />
+            <label for="location">Location</label>
+        </p-floatlabel>
+
+        <p-floatlabel variant="on" class="w-full">
+            <input pInputText id="cost" type="number" [(ngModel)]="activity().cost" (ngModelChange)="notifyUpdate()"
+                class="w-full" min="0" />
+            <label for="cost">Cost (USD)</label>
+        </p-floatlabel>
+
+        <div class="grid grid-cols-2 gap-2">
+            <p-floatlabel variant="on" class="w-full">
+                <input pInputText id="lat" type="number" [(ngModel)]="activity().latitude"
+                    (ngModelChange)="notifyUpdate()" class="w-full" />
+                <label for="lat">Lat</label>
+            </p-floatlabel>
+            <p-floatlabel variant="on" class="w-full">
+                <input pInputText id="lng" type="number" [(ngModel)]="activity().longitude"
+                    (ngModelChange)="notifyUpdate()" class="w-full" />
+                <label for="lng">Lng</label>
+            </p-floatlabel>
+        </div>
+    </div>
+
+    <!-- Hidden Remove Button logic is mostly handled by parent DayEditor dialog, but keeping it here for completeness if used elsewhere -->
+</div>

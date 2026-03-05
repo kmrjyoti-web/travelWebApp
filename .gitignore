@@ -1,0 +1,34 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+**/node_modules/
+
+# Build outputs
+**/dist/
+**/.next/
+**/build/
+**/.turbo/
+
+# Env files
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+
+# Logs
+*.log
+.dev-logs/
+
+# IDE
+.vscode/
+.idea/
+
+# Claude memory (local only)
+.claude/
+
+# SharedCore is its own git repo — tracked separately
+SharedCore/

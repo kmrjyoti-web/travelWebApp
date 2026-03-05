@@ -1,0 +1,81 @@
+/**
+ * TravelOS Platform — Product theme: Food OS
+ *
+ * Palette: Warm oranges (#f57c00) + fresh greens (#388e3c)
+ * Applied when <html data-product="food-os">.
+ *
+ * Color scale reference:
+ *   Orange 50: #fff3e0  300: #ffb74d  500: #ff9800  600: #fb8c00
+ *          700: #f57c00  800: #e65100  900: #bf360c
+ *   Green  50: #e8f5e9  300: #81c784  500: #4caf50  700: #388e3c
+ *          800: #2e7d32  900: #1b5e20
+ */
+
+/* ── Light mode ─────────────────────────────────────────────────────────────── */
+
+[data-product="food-os"] {
+  /* Primary — warm orange */
+  --tos-color-primary:       #f57c00;
+  --tos-color-primary-light: #fb8c00;
+  --tos-color-primary-dark:  #e65100;
+  --tos-color-accent:        #fb8c00;
+  --tos-color-accent-hover:  #f57c00;
+
+  /* Secondary — fresh green */
+  --tos-color-secondary:       #388e3c;
+  --tos-color-secondary-light: #43a047;
+  --tos-color-secondary-dark:  #2e7d32;
+
+  /* Header — warm orange */
+  --tos-header-bg:   #f57c00;
+  --tos-header-text: #ffffff;
+
+  /* Sidebar — dark charcoal (neutral, readable) */
+  --tos-sidebar-bg:        #1a1a1a;
+  --tos-sidebar-text:      #e0e0e0;
+  --tos-sidebar-text-muted:#9e9e9e;
+  --tos-sidebar-active-bg: #fb8c00;
+  --tos-sidebar-hover-bg:  #2a2a2a;
+  --tos-sidebar-border-right: 1px solid #2a2a2a;
+
+  /* Focus ring uses orange accent */
+  --tos-focus-ring:       0 0 0 3px rgba(245,124,0,0.4);
+  --tos-focus-ring-color: rgba(245,124,0,0.4);
+
+  /* Text link — green for contrast */
+  --tos-color-text-link:       #388e3c;
+  --tos-color-text-link-hover: #2e7d32;
+
+  /* App background — warm off-white */
+  --tos-app-bg:     #fff8f0;
+  --tos-content-bg: #fff8f0;
+
+  /* Legacy token support */
+  --tos-accent: #fb8c00;
+  --tos-icon:   #616161;
+}
+
+/* ── Dark mode overrides ────────────────────────────────────────────────────── */
+
+[data-product="food-os"][data-theme="dark"],
+[data-product="food-os"][data-coreui-theme="dark"] {
+  /* Header — deeper orange-brown */
+  --tos-header-bg:        #b35a00;
+
+  /* Sidebar darker */
+  --tos-sidebar-bg:        #0d0d0d;
+  --tos-sidebar-active-bg: #f57c00;
+  --tos-sidebar-hover-bg:  #1a1a1a;
+  --tos-sidebar-border-right: 1px solid #1a1a1a;
+
+  /* App bg — very dark warm */
+  --tos-app-bg:     #1a0f00;
+
+  /* Focus ring */
+  --tos-focus-ring:       0 0 0 3px rgba(245,124,0,0.55);
+  --tos-focus-ring-color: rgba(245,124,0,0.55);
+
+  /* Text links */
+  --tos-color-text-link:       #81c784;
+  --tos-color-text-link-hover: #a5d6a7;
+}

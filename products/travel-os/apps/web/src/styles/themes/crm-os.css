@@ -1,0 +1,80 @@
+/**
+ * TravelOS Platform — Product theme: CRM-OS
+ *
+ * Palette: Professional purples (#7b1fa2) + neutral grays
+ * Applied when <html data-product="crm-os">.
+ *
+ * Color scale reference:
+ *   Purple 50: #f3e5f5  100: #e1bee7  300: #ba68c8  500: #9c27b0
+ *          600: #8e24aa  700: #7b1fa2  800: #6a1b9a  900: #4a148c
+ *          950: #2d0a5a
+ */
+
+/* ── Light mode ─────────────────────────────────────────────────────────────── */
+
+[data-product="crm-os"] {
+  /* Primary — professional purple */
+  --tos-color-primary:       #7b1fa2;
+  --tos-color-primary-light: #8e24aa;
+  --tos-color-primary-dark:  #6a1b9a;
+  --tos-color-accent:        #8e24aa;
+  --tos-color-accent-hover:  #7b1fa2;
+
+  /* Secondary — deep indigo */
+  --tos-color-secondary:       #4527a0;
+  --tos-color-secondary-light: #5e35b1;
+  --tos-color-secondary-dark:  #311b92;
+
+  /* Header — deep purple */
+  --tos-header-bg:   #4a148c;
+  --tos-header-text: #ffffff;
+
+  /* Sidebar — very dark purple-gray */
+  --tos-sidebar-bg:        #1a0a2e;
+  --tos-sidebar-text:      #e1bee7;
+  --tos-sidebar-text-muted:#9c8fb0;
+  --tos-sidebar-active-bg: #7b1fa2;
+  --tos-sidebar-hover-bg:  #2d1054;
+  --tos-sidebar-border-right: 1px solid #2d1054;
+
+  /* Focus ring uses purple accent */
+  --tos-focus-ring:       0 0 0 3px rgba(123,31,162,0.4);
+  --tos-focus-ring-color: rgba(123,31,162,0.4);
+
+  /* Text link */
+  --tos-color-text-link:       #7b1fa2;
+  --tos-color-text-link-hover: #4a148c;
+
+  /* App background — very light lavender */
+  --tos-app-bg:     #faf5ff;
+  --tos-content-bg: #faf5ff;
+
+  /* Legacy token support */
+  --tos-accent: #8e24aa;
+  --tos-icon:   #7e57c2;
+}
+
+/* ── Dark mode overrides ────────────────────────────────────────────────────── */
+
+[data-product="crm-os"][data-theme="dark"],
+[data-product="crm-os"][data-coreui-theme="dark"] {
+  /* Header — deeper purple */
+  --tos-header-bg:        #2d0a5a;
+
+  /* Sidebar darkest */
+  --tos-sidebar-bg:        #0d0018;
+  --tos-sidebar-active-bg: #6a1b9a;
+  --tos-sidebar-hover-bg:  #1a0a2e;
+  --tos-sidebar-border-right: 1px solid #1a0a2e;
+
+  /* App bg — near black with purple tint */
+  --tos-app-bg: #0d0018;
+
+  /* Focus ring */
+  --tos-focus-ring:       0 0 0 3px rgba(123,31,162,0.55);
+  --tos-focus-ring-color: rgba(123,31,162,0.55);
+
+  /* Text links — lighter purple for dark bg */
+  --tos-color-text-link:       #ce93d8;
+  --tos-color-text-link-hover: #e1bee7;
+}

@@ -1,0 +1,69 @@
+# TravelOS-Web — Cursor AI Configuration
+# Version 4.0 | March 2, 2026
+
+## Identity
+You are building TravelOS-Web, an AI-Powered Travel Industry Super-App.
+
+## 13 Golden Rules (STRICT)
+1. SHARED FOLDER — All reusable code in src/shared/
+2. DIRECT DEVELOPMENT — Build in target folders, no staging
+3. COMPONENT WRAPPERS — CoreUI via src/shared/components/ only
+4. ICON WRAPPER — <Icon name='...' /> from shared, never lucide-react direct
+5. SHARED SERVICES — API logic in src/shared/services/ only
+6. ESLINT ENFORCED — no-restricted-imports for @coreui/* and lucide-react
+7. FEATURE FOLDERS — src/features/{name}/ self-contained
+8. DRAWER CRUD — COffcanvas drawers, never /create or /edit pages
+9. CSS TOKENS — --tos-* properties, never hardcode colors
+10. SESSION LOGGING — Log every session in docs/sessions/
+11. GEMINI = UI ONLY (not you, but respect boundary)
+12. CODEX = PLAN FIRST (not you, but respect boundary)
+13. CLAUDE = FULL TEST (not you, but respect boundary)
+
+## Tech Stack
+- Next.js 14 (App Router) + TypeScript strict
+- @coreui/react + @coreui/react-pro (via shared/ wrappers)
+- lucide-react (via shared/components/Icon)
+- Zustand for state
+- recharts for charts
+- axios for HTTP (via shared/services/api.ts)
+- CoreUI CSS + --tos-* tokens (NO Tailwind)
+- pnpm
+
+## Import Pattern
+```typescript
+// ALWAYS:
+import { CButton, Icon } from '@/shared/components'
+import { authService } from '@/shared/services'
+import { useAuth } from '@/shared/hooks'
+import type { User } from '@/shared/types'
+
+// NEVER:
+import { CButton } from '@coreui/react'
+import { Map } from 'lucide-react'
+```
+
+## Wrapper Pattern
+```typescript
+'use client'
+import React from 'react'
+import { CButton as CoreButton } from '@coreui/react'
+import type { CButtonProps } from '@coreui/react'
+
+export const CButton = React.forwardRef<HTMLButtonElement, CButtonProps>(
+  (props, ref) => <CoreButton ref={ref} {...props} />
+)
+CButton.displayName = 'CButton'
+```
+
+## Anti-Patterns
+- NO @coreui/* in feature code
+- NO lucide-react direct imports
+- NO API logic in features
+- NO /create or /edit pages
+- NO Tailwind
+- NO hardcoded colors
+- NO raw HTML when CoreUI has a component
+
+## Session Logging
+Create: docs/sessions/YYYY-MM-DD_HH-MM_cursor_{topic}.md
+Log all files, decisions, issues. Minimum Level 2 tests (tsc + ESLint).

@@ -1,0 +1,216 @@
+%%{init: {"theme": "default", "themeVariables": {"fontFamily": "monospace", "fontSize": "13px"}}}%%
+%%
+%% =====================================================================
+%% UI-KIT-main — Dependency Graph
+%% Auditor : Claude (Frontend Architecture Agent)
+%% Date    : 2026-03-03
+%% Source  : Live import/export audit of all 27 source files
+%% =====================================================================
+%%
+%% ── CIRCULAR DEPENDENCIES ───────────────────────────────────────────
+%%   NONE detected ✅
+%%
+%% ── DEAD CODE (exported but never consumed) ─────────────────────────
+%%   1. components/TextFieldShowcase.tsx
+%%        → Not imported by any page or component
+%%        → demo/docs only, no route renders it
+%%
+%%   2. hooks/use-mobile.ts  (useIsMobile)
+%%        → 0 consumers — not imported anywhere in the codebase
+%%
+%%   3. lib/utils.ts  (cn)
+%%        → Not imported by any file
+%%        → ui/TextField.tsx defines its own identical cn() inline
+%%
+%%   4. cn() inside ui/TextField.tsx  (lines 1-7)
+%%        → Duplicate of lib/utils.ts; should import instead of copy
+%%
+%% ── UNUSED PACKAGE.JSON ENTRIES ─────────────────────────────────────
+%%   @google/genai            ^1.17.0   → no import found in any file
+%%   @hookform/resolvers      ^5.2.1    → no import found in any file
+%%   class-variance-authority ^0.7.1   → no import found in any file
+%%   firebase-tools           ^15.0.0  → dev tooling only, not imported
+%%   tw-animate-css           ^1.4.0   → not imported
+%%   @tailwindcss/typography  ^0.5.19  → not imported
+%%   autoprefixer / postcss           → PostCSS config only (not JS)
+%%
+%% ── CROSS-BOUNDARY COUPLING ─────────────────────────────────────────
+%%   HorizontalMenu.tsx imports MENU_DATA + MenuNode TYPE from Sidebar.tsx
+%%     → Shared data tightly couples two sibling layout components
+%%     → Fix: extract to lib/menuData.ts (shared, no component dep)
+%%
+%%   Name collision: both ThemeProvider.tsx and login/ThemeContext.tsx
+%%   export a symbol named "ThemeProvider"
+%%     → Consumers must alias one on import (error-prone)
+%%     → Fix: rename login export to LoginThemeProvider
+%%
+%% ── MISSING DEPENDENCIES ────────────────────────────────────────────
+%%   NONE detected ✅  All imports resolve to installed packages
+%%
+%% =====================================================================
+
+graph TD
+
+    %% ============================================================
+    %% PAGES (Entry Points)
+    %% ============================================================
+    subgraph PAGES["📄 Pages — Entry Points"]
+        AL["app/layout.tsx\n─────────────────\nRootLayout"]
+        AP["app/page.tsx\n─────────────────\nHome"]
+        LP["app/login/page.tsx\n─────────────────\nLoginPage + LoginContent"]
+    end
+
+    %% ============================================================
+    %% LAYOUT
+    %% ============================================================
+    subgraph LAYOUT["🔲 Layout Components"]
+        H["Header.tsx\n─────────────────\nHeader, HeaderIcon,\nMobileMenuRow\n18 lucide icons"]
+        S["Sidebar.tsx\n─────────────────\nexports: Sidebar,\nMENU_DATA, MenuNode\n16 lucide icons"]
+        HM["HorizontalMenu.tsx\n─────────────────\nHorizontalMenu\n⚠️ imports Sidebar.MENU_DATA"]
+        F["Footer.tsx\n─────────────────\nFooter\n✅ zero deps"]
+    end
+
+    %% ============================================================
+    %% THEME
+    %% ============================================================
+    subgraph THEME["🎨 Theme System"]
+        TP["ThemeProvider.tsx\n─────────────────\nexports: ThemeProvider,\nuseTheme, ThemeState\n👑 App-wide Context\n+ localStorage persist"]
+        TS["ThemeSettings.tsx\n─────────────────\nThemeSettings, ColorPicker\n14 presets · 11 BGs"]
+        LTC["login/ThemeContext.tsx\n─────────────────\nexports: ThemeProvider,\nuseLoginTheme, THEME_CONFIG\n🔒 Login-only Context\n5 modes · 5 Unsplash URLs"]
+    end
+
+    %% ============================================================
+    %% FEATURE COMPONENTS
+    %% ============================================================
+    subgraph COMPS["🧩 Feature Components"]
+        ID["ItineraryDashboard.tsx\n─────────────────\nItineraryDashboard, KpiCard\n8 KPI cards · 6 recharts\nAI prompt card"]
+        TF["ui/TextField.tsx\n─────────────────\nTextField, TextFieldProps\n⭐ 5/5 quality\nfloating labels · 3 variants\n⚠️ duplicates cn() inline"]
+        BS["login/BackgroundSystem.tsx\n─────────────────\nBackgroundStage\n+ Stars, DataLines,\nParticles, Birds"]
+        UIC["login/UIComponents.tsx\n─────────────────\nGlassCard, LoginForm,\nOnboardingCarousel,\nThemeSwitcher"]
+    end
+
+    %% ============================================================
+    %% DEAD CODE
+    %% ============================================================
+    subgraph DEAD["💀 Dead Code — Exported but Never Consumed"]
+        TFS["components/TextFieldShowcase.tsx\nNo page or route imports this\nDemo/docs only"]
+        UM["hooks/use-mobile.ts\nuseIsMobile exported\n0 consumers in codebase"]
+        LU["lib/utils.ts\ncn() exported\n0 consumers — TextField\nduplicates it inline"]
+    end
+
+    %% ============================================================
+    %% EXTERNAL PACKAGES (actually used)
+    %% ============================================================
+    subgraph EXT["📦 External Packages — In Use"]
+        MOT["motion/react\nv12.23.24\nFramer Motion v12\nAll animated components"]
+        LUC["lucide-react\nv0.553.0\nHeader·Sidebar·HorizMenu\nThemeSettings·ItinDash\nBackgroundSys·UIComps"]
+        REC["recharts\nv3.7.0\nBarChart·AreaChart·LineChart\nUsed only in ItinDash"]
+        CLX["clsx + tailwind-merge\nUsed in TextField.tsx\nand lib/utils.ts"]
+    end
+
+    %% ============================================================
+    %% UNUSED PACKAGES
+    %% ============================================================
+    subgraph UNUSED["❌ In package.json — Zero Imports Found"]
+        GAI["@google/genai\n^1.17.0"]
+        HFR["@hookform/resolvers\n^5.2.1"]
+        CVA["class-variance-authority\n^0.7.1"]
+    end
+
+    %% ============================================================
+    %% DEPENDENCY EDGES — Pages → Components
+    %% ============================================================
+    AL --> TP
+    AL --> TS
+
+    AP --> H
+    AP --> S
+    AP --> HM
+    AP --> F
+    AP --> TP
+    AP --> ID
+
+    LP --> LTC
+    LP --> BS
+    LP --> UIC
+    LP --> MOT
+
+    %% ============================================================
+    %% DEPENDENCY EDGES — Components → Theme
+    %% ============================================================
+    H --> TP
+    S --> TP
+    HM --> TP
+    TS --> TP
+
+    %% ============================================================
+    %% DEPENDENCY EDGES — Cross-boundary coupling (WARNING)
+    %% ============================================================
+    HM -- "⚠️ MENU_DATA + MenuNode\ntight coupling" --> S
+
+    %% ============================================================
+    %% DEPENDENCY EDGES — Components → External
+    %% ============================================================
+    H --> MOT
+    H --> LUC
+
+    S --> MOT
+    S --> LUC
+
+    HM --> MOT
+    HM --> LUC
+
+    TS --> MOT
+    TS --> LUC
+
+    ID --> MOT
+    ID --> LUC
+    ID --> REC
+
+    BS --> MOT
+    BS --> LUC
+
+    UIC --> MOT
+    UIC --> LUC
+
+    %% ============================================================
+    %% DEPENDENCY EDGES — Login feature internal
+    %% ============================================================
+    BS --> LTC
+    UIC --> LTC
+
+    %% ============================================================
+    %% DEPENDENCY EDGES — TextField chain
+    %% ============================================================
+    TF --> CLX
+    LU --> CLX
+
+    %% ============================================================
+    %% DEPENDENCY EDGES — Dead code (dashed)
+    %% ============================================================
+    TFS -.->|"dead: imports but\nnever rendered"| TF
+    TFS -.->|"dead"| LUC
+
+    %% ============================================================
+    %% STYLES
+    %% ============================================================
+
+    %% Dead code: red tint
+    style TFS fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+    style UM  fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+    style LU  fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+
+    %% Unused packages: amber tint
+    style GAI fill:#fef3c7,stroke:#d97706,color:#78350f
+    style HFR fill:#fef3c7,stroke:#d97706,color:#78350f
+    style CVA fill:#fef3c7,stroke:#d97706,color:#78350f
+
+    %% Theme providers: blue tint
+    style TP  fill:#dbeafe,stroke:#1d4ed8,color:#1e3a8a
+    style LTC fill:#dbeafe,stroke:#1d4ed8,color:#1e3a8a
+
+    %% High-value component: green tint
+    style TF fill:#d1fae5,stroke:#059669,color:#065f46
+
+    %% Warning: cross-coupling node
+    style HM fill:#fef9c3,stroke:#ca8a04,color:#713f12
