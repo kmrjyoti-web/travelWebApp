@@ -37,6 +37,14 @@ export const queryKeys = {
     detail: (id: string) => ['agent', 'detail', id] as const,
   },
 
+  // B2B Marketplace
+  b2b: {
+    all:      () => ['b2b'] as const,
+    listings: (params?: Record<string, unknown>) => ['b2b', 'listings', params] as const,
+    orders:   (params?: Record<string, unknown>) => ['b2b', 'orders',   params] as const,
+    rfqs:     (params?: Record<string, unknown>) => ['b2b', 'rfqs',     params] as const,
+  },
+
   // Analytics
   analytics: {
     dashboard: () => ['analytics', 'dashboard'] as const,
