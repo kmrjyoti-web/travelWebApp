@@ -5,6 +5,7 @@ import { BackgroundStage } from './BackgroundStage';
 import { LoginForm } from './LoginForm';
 import { OtpForm } from './OtpForm';
 import { ForgotPasswordForm } from './ForgotPasswordForm';
+import { RegistrationForm } from './RegistrationForm';
 import { LoginThemeSwitcher } from './LoginThemeSwitcher';
 import { useLoginTheme, THEME_CONFIG, type LoginView } from '../hooks/useLoginTheme';
 
@@ -61,6 +62,9 @@ export function LoginView() {
           >
             {view === 'login' && (
               <LoginForm onViewChange={(v) => handleViewChange(v)} />
+            )}
+            {view === 'register' && (
+              <RegistrationForm onViewChange={handleViewChange} />
             )}
             {view === 'otp' && (
               <OtpForm email={otpEmail || 'your@email.com'} onViewChange={handleViewChange} />

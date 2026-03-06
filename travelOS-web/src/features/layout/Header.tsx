@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/shared/stores/auth.store";
 import {
   Menu,
   Wifi,
@@ -28,6 +30,8 @@ export default function Header({
   toggleSidebar?: () => void;
 }) {
   const { toggleSettings } = useUIKitTheme();
+  const router = useRouter();
+  const { logout, user } = useAuthStore();
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [isCompanyModalOpen, setIsCompanyModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -44,14 +48,16 @@ export default function Header({
 
         <div className="relative ml-2">
           <button
-            className="flex items-center bg-white/10 hover:bg-white/20 transition-colors px-2 sm:px-3 py-1 rounded text-xs text-left"
+            className="flex items-center bg-white/10 hover:bg-white/20 transition-colors px-2 sm:px-3 py-1.5 rounded text-sm text-left"
             onClick={() => setIsCompanyModalOpen(true)}
           >
-            <div className="w-6 h-6 bg-white rounded sm:mr-2 flex items-center justify-center text-[var(--header-bg)] font-bold">A</div>
+            <div className="w-8 h-8 bg-white rounded sm:mr-2 flex items-center justify-center text-[var(--header-bg)] font-bold text-base">
+              {(user?.name ?? 'U')[0].toUpperCase()}
+            </div>
             <div className="hidden sm:block">
-              <div className="font-bold">DEMO Aliya.. (ALIYA)</div>
-              <div className="text-[10px] text-gray-300">
-                Books From 01-04-2025 to 31-03-2026
+              <div className="font-bold text-sm">{user?.name ?? 'User'}</div>
+              <div className="text-xs text-gray-300" style={{ textTransform: 'capitalize' }}>
+                {user?.role ?? 'agent'}
               </div>
             </div>
           </button>
@@ -75,10 +81,12 @@ export default function Header({
                 >
                   <div className="bg-[var(--header-bg)] p-4 text-white flex justify-between items-start">
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-white rounded flex items-center justify-center text-[var(--header-bg)] font-bold text-lg">A</div>
+                      <div className="w-12 h-12 bg-white rounded flex items-center justify-center text-[var(--header-bg)] font-bold text-xl">
+                        {(user?.name ?? 'U')[0].toUpperCase()}
+                      </div>
                       <div>
-                        <h3 className="font-bold text-base">DEMO Aliya.. (ALIYA)</h3>
-                        <p className="text-xs text-white/80">Travel OS Pvt Ltd</p>
+                        <h3 className="font-bold" style={{ fontSize: '1.5rem', lineHeight: 1.3 }}>{user?.name ?? 'User'}</h3>
+                        <p className="text-sm text-white/80">{user?.email ?? ''}</p>
                       </div>
                     </div>
                     <button onClick={() => setIsCompanyModalOpen(false)} className="p-1 hover:bg-white/20 rounded-full transition-colors">
@@ -87,20 +95,16 @@ export default function Header({
                   </div>
                   <div className="p-4 space-y-3">
                     <div className="flex justify-between items-center text-sm border-b border-gray-100 pb-2">
-                      <span className="text-gray-500">Financial Year</span>
-                      <span className="font-medium">2025 - 2026</span>
+                      <span className="text-gray-500">Role</span>
+                      <span className="font-medium" style={{ textTransform: 'capitalize' }}>{user?.role ?? 'agent'}</span>
                     </div>
                     <div className="flex justify-between items-center text-sm border-b border-gray-100 pb-2">
-                      <span className="text-gray-500">Books From</span>
-                      <span className="font-medium">01-04-2025</span>
+                      <span className="text-gray-500">Product</span>
+                      <span className="font-medium">TravelOS</span>
                     </div>
                     <div className="flex justify-between items-center text-sm border-b border-gray-100 pb-2">
-                      <span className="text-gray-500">GSTIN</span>
-                      <span className="font-medium">27AADCB2230M1Z2</span>
-                    </div>
-                    <div className="flex justify-between items-center text-sm border-b border-gray-100 pb-2">
-                      <span className="text-gray-500">Branch</span>
-                      <span className="font-medium">Head Office</span>
+                      <span className="text-gray-500">Tenant</span>
+                      <span className="font-medium">{user?.tenantId ?? '—'}</span>
                     </div>
                   </div>
                   <div className="p-3 bg-gray-50 border-t border-gray-200 flex space-x-2">
@@ -108,13 +112,13 @@ export default function Header({
                       className="flex-1 py-2 px-4 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 rounded flex items-center justify-center transition-colors text-sm font-medium"
                       onClick={() => setIsCompanyModalOpen(false)}
                     >
-                      Switch Company
+                      Switch Tenant
                     </button>
                     <button
                       className="flex-1 py-2 px-4 bg-[var(--accent-color)] hover:opacity-90 text-white rounded flex items-center justify-center transition-colors text-sm font-medium"
                       onClick={() => setIsCompanyModalOpen(false)}
                     >
-                      Edit Details
+                      Edit Profile
                     </button>
                   </div>
                 </motion.div>
@@ -178,8 +182,8 @@ export default function Header({
                 >
                   <div className="bg-[var(--header-bg)] p-4 text-white flex justify-between items-start">
                     <div>
-                      <h3 className="font-bold text-base">Aliya Demo</h3>
-                      <p className="text-xs text-white/80">admin@travelos.com</p>
+                      <h3 className="font-bold" style={{ fontSize: '1.5rem', lineHeight: 1.3 }}>{user?.name ?? 'User'}</h3>
+                      <p className="text-sm text-white/80">{user?.email ?? ''}</p>
                     </div>
                     <button onClick={() => setIsUserModalOpen(false)} className="p-1 hover:bg-white/20 rounded-full transition-colors">
                       <X size={16} />
@@ -188,7 +192,7 @@ export default function Header({
                   <div className="p-4 space-y-3">
                     <div className="flex justify-between items-center text-sm border-b border-gray-100 pb-2">
                       <span className="text-gray-500">Role</span>
-                      <span className="font-medium">Administrator</span>
+                      <span className="font-medium" style={{ textTransform: 'capitalize' }}>{user?.role ?? 'agent'}</span>
                     </div>
                     <div className="flex justify-between items-center text-sm border-b border-gray-100 pb-2">
                       <span className="text-gray-500">Status</span>
@@ -203,17 +207,12 @@ export default function Header({
                     </div>
                   </div>
                   <div className="p-3 bg-gray-50 border-t border-gray-200">
-                    <a
-                      href="/login"
-                      className="w-full py-2 px-4 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 rounded flex items-center justify-center space-x-2 transition-colors text-sm font-medium mb-2"
-                    >
-                      <span>View Login Experience</span>
-                    </a>
                     <button
                       className="w-full py-2 px-4 bg-white border border-gray-300 hover:bg-gray-100 text-red-600 rounded flex items-center justify-center space-x-2 transition-colors text-sm font-medium"
                       onClick={() => {
                         setIsUserModalOpen(false);
-                        // Add logout logic here
+                        logout();
+                        router.push('/login');
                       }}
                     >
                       <LogOut size={16} />
@@ -297,7 +296,7 @@ function HeaderIcon({ icon, label, onClick }: { icon: React.ReactNode; label: st
   return (
     <button className="flex flex-col items-center justify-center w-14 h-12 hover:bg-white/10 rounded" onClick={onClick}>
       {icon}
-      {label && <span className="text-[9px] mt-1">{label}</span>}
+      {label && <span className="text-[11px] mt-1 font-medium">{label}</span>}
     </button>
   );
 }

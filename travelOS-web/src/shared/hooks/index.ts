@@ -1,5 +1,7 @@
 export { useThemeSync } from './useThemeSync';
-export { useItineraryList, useItinerary, useCreateItinerary } from './useItinerary';
+export { useUserType, useUserTypeStore } from './useUserType';
+export type { UserTypeStore } from './useUserType';
+export { useItineraryList, useItinerary, useCreateItinerary, useUpdateItinerary, useDeleteItinerary } from './useItinerary';
 export { useMediaQuery, useIsMobile, useIsTablet } from './useMediaQuery';
 export { useDebounce } from './useDebounce';
 export { useApiQuery, useApiMutation } from './useApiQuery';

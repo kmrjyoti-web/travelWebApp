@@ -1,13 +1,18 @@
 'use client';
-import React, { useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLoginTheme, THEME_CONFIG } from '../hooks/useLoginTheme';
 
 // Adapted from UI-KIT BackgroundSystem.tsx — Stars, DataLines, Particles
+// Note: random values generated client-side only (useEffect) to avoid SSR hydration mismatch
 
 function Stars({ count = 40, reducedMotion }: { count?: number; reducedMotion: boolean }) {
-  const stars = useMemo(
-    () =>
+  const [stars, setStars] = useState<Array<{
+    id: number; top: string; left: string; size: number; delay: number; duration: number;
+  }>>([]);
+
+  useEffect(() => {
+    setStars(
       Array.from({ length: count }, (_, i) => ({
         id: i,
         top: `${Math.random() * 100}%`,
@@ -15,11 +20,11 @@ function Stars({ count = 40, reducedMotion }: { count?: number; reducedMotion: b
         size: Math.random() * 2 + 1,
         delay: Math.random() * 3,
         duration: 2 + Math.random() * 3,
-      })),
-    [count]
-  );
+      }))
+    );
+  }, [count]);
 
-  if (reducedMotion) return null;
+  if (reducedMotion || stars.length === 0) return null;
 
   return (
     <>
@@ -27,12 +32,7 @@ function Stars({ count = 40, reducedMotion }: { count?: number; reducedMotion: b
         <motion.div
           key={s.id}
           className="tos-star"
-          style={{
-            top: s.top,
-            left: s.left,
-            width: s.size,
-            height: s.size,
-          }}
+          style={{ top: s.top, left: s.left, width: s.size, height: s.size }}
           animate={{ opacity: [0.2, 1, 0.2], scale: [1, 1.5, 1] }}
           transition={{ duration: s.duration, delay: s.delay, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -42,8 +42,12 @@ function Stars({ count = 40, reducedMotion }: { count?: number; reducedMotion: b
 }
 
 function DataLines({ count = 15, reducedMotion }: { count?: number; reducedMotion: boolean }) {
-  const lines = useMemo(
-    () =>
+  const [lines, setLines] = useState<Array<{
+    id: number; left: string; height: string; top: string; duration: number; delay: number;
+  }>>([]);
+
+  useEffect(() => {
+    setLines(
       Array.from({ length: count }, (_, i) => ({
         id: i,
         left: `${5 + (i / count) * 90}%`,
@@ -51,11 +55,11 @@ function DataLines({ count = 15, reducedMotion }: { count?: number; reducedMotio
         top: `${Math.random() * 80}%`,
         duration: 2 + Math.random() * 2,
         delay: Math.random() * 3,
-      })),
-    [count]
-  );
+      }))
+    );
+  }, [count]);
 
-  if (reducedMotion) return null;
+  if (reducedMotion || lines.length === 0) return null;
 
   return (
     <>
@@ -75,23 +79,28 @@ function DataLines({ count = 15, reducedMotion }: { count?: number; reducedMotio
 const PARTICLE_COLORS = ['#60a5fa', '#a78bfa', '#34d399', '#f472b6', '#fbbf24'];
 
 function Particles({ count = 30, reducedMotion }: { count?: number; reducedMotion: boolean }) {
-  const particles = useMemo(
-    () =>
+  const [particles, setParticles] = useState<Array<{
+    id: number; top: string; left: string; size: number; color: string;
+    duration: number; delay: number; dx: number; dy: number;
+  }>>([]);
+
+  useEffect(() => {
+    setParticles(
       Array.from({ length: count }, (_, i) => ({
         id: i,
         top: `${Math.random() * 100}%`,
         left: `${Math.random() * 100}%`,
         size: Math.random() * 4 + 2,
-        color: PARTICLE_COLORS[i % PARTICLE_COLORS.length],
+        color: PARTICLE_COLORS[i % PARTICLE_COLORS.length]!,
         duration: 3 + Math.random() * 3,
         delay: Math.random() * 2,
         dx: (Math.random() - 0.5) * 20,
         dy: (Math.random() - 0.5) * 20,
-      })),
-    [count]
-  );
+      }))
+    );
+  }, [count]);
 
-  if (reducedMotion) return null;
+  if (reducedMotion || particles.length === 0) return null;
 
   return (
     <>
@@ -99,18 +108,8 @@ function Particles({ count = 30, reducedMotion }: { count?: number; reducedMotio
         <motion.div
           key={p.id}
           className="tos-particle"
-          style={{
-            top: p.top,
-            left: p.left,
-            width: p.size,
-            height: p.size,
-            background: p.color,
-          }}
-          animate={{
-            x: [0, p.dx, 0],
-            y: [0, p.dy, 0],
-            opacity: [0.4, 0.8, 0.4],
-          }}
+          style={{ top: p.top, left: p.left, width: p.size, height: p.size, background: p.color }}
+          animate={{ x: [0, p.dx, 0], y: [0, p.dy, 0], opacity: [0.4, 0.8, 0.4] }}
           transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}
         />
       ))}

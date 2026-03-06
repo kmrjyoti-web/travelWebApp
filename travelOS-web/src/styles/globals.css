@@ -22,6 +22,9 @@
 /* 3. Overrides */
 @import './overrides.css';
 
+/* 4. Login page styles */
+@import './login.css';
+
 /* === RESET & BASE === */
 *,
 *::before,

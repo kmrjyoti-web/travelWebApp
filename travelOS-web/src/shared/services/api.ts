@@ -31,8 +31,10 @@ api.interceptors.response.use(
   (response): any => response.data,
   async (error) => {
     if (error.response?.status === 401) {
-      // Clear tokens and redirect to login
-      if (typeof window !== 'undefined') {
+      // Don't redirect when the 401 comes from the login endpoint itself
+      // (wrong password is a valid 401, not an expired session)
+      const isLoginRequest = (error.config?.url as string | undefined)?.includes('/auth/login');
+      if (!isLoginRequest && typeof window !== 'undefined') {
         localStorage.removeItem('tos-access-token');
         localStorage.removeItem('tos-refresh-token');
         window.location.href = '/login';

@@ -87,3 +87,7 @@ export * from './forms';
 
 // Layout (barrel populated in Phase 4)
 export * from './layout';
+
+// SidePanel — unified drawer with minimize/maximize/fullscreen/new-tab + Windows taskbar
+export { SidePanelRenderer, SidePanelTaskbar, useSidePanelStore } from './SidePanel';
+export type { PanelConfig, PanelInstance, PanelState, ActionButton } from './SidePanel';

@@ -157,6 +157,58 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
+/* Search icon shown when sidebar is collapsed */
+.tos-sidebar__search-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Shared Input inside sidebar — reset CoreUI light-bg styles */
+.tos-sidebar__search .tos-icon-field {
+  background: transparent;
+}
+.tos-sidebar__search .tos-icon-field__input .form-control,
+.tos-sidebar__search .tos-icon-field__input .form-control:focus {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: var(--tos-sidebar-text) !important;
+  font-size: 13px;
+  box-shadow: none !important;
+}
+.tos-sidebar__search .tos-icon-field__input .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+.tos-sidebar__search .tos-icon-field__icon {
+  color: var(--tos-icon-color) !important;
+}
+
+/* Sidebar highlight text for search matches */
+.tos-sidebar__highlight {
+  background: var(--tos-accent);
+  color: #fff;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+/* Shared Button used as nav item — reset CoreUI .btn styles */
+.tos-nav-item-btn.btn {
+  border-radius: 0 !important;
+  padding: 8px var(--tos-spacing-md) !important;
+  font-size: var(--tos-font-size) !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+.tos-nav-item-btn.btn:focus,
+.tos-nav-item-btn.btn:active {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
 .tos-sidebar__nav {
   flex: 1;
   overflow-y: auto;

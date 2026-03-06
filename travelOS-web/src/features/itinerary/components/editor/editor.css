@@ -1,0 +1,294 @@
+/* ─── Itinerary Editor ─────────────────────────────────────────────────────── */
+
+/* Drawer width */
+.tos-itinerary-editor-drawer .offcanvas {
+  width: min(880px, 96vw) !important;
+}
+
+/* Tab Navigation */
+.tos-editor-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--tos-border-color);
+  margin-bottom: var(--tos-spacing-md);
+  overflow-x: auto;
+  gap: 0;
+  background: var(--tos-bg-secondary);
+  border-radius: var(--tos-border-radius) var(--tos-border-radius) 0 0;
+  flex-shrink: 0;
+}
+
+.tos-editor-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 18px;
+  border: none;
+  background: transparent;
+  color: var(--tos-text-secondary);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tos-editor-tab:hover {
+  color: var(--tos-text-primary);
+  background: var(--tos-hover-bg);
+}
+
+.tos-editor-tab--active {
+  color: var(--tos-primary);
+  border-bottom-color: var(--tos-primary);
+}
+
+.tos-editor-tab__badge {
+  background: var(--tos-primary);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 10px;
+  padding: 1px 6px;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* Step content */
+.tos-editor-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tos-spacing-md);
+  padding-bottom: var(--tos-spacing-lg);
+}
+
+/* Toolbar row inside step */
+.tos-step-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--tos-bg-secondary);
+  border-radius: var(--tos-border-radius);
+  border: 1px solid var(--tos-border-color);
+}
+
+.tos-step-toolbar__info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--tos-text-secondary);
+}
+
+/* Day card */
+.tos-day-card {
+  border: 1px solid var(--tos-border-color);
+  border-radius: var(--tos-border-radius);
+  overflow: hidden;
+  background: var(--tos-bg-card);
+}
+
+.tos-day-card__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--tos-bg-secondary);
+  border-bottom: 1px solid var(--tos-border-color);
+}
+
+.tos-day-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--tos-primary);
+  color: #fff;
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Generic card (hotels, transport) */
+.tos-card {
+  border: 1px solid var(--tos-border-color);
+  border-radius: var(--tos-border-radius);
+  background: var(--tos-bg-card);
+  overflow: hidden;
+}
+
+.tos-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--tos-bg-secondary);
+  border-bottom: 1px solid var(--tos-border-color);
+}
+
+/* Activities section */
+.tos-activities {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tos-activity-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px;
+  background: var(--tos-hover-bg);
+  border-radius: var(--tos-border-radius);
+  border: 1px solid var(--tos-border-color);
+}
+
+.tos-form-grid--activity {
+  flex: 1;
+  grid-template-columns: 1fr 1fr 1fr 1fr !important;
+}
+
+.tos-form-grid__span2 {
+  grid-column: span 2;
+}
+
+.tos-form-grid__span3 {
+  grid-column: span 3;
+}
+
+.tos-form-grid__full {
+  grid-column: 1 / -1;
+}
+
+/* Icon button */
+.tos-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--tos-border-color);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  color: var(--tos-text-secondary);
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tos-icon-btn:hover { background: var(--tos-hover-bg); }
+
+.tos-icon-btn--danger {
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+.tos-icon-btn--danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Empty state */
+.tos-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 20px;
+  border: 2px dashed var(--tos-border-color);
+  border-radius: var(--tos-border-radius);
+  color: var(--tos-text-secondary);
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Image grid */
+.tos-image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--tos-spacing-md);
+}
+
+.tos-image-card {
+  position: relative;
+  border: 1px solid var(--tos-border-color);
+  border-radius: var(--tos-border-radius);
+  overflow: hidden;
+  background: var(--tos-bg-card);
+}
+
+.tos-image-card__preview {
+  height: 140px;
+  background: var(--tos-bg-secondary);
+  overflow: hidden;
+}
+
+.tos-image-card__preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tos-image-card__fields {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tos-image-card__remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+/* Star rating */
+.tos-star-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tos-star-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.tos-star-label {
+  cursor: pointer;
+  color: var(--tos-text-muted);
+}
+
+.tos-star-label:hover,
+.tos-star-label:has(input:checked) {
+  color: #f59e0b;
+}
+
+/* Source mode badge */
+.tos-editor-source-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tos-editor-source-badge--manual { background: rgba(59,130,246,0.15); color: #3b82f6; }
+.tos-editor-source-badge--ai     { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+.tos-editor-source-badge--edit   { background: rgba(16,185,129,0.15); color: #10b981; }
+
+/* Form layout additions */
+.tos-form-grid--full { display: grid; grid-template-columns: 1fr; }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .tos-itinerary-editor-drawer .offcanvas { width: 100vw !important; }
+  .tos-form-grid--activity { grid-template-columns: 1fr 1fr !important; }
+  .tos-form-grid__span2,
+  .tos-form-grid__span3 { grid-column: span 2; }
+  .tos-image-grid { grid-template-columns: 1fr; }
+}

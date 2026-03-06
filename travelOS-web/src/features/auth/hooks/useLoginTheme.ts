@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 // Adapted from UI-KIT login/ThemeContext.tsx — 5 time-of-day themes
 export type LoginThemeMode = 'morning' | 'work' | 'evening' | 'night' | 'holi';
-export type LoginView = 'login' | 'otp' | 'forgot-password' | 'onboarding';
+export type LoginView = 'login' | 'otp' | 'forgot-password' | 'onboarding' | 'register';
 
 interface ThemeConfig {
   greeting: string;

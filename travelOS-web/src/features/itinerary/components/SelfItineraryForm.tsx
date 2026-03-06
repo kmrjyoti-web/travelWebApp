@@ -68,7 +68,8 @@ export function SelfItineraryForm({ onSuccess, onCancel }: SelfItineraryFormProp
 
   const onSubmit = async (data: SelfItineraryFormData) => {
     try {
-      await createItinerary.mutateAsync(data);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await createItinerary.mutateAsync(data as any);
       onSuccess();
     } catch {
       // Error is surfaced via createItinerary.error — no additional action needed

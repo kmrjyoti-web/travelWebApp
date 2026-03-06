@@ -28,7 +28,12 @@ export const useAuthStore = create<AuthStore>()(
       isAuthenticated: false,
       isLoading: false,
 
-      setUser: (user) => set({ user, isAuthenticated: true }),
+      setUser: (user) => {
+        set({ user, isAuthenticated: true });
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('tos-tenant-id', user.tenantId);
+        }
+      },
 
       setTokens: (accessToken, refreshToken) => {
         set({ accessToken, refreshToken });
@@ -42,6 +47,7 @@ export const useAuthStore = create<AuthStore>()(
         if (typeof window !== 'undefined') {
           localStorage.removeItem('tos-access-token');
           localStorage.removeItem('tos-refresh-token');
+          localStorage.removeItem('tos-tenant-id');
         }
         set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
       },

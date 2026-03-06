@@ -1,4 +1,14 @@
 'use client';
+/**
+ * LoginForm — Email + password sign-in.
+ *
+ * Handles three possible login outcomes:
+ *   1. ACCOUNT_UNDER_REVIEW → redirect to /under-review with SLA params
+ *   2. profileCompleted === false → redirect to /complete-profile
+ *   3. Normal success → redirect to /dashboard
+ *
+ * Falls back to mock auth in development when the backend is unavailable.
+ */
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,6 +16,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Icon } from '@/shared/components/Icon';
 import { authService } from '@/shared/services/auth.service';
+import type { LoginSuccessResult, LoginBlockedResult } from '@/shared/services/auth.service';
 import { useAuthStore } from '@/shared/stores/auth.store';
 import { loginSchema, type LoginFormData } from '../types/auth-form.types';
 import type { LoginView } from '../hooks/useLoginTheme';
@@ -46,13 +57,87 @@ export function LoginForm({ onViewChange }: LoginFormProps) {
   const onSubmit = async (data: LoginFormData) => {
     setApiError(null);
     try {
-      const res = (await authService.login(data)) as unknown as { data: { user: Parameters<typeof setUser>[0]; accessToken: string; refreshToken: string } };
-      setUser(res.data.user);
-      setTokens(res.data.accessToken, res.data.refreshToken);
-      router.push('/dashboard');
+      const result = await authService.login(data);
+
+      // ── Blocked / special status ────────────────────────────────────────────
+      if (!result.success) {
+        const blocked = result as LoginBlockedResult;
+        if (blocked.code === 'ACCOUNT_UNDER_REVIEW') {
+          const params = new URLSearchParams({
+            type: blocked.meta?.userTypeCode ?? '',
+            sla: blocked.meta?.slaDeadline ?? '',
+            submitted: blocked.meta?.submittedAt ?? '',
+          });
+          router.push(`/under-review?${params.toString()}`);
+          return;
+        }
+        setApiError(blocked.message ?? 'Login failed. Please try again.');
+        return;
+      }
+
+      // ── Success ─────────────────────────────────────────────────────────────
+      const success = result as LoginSuccessResult;
+      const loginData = success.data;
+
+      // Prefer the nested `user` object if present, otherwise build from flat fields
+      const userPayload: Parameters<typeof setUser>[0] = loginData.user ?? {
+        id: loginData.userId ?? 'unknown',
+        email: loginData.email ?? data.email,
+        name: loginData.email?.split('@')[0] ?? 'User',
+        role: (loginData.role as Parameters<typeof setUser>[0]['role']) ?? 'agent',
+        tenantId: 'default',
+        productId: 'travel-os',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      setUser(userPayload);
+      setTokens(
+        loginData.accessToken ?? loginData.token ?? '',
+        loginData.refreshToken ?? '',
+      );
+
+      if (loginData.profileCompleted === false) {
+        router.push('/complete-profile');
+      } else {
+        router.push('/dashboard');
+      }
     } catch (err: unknown) {
-      const error = err as { message?: string };
-      setApiError(error?.message || 'Login failed. Please try again.');
+      // The axios interceptor rejects with error.response?.data (the API body),
+      // so err is shaped like: { success: false, error: { code, message } }
+      const apiErr = err as { success?: boolean; error?: { code?: string; message?: string } };
+      const errCode = apiErr?.error?.code;
+      const errMsg = apiErr?.error?.message;
+
+      if (errCode === 'UNAUTHORIZED') {
+        setApiError(errMsg ?? 'Invalid email or password.');
+        return;
+      }
+      if (errCode != null) {
+        // Other known API error (e.g. ACCOUNT_SUSPENDED coming through as a thrown error)
+        setApiError(errMsg ?? 'Login failed. Please try again.');
+        return;
+      }
+
+      // No API error shape — backend is truly unreachable (network error)
+      // Only use mock auth in development AND when backend is down
+      if (process.env.NODE_ENV === 'development') {
+        const mockUser: Parameters<typeof setUser>[0] = {
+          id: 'mock-user-001',
+          email: data.email,
+          name: data.email.split('@')[0] ?? 'Demo User',
+          role: 'agent',
+          tenantId: 'default',
+          productId: 'travel-os',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        setUser(mockUser);
+        setTokens('mock-access-token', 'mock-refresh-token');
+        router.push('/dashboard');
+        return;
+      }
+      setApiError('Login failed. Please try again.');
     }
   };
 
@@ -74,6 +159,7 @@ export function LoginForm({ onViewChange }: LoginFormProps) {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
+            role="alert"
             style={{
               padding: '10px 14px',
               background: 'rgba(239,68,68,0.15)',
@@ -87,7 +173,7 @@ export function LoginForm({ onViewChange }: LoginFormProps) {
               gap: 8,
             }}
           >
-            <Icon name="CircleAlert" size={14} />
+            <Icon name="CircleAlert" size={14} aria-hidden="true" />
             {apiError}
           </motion.div>
         )}
@@ -105,7 +191,7 @@ export function LoginForm({ onViewChange }: LoginFormProps) {
           {...register('email')}
         />
         {errors.email && (
-          <div className="tos-login-field__error">{errors.email.message}</div>
+          <div className="tos-login-field__error" role="alert">{errors.email.message}</div>
         )}
       </div>
 
@@ -125,6 +211,7 @@ export function LoginForm({ onViewChange }: LoginFormProps) {
           <button
             type="button"
             onClick={() => setShowPassword((s) => !s)}
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
             style={{
               position: 'absolute',
               right: 10,
@@ -142,7 +229,7 @@ export function LoginForm({ onViewChange }: LoginFormProps) {
           </button>
         </div>
         {errors.password && (
-          <div className="tos-login-field__error">{errors.password.message}</div>
+          <div className="tos-login-field__error" role="alert">{errors.password.message}</div>
         )}
       </div>
 
@@ -172,8 +259,13 @@ export function LoginForm({ onViewChange }: LoginFormProps) {
       </div>
 
       {/* Submit */}
-      <button type="submit" className="tos-login-btn" disabled={isSubmitting}>
-        {isSubmitting ? <LoadingBars /> : <Icon name="LogIn" size={16} />}
+      <button
+        type="submit"
+        className="tos-login-btn"
+        disabled={isSubmitting}
+        aria-busy={isSubmitting}
+      >
+        {isSubmitting ? <LoadingBars /> : <Icon name="LogIn" size={16} aria-hidden="true" />}
         {isSubmitting ? 'Signing in...' : 'Sign In'}
       </button>
 
@@ -184,12 +276,12 @@ export function LoginForm({ onViewChange }: LoginFormProps) {
       <button
         type="button"
         className="tos-google-btn"
+        aria-label="Sign in with Google"
         onClick={() => {
-          // Google OAuth flow — hook into Google Identity Services
           window.dispatchEvent(new CustomEvent('tos:google-auth'));
         }}
       >
-        <Icon name="Chrome" size={16} />
+        <Icon name="Chrome" size={16} aria-hidden="true" />
         Sign in with Google
       </button>
 
@@ -208,6 +300,29 @@ export function LoginForm({ onViewChange }: LoginFormProps) {
           }}
         >
           Sign in with OTP instead
+        </button>
+      </div>
+
+      {/* Create account */}
+      <div style={{ textAlign: 'center', marginTop: 'var(--tos-spacing-sm)' }}>
+        <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>
+          New to TravelOS?{' '}
+        </span>
+        <button
+          type="button"
+          onClick={() => onViewChange('register')}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: 'rgba(255,255,255,0.85)',
+            cursor: 'pointer',
+            fontSize: 13,
+            fontWeight: 600,
+            textDecoration: 'underline',
+            padding: 0,
+          }}
+        >
+          Create an account
         </button>
       </div>
     </form>
