@@ -1,3 +1,5 @@
+import './components.css';
+
 // Icon (Rule 4 — ONLY way to use lucide-react in features)
 export { Icon } from './Icon';
 export type { IconName, IconProps } from './Icon';
@@ -87,6 +89,31 @@ export * from './forms';
 
 // Layout (barrel populated in Phase 4)
 export * from './layout';
+
+// Business components (Phase 2)
+export { PageHeader } from './PageHeader';
+export type { PageHeaderProps } from './PageHeader';
+
+export { EmptyState } from './EmptyState';
+export type { EmptyStateProps, EmptyStateAction } from './EmptyState';
+
+export { StatusBadge, ColorBadge } from './StatusBadge';
+export type { StatusBadgeProps, ColorBadgeProps } from './StatusBadge';
+
+export { FormErrors } from './FormErrors';
+export type { FormErrorsProps } from './FormErrors';
+
+export { FormSubmitOverlay } from './FormSubmitOverlay';
+export type { FormSubmitOverlayProps } from './FormSubmitOverlay';
+
+export { ActionsMenu } from './ActionsMenu';
+export type { ActionsMenuProps, ActionMenuItem } from './ActionsMenu';
+
+export { Breadcrumb } from './Breadcrumb';
+export type { BreadcrumbProps, BreadcrumbItem } from './Breadcrumb';
+
+export { TableSkeleton } from './TableSkeleton';
+export type { TableSkeletonProps } from './TableSkeleton';
 
 // SidePanel — unified drawer with minimize/maximize/fullscreen/new-tab + Windows taskbar
 export { SidePanelRenderer, SidePanelTaskbar, useSidePanelStore } from './SidePanel';
