@@ -118,3 +118,15 @@ export type { TableSkeletonProps } from './TableSkeleton';
 // SidePanel — unified drawer with minimize/maximize/fullscreen/new-tab + Windows taskbar
 export { SidePanelRenderer, SidePanelTaskbar, useSidePanelStore } from './SidePanel';
 export type { PanelConfig, PanelInstance, PanelState, ActionButton } from './SidePanel';
+
+// Phase 4 — DataTable, ConfirmDialog, FilterPanel
+export { ConfirmDialog } from './ConfirmDialog';
+export type { ConfirmDialogProps } from './ConfirmDialog';
+
+export { useConfirmDialog } from './useConfirmDialog';
+
+export { DataTable } from './DataTable';
+export type { DataTableProps, DataTableColumn } from './DataTable';
+
+export { FilterPanel } from './FilterPanel';
+export type { FilterPanelProps, FilterField } from './FilterPanel';

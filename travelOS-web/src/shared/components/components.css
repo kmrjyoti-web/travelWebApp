@@ -303,3 +303,86 @@
   margin-left: -8px;
   position: relative;
 }
+
+/* ── ConfirmDialog ───────────────────────────────────────────────────────── */
+.tos-confirm__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.tos-confirm__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tos-confirm__message {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--tos-body-color, #374151);
+  line-height: 1.5;
+}
+
+/* ── DataTable ───────────────────────────────────────────────────────────── */
+.tos-data-table { display: flex; flex-direction: column; gap: 12px; }
+.tos-data-table__scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.tos-data-table__table { min-width: 500px; margin-bottom: 0; }
+
+.tos-data-table__th--sortable {
+  cursor: pointer;
+  user-select: none;
+}
+.tos-data-table__th--sortable:hover { background: var(--tos-secondary-bg, #f8f9fa); }
+.tos-data-table__th-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.tos-data-table__sort-icon { color: var(--tos-secondary, #9da5b1); }
+.tos-data-table__th--sortable:hover .tos-data-table__sort-icon {
+  color: var(--tos-body-color, #333);
+}
+
+.tos-data-table__row--clickable { cursor: pointer; }
+.tos-data-table__row--clickable:hover td {
+  background: var(--tos-primary-light, #eef2ff) !important;
+}
+.tos-data-table__row--selected td {
+  background: var(--tos-primary-light, #eef2ff) !important;
+}
+
+.tos-data-table__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 4px 2px;
+}
+.tos-data-table__count {
+  font-size: 0.8rem;
+  color: var(--tos-secondary, #6b7280);
+}
+
+/* ── FilterPanel ─────────────────────────────────────────────────────────── */
+.tos-filter-panel--vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--tos-secondary-bg, #f8f9fa);
+  border: 1px solid var(--tos-border-color, #e5e7eb);
+  border-radius: 8px;
+}
+.tos-filter-panel--horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+.tos-filter-panel--horizontal .tos-filter-panel__field { flex: 1; min-width: 140px; max-width: 240px; }
+.tos-filter-panel__reset { margin-top: 4px; }
+.tos-filter-panel--horizontal .tos-filter-panel__reset { align-self: flex-end; }
