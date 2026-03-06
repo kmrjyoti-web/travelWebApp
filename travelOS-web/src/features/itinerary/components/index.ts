@@ -5,3 +5,4 @@ export { AiItineraryForm } from './AiItineraryForm';
 export { NumberStepper } from './NumberStepper';
 export { ItineraryEditorForm } from './ItineraryEditorForm';
 export { ItineraryEditorDrawer } from './ItineraryEditorDrawer';
+export { ItineraryListPanel } from './ItineraryListPanel';

@@ -1,21 +1,8 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import {
-  Map,
-  Globe,
-  Download,
-  Sparkles,
-  Store,
-  Globe2,
-  Layers,
-  TrendingUp,
-  Search,
-  ArrowRight,
-  MapPin,
-  Send
-} from 'lucide-react';
+import { Icon } from '@/shared/components';
+import type { IconName } from '@/shared/components';
 import {
   BarChart,
   Bar,
@@ -24,10 +11,8 @@ import {
   CartesianGrid,
   Tooltip as RechartsTooltip,
   ResponsiveContainer,
-  LineChart,
-  Line,
   AreaChart,
-  Area
+  Area,
 } from 'recharts';
 import {
   topPackages,
@@ -35,10 +20,10 @@ import {
   PriceTrendChart,
   WatchListWidget,
   TravelAlertsWidget,
-  WeatherAdvisoryWidget
+  WeatherAdvisoryWidget,
 } from './DashboardWidgets';
 
-// --- MOCK DATA ---
+// ── Mock Data ──────────────────────────────────────────────────────────────────
 const searchMarketplaceData = [
   { name: 'Bali', searches: 4500 },
   { name: 'Maldives', searches: 3800 },
@@ -81,7 +66,9 @@ const conversionWebsiteData = [
   { name: 'Himachal', rate: 9.1 },
 ];
 
-const trendingSearchData = {
+type Region = 'World' | 'India' | 'Other';
+
+const trendingSearchData: Record<Region, { month: string; value: number }[]> = {
   World: [
     { month: 'Jan', value: 4000 }, { month: 'Feb', value: 3000 }, { month: 'Mar', value: 5000 },
     { month: 'Apr', value: 4500 }, { month: 'May', value: 6000 }, { month: 'Jun', value: 7000 },
@@ -93,10 +80,10 @@ const trendingSearchData = {
   Other: [
     { month: 'Jan', value: 1000 }, { month: 'Feb', value: 1200 }, { month: 'Mar', value: 1500 },
     { month: 'Apr', value: 1800 }, { month: 'May', value: 2000 }, { month: 'Jun', value: 2200 },
-  ]
+  ],
 };
 
-const trendingVisitData = {
+const trendingVisitData: Record<Region, { month: string; value: number }[]> = {
   World: [
     { month: 'Jan', value: 2000 }, { month: 'Feb', value: 1500 }, { month: 'Mar', value: 2500 },
     { month: 'Apr', value: 2200 }, { month: 'May', value: 3000 }, { month: 'Jun', value: 3500 },
@@ -108,317 +95,314 @@ const trendingVisitData = {
   Other: [
     { month: 'Jan', value: 500 }, { month: 'Feb', value: 600 }, { month: 'Mar', value: 750 },
     { month: 'Apr', value: 900 }, { month: 'May', value: 1000 }, { month: 'Jun', value: 1100 },
-  ]
+  ],
 };
 
-// --- COMPONENTS ---
+// ── Shared styles ──────────────────────────────────────────────────────────────
+const CARD: React.CSSProperties = {
+  background: 'var(--cui-body-bg, #fff)',
+  padding: '1.5rem',
+  borderRadius: '0.75rem',
+  boxShadow: '0 1px 3px rgba(0,0,0,.08)',
+  border: '1px solid var(--cui-border-color, #e5e7eb)',
+};
 
-const KpiCard = ({ title, value, icon: Icon, colorClass, delay }: any) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-20px" }}
-    transition={{ duration: 0.5, delay }}
-    className="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center space-x-4 hover:shadow-md transition-shadow"
-  >
-    <div className={`p-3 rounded-lg ${colorClass} bg-opacity-10 dark:bg-opacity-20`}>
-      <Icon className={colorClass.replace('bg-', 'text-').replace('10', '500')} size={24} />
+const CARD_TITLE: React.CSSProperties = {
+  margin: 0,
+  fontSize: '1.125rem',
+  fontWeight: 700,
+  color: 'var(--cui-body-color, #374151)',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.5rem',
+};
+
+const SELECT_STYLE: React.CSSProperties = {
+  background: 'var(--cui-body-bg, #f9fafb)',
+  border: '1px solid var(--cui-border-color, #e5e7eb)',
+  color: 'var(--cui-body-color, #374151)',
+  fontSize: '0.875rem',
+  borderRadius: '0.5rem',
+  padding: '0.375rem 0.5rem',
+  outline: 'none',
+  cursor: 'pointer',
+};
+
+const TOOLTIP_CONTENT_STYLE = {
+  borderRadius: '0.5rem',
+  border: 'none',
+  boxShadow: '0 4px 6px -1px rgba(0,0,0,.1)',
+  backgroundColor: 'var(--cui-body-bg, #fff)',
+  color: 'var(--cui-body-color, #000)',
+};
+
+// ── KpiCard ────────────────────────────────────────────────────────────────────
+interface KpiCardProps {
+  title: string;
+  value: string;
+  iconName: IconName;
+  iconColor: string;
+}
+
+const KpiCard = ({ title, value, iconName, iconColor }: KpiCardProps) => (
+  <div style={{ ...CARD, display: 'flex', alignItems: 'center', gap: '1rem' }}>
+    <div style={{ padding: '0.75rem', borderRadius: '0.5rem', background: `${iconColor}1a`, flexShrink: 0 }}>
+      <Icon name={iconName} size={24} style={{ color: iconColor }} />
     </div>
     <div>
-      <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{title}</p>
-      <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{value}</h3>
+      <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--cui-secondary-color, #6b7280)', fontWeight: 500 }}>{title}</p>
+      <h3 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 700, color: 'var(--cui-body-color, #111827)' }}>{value}</h3>
     </div>
-  </motion.div>
+  </div>
 );
 
+// ── Page ───────────────────────────────────────────────────────────────────────
 export default function ItineraryDashboard({ showAiPrompt = true }: { showAiPrompt?: boolean }) {
-  const [trendingSearchRegion, setTrendingSearchRegion] = useState<'World' | 'India' | 'Other'>('World');
-  const [trendingVisitRegion, setTrendingVisitRegion] = useState<'World' | 'India' | 'Other'>('World');
+  const [trendingSearchRegion, setTrendingSearchRegion] = useState<Region>('World');
+  const [trendingVisitRegion, setTrendingVisitRegion]   = useState<Region>('World');
   const [aiPrompt, setAiPrompt] = useState('');
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-10">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', maxWidth: '80rem', margin: '0 auto', paddingBottom: '2.5rem' }}>
 
       {/* AI Prompt Card */}
       {showAiPrompt && (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 p-1"
-      >
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 mix-blend-overlay"></div>
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-
-        <div className="relative bg-black/40 backdrop-blur-xl rounded-xl p-8 border border-white/10">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="p-2 bg-white/10 rounded-lg">
-              <Sparkles className="text-purple-300" size={24} />
-            </div>
-            <h2 className="text-2xl font-bold text-white tracking-tight">AI Itinerary Generator</h2>
-          </div>
-          <p className="text-purple-200/80 mb-6 max-w-2xl">
-            Describe your dream trip, and our AI will instantly craft a personalized, day-by-day itinerary complete with activities, hotels, and travel logistics.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-1">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <MapPin className="text-purple-300/50" size={20} />
+        <div style={{ borderRadius: '1rem', background: 'linear-gradient(135deg, #1e1b4b 0%, #4c1d95 50%, #0f172a 100%)', padding: '1px', overflow: 'hidden' }}>
+          <div style={{ background: 'rgba(0,0,0,.4)', backdropFilter: 'blur(12px)', borderRadius: 'calc(1rem - 1px)', padding: '2rem', border: '1px solid rgba(255,255,255,.1)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+              <div style={{ padding: '0.5rem', background: 'rgba(255,255,255,.1)', borderRadius: '0.5rem' }}>
+                <Icon name="Sparkles" size={24} style={{ color: '#d8b4fe' }} />
               </div>
-              <input
-                type="text"
-                value={aiPrompt}
-                onChange={(e) => setAiPrompt(e.target.value)}
-                placeholder="e.g., A 7-day romantic honeymoon in Bali focusing on beaches and culture..."
-                className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-purple-200/40 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent transition-all"
-              />
+              <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 700, color: '#fff', letterSpacing: '-0.025em' }}>
+                AI Itinerary Generator
+              </h2>
             </div>
-            <button className="px-8 py-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-400 hover:to-indigo-400 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/25 flex items-center justify-center space-x-2 transition-all transform hover:scale-[1.02] active:scale-[0.98]">
-              <span>Generate</span>
-              <Send size={18} />
-            </button>
+            <p style={{ color: 'rgba(216,180,254,.8)', marginBottom: '1.5rem', maxWidth: '42rem' }}>
+              Describe your dream trip, and our AI will instantly craft a personalized, day-by-day itinerary complete with activities, hotels, and travel logistics.
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div style={{ position: 'relative', flex: '1 1 200px' }}>
+                <div style={{ position: 'absolute', top: 0, bottom: 0, left: '1rem', display: 'flex', alignItems: 'center', pointerEvents: 'none' }}>
+                  <Icon name="MapPin" size={20} style={{ color: 'rgba(216,180,254,.5)' }} />
+                </div>
+                <input
+                  type="text"
+                  value={aiPrompt}
+                  onChange={(e) => setAiPrompt(e.target.value)}
+                  placeholder="e.g., A 7-day romantic honeymoon in Bali focusing on beaches and culture..."
+                  style={{ width: '100%', paddingLeft: '3rem', paddingRight: '1rem', paddingTop: '1rem', paddingBottom: '1rem', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.1)', borderRadius: '0.75rem', color: '#fff', outline: 'none', boxSizing: 'border-box' }}
+                />
+              </div>
+              <button
+                style={{ padding: '1rem 2rem', background: 'linear-gradient(to right, #a855f7, #6366f1)', color: '#fff', fontWeight: 600, borderRadius: '0.75rem', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+              >
+                <span>Generate</span>
+                <Icon name="Send" size={18} />
+              </button>
+            </div>
           </div>
         </div>
-      </motion.div>
       )}
 
       {/* KPIs */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <KpiCard title="Total Itineraries" value="12,450" icon={Map} colorClass="bg-blue-500" delay={0.1} />
-        <KpiCard title="My Itineraries" value="142" icon={Globe} colorClass="bg-emerald-500" delay={0.2} />
-        <KpiCard title="Downloaded" value="3,890" icon={Download} colorClass="bg-amber-500" delay={0.3} />
-        <KpiCard title="AI Generated" value="8,210" icon={Sparkles} colorClass="bg-purple-500" delay={0.4} />
-        <KpiCard title="Marketplace" value="5,120" icon={Store} colorClass="bg-pink-500" delay={0.5} />
-        <KpiCard title="Website" value="4,830" icon={Globe2} colorClass="bg-cyan-500" delay={0.6} />
-        <KpiCard title="Both (Mkt & Web)" value="2,500" icon={Layers} colorClass="bg-indigo-500" delay={0.7} />
-        <KpiCard title="Conversion Rate" value="14.2%" icon={TrendingUp} colorClass="bg-rose-500" delay={0.8} />
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+        <KpiCard title="Total Itineraries" value="12,450"  iconName="Map"        iconColor="#3b82f6" />
+        <KpiCard title="My Itineraries"    value="142"     iconName="Globe"      iconColor="#10b981" />
+        <KpiCard title="Downloaded"        value="3,890"   iconName="Download"   iconColor="#f59e0b" />
+        <KpiCard title="AI Generated"      value="8,210"   iconName="Sparkles"   iconColor="#a855f7" />
+        <KpiCard title="Marketplace"       value="5,120"   iconName="Store"      iconColor="#ec4899" />
+        <KpiCard title="Website"           value="4,830"   iconName="Earth"      iconColor="#06b6d4" />
+        <KpiCard title="Both (Mkt & Web)"  value="2,500"   iconName="Layers"     iconColor="#6366f1" />
+        <KpiCard title="Conversion Rate"   value="14.2%"   iconName="TrendingUp" iconColor="#f43f5e" />
       </div>
 
       {/* Top 10 Searches */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-gray-800 dark:text-white flex items-center">
-              <Store className="mr-2 text-pink-500" size={20} />
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: '1.5rem' }}>
+        <div style={CARD}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+            <h3 style={CARD_TITLE}>
+              <Icon name="Store" size={20} style={{ color: '#ec4899' }} />
               Top 10 Search - Marketplace
             </h3>
           </div>
-          <div className="h-72">
+          <div style={{ height: '18rem' }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={searchMarketplaceData} layout="vertical" margin={{ top: 5, right: 30, left: 40, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f0f0f0" className="dark:opacity-10" />
+                <CartesianGrid strokeDasharray="3 3" horizontal vertical={false} stroke="#f0f0f0" />
                 <XAxis type="number" hide />
                 <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} />
-                <RechartsTooltip cursor={{ fill: '#f9fafb', opacity: 0.1 }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', backgroundColor: 'var(--tooltip-bg, #fff)', color: 'var(--tooltip-text, #000)' }} />
+                <RechartsTooltip cursor={{ fill: 'rgba(249,250,251,.5)' }} contentStyle={TOOLTIP_CONTENT_STYLE} />
                 <Bar dataKey="searches" fill="#ec4899" radius={[0, 4, 4, 0]} barSize={16} />
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-gray-800 dark:text-white flex items-center">
-              <Globe2 className="mr-2 text-cyan-500" size={20} />
+        <div style={CARD}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+            <h3 style={CARD_TITLE}>
+              <Icon name="Earth" size={20} style={{ color: '#06b6d4' }} />
               Top 10 Search - Website
             </h3>
           </div>
-          <div className="h-72">
+          <div style={{ height: '18rem' }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={searchWebsiteData} layout="vertical" margin={{ top: 5, right: 30, left: 40, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f0f0f0" className="dark:opacity-10" />
+                <CartesianGrid strokeDasharray="3 3" horizontal vertical={false} stroke="#f0f0f0" />
                 <XAxis type="number" hide />
                 <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} />
-                <RechartsTooltip cursor={{ fill: '#f9fafb', opacity: 0.1 }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', backgroundColor: 'var(--tooltip-bg, #fff)', color: 'var(--tooltip-text, #000)' }} />
+                <RechartsTooltip cursor={{ fill: 'rgba(249,250,251,.5)' }} contentStyle={TOOLTIP_CONTENT_STYLE} />
                 <Bar dataKey="searches" fill="#06b6d4" radius={[0, 4, 4, 0]} barSize={16} />
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Top 10 Conversions */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-20px" }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-gray-800 dark:text-white flex items-center">
-              <TrendingUp className="mr-2 text-emerald-500" size={20} />
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: '1.5rem' }}>
+        <div style={CARD}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+            <h3 style={CARD_TITLE}>
+              <Icon name="TrendingUp" size={20} style={{ color: '#10b981' }} />
               Top Conversions - Marketplace
             </h3>
           </div>
-          <div className="space-y-4">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {conversionMarketplaceData.map((item, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="w-6 h-6 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-xs font-bold text-gray-500 dark:text-gray-400">
+              <div key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ width: '1.5rem', height: '1.5rem', borderRadius: '50%', background: 'var(--cui-secondary-bg, #f3f4f6)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700, color: 'var(--cui-secondary-color, #6b7280)', flexShrink: 0 }}>
                     {index + 1}
                   </div>
-                  <span className="font-medium text-gray-700 dark:text-gray-300">{item.name}</span>
+                  <span style={{ fontWeight: 500, color: 'var(--cui-body-color, #374151)' }}>{item.name}</span>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-32 h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${(item.rate / 15) * 100}%` }}></div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ width: '8rem', height: '0.5rem', background: 'var(--cui-secondary-bg, #f3f4f6)', borderRadius: '9999px', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', background: '#10b981', borderRadius: '9999px', width: `${(item.rate / 15) * 100}%` }} />
                   </div>
-                  <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 w-12 text-right">{item.rate}%</span>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#059669', width: '3rem', textAlign: 'right' }}>{item.rate}%</span>
                 </div>
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-20px" }}
-          transition={{ duration: 0.5, delay: 0.7 }}
-          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-gray-800 dark:text-white flex items-center">
-              <TrendingUp className="mr-2 text-blue-500" size={20} />
+        <div style={CARD}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+            <h3 style={CARD_TITLE}>
+              <Icon name="TrendingUp" size={20} style={{ color: '#3b82f6' }} />
               Top Conversions - Website
             </h3>
           </div>
-          <div className="space-y-4">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {conversionWebsiteData.map((item, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="w-6 h-6 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-xs font-bold text-gray-500 dark:text-gray-400">
+              <div key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ width: '1.5rem', height: '1.5rem', borderRadius: '50%', background: 'var(--cui-secondary-bg, #f3f4f6)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700, color: 'var(--cui-secondary-color, #6b7280)', flexShrink: 0 }}>
                     {index + 1}
                   </div>
-                  <span className="font-medium text-gray-700 dark:text-gray-300">{item.name}</span>
+                  <span style={{ fontWeight: 500, color: 'var(--cui-body-color, #374151)' }}>{item.name}</span>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-32 h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div className="h-full bg-blue-500 rounded-full" style={{ width: `${(item.rate / 16) * 100}%` }}></div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ width: '8rem', height: '0.5rem', background: 'var(--cui-secondary-bg, #f3f4f6)', borderRadius: '9999px', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', background: '#3b82f6', borderRadius: '9999px', width: `${(item.rate / 16) * 100}%` }} />
                   </div>
-                  <span className="text-sm font-bold text-blue-600 dark:text-blue-400 w-12 text-right">{item.rate}%</span>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#2563eb', width: '3rem', textAlign: 'right' }}>{item.rate}%</span>
                 </div>
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* New Widgets Row 1: Package Scrollers */}
+      {/* Package Scrollers */}
       <PackageScroller title="Top 10 Packages" packages={topPackages.slice(0, 5)} />
       <PackageScroller title="Top 10 Offers This Week" packages={topPackages.filter(p => p.isOffer)} highlightLowest={true} />
 
-      {/* New Widgets Row 2: Price Trends & Watch List */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <PriceTrendChart />
-        </div>
-        <div className="lg:col-span-1">
-          <WatchListWidget />
-        </div>
+      {/* Price Trends & Watch List */}
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
+        <PriceTrendChart />
+        <WatchListWidget />
       </div>
 
-      {/* New Widgets Row 3: Alerts & Weather */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Alerts & Weather */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: '1.5rem' }}>
         <TravelAlertsWidget />
         <WeatherAdvisoryWidget />
       </div>
 
       {/* Trending Area */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-gray-800 dark:text-white flex items-center">
-              <Search className="mr-2 text-indigo-500" size={20} />
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: '1.5rem' }}>
+        <div style={CARD}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+            <h3 style={CARD_TITLE}>
+              <Icon name="Search" size={20} style={{ color: '#6366f1' }} />
               Trending Searches
             </h3>
             <select
               value={trendingSearchRegion}
-              onChange={(e) => setTrendingSearchRegion(e.target.value as any)}
-              className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2 outline-none"
+              onChange={(e) => setTrendingSearchRegion(e.target.value as Region)}
+              style={SELECT_STYLE}
             >
               <option value="World">World</option>
               <option value="India">India</option>
               <option value="Other">Other Countries</option>
             </select>
           </div>
-          <div className="h-64">
+          <div style={{ height: '16rem' }}>
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={trendingSearchData[trendingSearchRegion]} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorSearch" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" className="dark:opacity-10" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                 <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} />
-                <RechartsTooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', backgroundColor: 'var(--tooltip-bg, #fff)', color: 'var(--tooltip-text, #000)' }} />
+                <RechartsTooltip contentStyle={TOOLTIP_CONTENT_STYLE} />
                 <Area type="monotone" dataKey="value" stroke="#6366f1" strokeWidth={3} fillOpacity={1} fill="url(#colorSearch)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.9 }}
-          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-gray-800 dark:text-white flex items-center">
-              <MapPin className="mr-2 text-orange-500" size={20} />
+        <div style={CARD}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+            <h3 style={CARD_TITLE}>
+              <Icon name="MapPin" size={20} style={{ color: '#f97316' }} />
               Trending Visits
             </h3>
             <select
               value={trendingVisitRegion}
-              onChange={(e) => setTrendingVisitRegion(e.target.value as any)}
-              className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block p-2 outline-none"
+              onChange={(e) => setTrendingVisitRegion(e.target.value as Region)}
+              style={SELECT_STYLE}
             >
               <option value="World">World</option>
               <option value="India">India</option>
               <option value="Other">Other Countries</option>
             </select>
           </div>
-          <div className="h-64">
+          <div style={{ height: '16rem' }}>
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={trendingVisitData[trendingVisitRegion]} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorVisit" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#f97316" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#f97316" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#f97316" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" className="dark:opacity-10" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                 <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} />
-                <RechartsTooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', backgroundColor: 'var(--tooltip-bg, #fff)', color: 'var(--tooltip-text, #000)' }} />
+                <RechartsTooltip contentStyle={TOOLTIP_CONTENT_STYLE} />
                 <Area type="monotone" dataKey="value" stroke="#f97316" strokeWidth={3} fillOpacity={1} fill="url(#colorVisit)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
-        </motion.div>
+        </div>
       </div>
 
     </div>
