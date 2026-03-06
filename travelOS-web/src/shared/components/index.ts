@@ -130,3 +130,13 @@ export type { DataTableProps, DataTableColumn } from './DataTable';
 
 export { FilterPanel } from './FilterPanel';
 export type { FilterPanelProps, FilterField } from './FilterPanel';
+
+// Phase 5 — StatCard, SearchInput, BulkActionsBar
+export { StatCard } from './StatCard';
+export type { StatCardProps } from './StatCard';
+
+export { SearchInput } from './SearchInput';
+export type { SearchInputProps } from './SearchInput';
+
+export { BulkActionsBar } from './BulkActionsBar';
+export type { BulkActionsBarProps, BulkAction } from './BulkActionsBar';
