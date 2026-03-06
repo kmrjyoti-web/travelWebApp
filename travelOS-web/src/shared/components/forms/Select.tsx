@@ -1,64 +1,107 @@
 'use client';
-import React from 'react';
-import { CFormSelect, CFormLabel, CFormFeedback } from '@coreui/react';
+import React, { useId } from 'react';
+import { CFormSelect, CFormLabel, CFormFloating, CFormFeedback, CFormText } from '@coreui/react';
 import type { ComponentProps } from 'react';
 import { Icon } from '../Icon';
 import type { IconName } from '../Icon';
 import type { InputVariant, InputSize } from './Input';
 
-type CFormSelectProps = ComponentProps<typeof CFormSelect>;
-
-export interface SelectProps extends CFormSelectProps {
+export interface SelectProps extends Omit<ComponentProps<typeof CFormSelect>, 'size'> {
   label?: string;
+  floatingLabel?: boolean | string;
+  helperText?: string;
   errorMessage?: string;
   wrapperClassName?: string;
   icon?: IconName;
   variant?: InputVariant;
   inputSize?: InputSize;
+  required?: boolean;
 }
 
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, errorMessage, wrapperClassName, icon, floatingLabel, variant = 'outlined', inputSize = 'md', ...props }, ref) => {
-    const labelText = typeof floatingLabel === 'string' ? floatingLabel : label;
-    const inputId = props.id || (labelText ? labelText.toLowerCase().replace(/\s+/g, '-') : undefined);
-    const variantCls = `tos-input--${variant}${inputSize === 'sm' ? ' tos-input--sm' : ''}`;
-    const iconSize = inputSize === 'sm' ? 14 : 16;
+  (
+    {
+      label,
+      floatingLabel,
+      helperText,
+      errorMessage,
+      wrapperClassName = '',
+      icon,
+      variant = 'outlined',
+      inputSize = 'md',
+      id,
+      required,
+      disabled,
+      ...rest
+    },
+    ref,
+  ) => {
+    const autoId = useId();
+    const inputId = id ?? autoId;
+    const floatLabelText = typeof floatingLabel === 'string' ? floatingLabel : undefined;
+    const resolvedLabel  = floatLabelText ?? label;
+    const isFloating     = floatingLabel !== false && !!resolvedLabel;
+
+    const wrapCls = [
+      'tos-field',
+      `tos-field--${variant}`,
+      `tos-field--${inputSize}`,
+      icon         ? 'tos-field--icon-left' : '',
+      errorMessage ? 'tos-field--error'     : '',
+      disabled     ? 'tos-field--disabled'  : '',
+      wrapperClassName,
+    ].filter(Boolean).join(' ');
+
+    const iconSize = inputSize === 'sm' ? 14 : inputSize === 'lg' ? 18 : 16;
 
     const selectEl = (
       <CFormSelect
         ref={ref}
         id={inputId}
         invalid={!!errorMessage}
-        floatingLabel={floatingLabel}
-        size={inputSize === 'sm' ? 'sm' : undefined}
-        {...props}
+        disabled={disabled}
+        required={required}
+        {...rest}
       />
     );
 
-    const feedback = errorMessage ? <CFormFeedback invalid>{errorMessage}</CFormFeedback> : null;
-
-    if (icon) {
+    if (isFloating) {
       return (
-        <div className={`tos-icon-field ${variantCls} ${wrapperClassName || ''}`}>
-          <span className="tos-icon-field__icon" aria-hidden="true">
-            <Icon name={icon} size={iconSize} />
-          </span>
-          <div className="tos-icon-field__input">
-            {!floatingLabel && label && <CFormLabel htmlFor={inputId}>{label}</CFormLabel>}
+        <div className={wrapCls}>
+          {icon && (
+            <span className="tos-field__icon tos-field__icon--left" aria-hidden>
+              <Icon name={icon} size={iconSize} />
+            </span>
+          )}
+          <CFormFloating>
             {selectEl}
-            {feedback}
-          </div>
+            <CFormLabel htmlFor={inputId}>
+              {resolvedLabel}{required && <span style={{ color: 'var(--tos-danger)' }}> *</span>}
+            </CFormLabel>
+          </CFormFloating>
+          {errorMessage && <span className="tos-field__error-msg" role="alert">{errorMessage}</span>}
+          {helperText && !errorMessage && <span className="tos-field__hint">{helperText}</span>}
         </div>
       );
     }
 
     return (
-      <div className={`${variantCls} ${wrapperClassName || ''}`}>
-        {!floatingLabel && label && <CFormLabel htmlFor={inputId}>{label}</CFormLabel>}
+      <div className={wrapCls}>
+        {resolvedLabel && (
+          <CFormLabel htmlFor={inputId} className={required ? 'tos-field__label--required' : ''}>
+            {resolvedLabel}
+          </CFormLabel>
+        )}
+        {icon && (
+          <span className="tos-field__icon tos-field__icon--left" aria-hidden>
+            <Icon name={icon} size={iconSize} />
+          </span>
+        )}
         {selectEl}
-        {feedback}
+        {errorMessage && <CFormFeedback invalid>{errorMessage}</CFormFeedback>}
+        {helperText && !errorMessage && <CFormText>{helperText}</CFormText>}
       </div>
     );
-  }
+  },
 );
 Select.displayName = 'Select';
