@@ -260,3 +260,46 @@
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.4; }
 }
+
+/* ── Badge dot ───────────────────────────────────────────────────────────── */
+.tos-badge-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tos-badge-dot--primary   { background: var(--tos-primary, #321fdb); }
+.tos-badge-dot--success   { background: var(--tos-success, #2eb85c); }
+.tos-badge-dot--danger    { background: var(--tos-danger,  #e55353); }
+.tos-badge-dot--warning   { background: var(--tos-warning, #f9b115); }
+.tos-badge-dot--info      { background: var(--tos-info,    #39f); }
+.tos-badge-dot--secondary { background: var(--tos-secondary, #9da5b1); }
+
+/* ── AvatarGroup ─────────────────────────────────────────────────────────── */
+.tos-avatar-group {
+  display: flex;
+  align-items: center;
+}
+.tos-avatar-group > * + * {
+  margin-left: -8px;
+}
+.tos-avatar-group > * {
+  box-shadow: 0 0 0 2px var(--tos-body-bg, #fff);
+  position: relative;
+}
+.tos-avatar-group__overflow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--tos-secondary-bg, #e8e8e8);
+  color: var(--tos-body-color, #333);
+  font-size: 0.72rem;
+  font-weight: 600;
+  box-shadow: 0 0 0 2px var(--tos-body-bg, #fff);
+  margin-left: -8px;
+  position: relative;
+}

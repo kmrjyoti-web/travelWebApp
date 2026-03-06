@@ -17,8 +17,8 @@ export type { SpinnerProps } from './Spinner';
 export { Alert, AlertHeading, AlertLink } from './Alert';
 export type { AlertProps } from './Alert';
 
-export { Avatar } from './Avatar';
-export type { AvatarProps } from './Avatar';
+export { Avatar, AvatarGroup } from './Avatar';
+export type { AvatarProps, AvatarGroupProps } from './Avatar';
 
 export { Tooltip } from './Tooltip';
 export type { TooltipProps } from './Tooltip';
