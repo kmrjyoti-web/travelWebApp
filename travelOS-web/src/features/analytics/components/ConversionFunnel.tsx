@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Alert } from '@/shared/components';
+import { Alert, SelectField } from '@/shared/components';
 import { useConversionFunnel } from '../hooks/useAnalytics';
 import type { DateRangeParams } from '@/shared/services/analytics.service';
 
@@ -44,13 +44,15 @@ export function ConversionFunnel({ dateRange }: ConversionFunnelProps) {
             </p>
           )}
         </div>
-        <select
+        <SelectField
+          label="Funnel"
+          variant="outlined"
+          size="sm"
           value={funnel}
           onChange={(e) => setFunnel(e.target.value)}
-          style={{ padding: '0.375rem 0.5rem', borderRadius: '0.375rem', border: '1px solid var(--cui-border-color, #e5e7eb)', fontSize: '0.8125rem', color: 'var(--cui-body-color, #374151)', background: 'var(--cui-body-bg, #fff)', cursor: 'pointer', outline: 'none' }}
         >
           {FUNNEL_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-        </select>
+        </SelectField>
       </div>
 
       {error && <Alert color="danger">Failed to load funnel data.</Alert>}

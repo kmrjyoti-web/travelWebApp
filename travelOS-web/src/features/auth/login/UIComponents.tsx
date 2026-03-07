@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLoginTheme, THEME_CONFIG } from './ThemeContext';
 import { Volume2, VolumeX, Moon, Sun, Briefcase, Sunset, PartyPopper, ArrowRight, Loader2, Github, Twitter } from 'lucide-react';
+import { TextField, Checkbox } from '@/shared/components';
 
 export function GlassCard({ children, className = '' }: { children: React.ReactNode, className?: string }) {
   return (
@@ -74,25 +75,26 @@ export function LoginForm() {
 
       <form onSubmit={handleLogin} className="space-y-4">
         <div className="space-y-4">
-          <input
+          <TextField
+            label="Email address"
             type="email"
             placeholder="Email address"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
+            variant="outlined"
+            size="sm"
             required
           />
-          <input
+          <TextField
+            label="Password"
             type="password"
             placeholder="Password"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
+            variant="outlined"
+            size="sm"
             required
           />
         </div>
 
         <div className="flex items-center justify-between text-sm">
-          <label className="flex items-center space-x-2 cursor-pointer">
-            <input type="checkbox" className="rounded bg-white/10 border-white/20 text-blue-500 focus:ring-blue-500/50" />
-            <span className="text-white/80">Remember me</span>
-          </label>
+          <Checkbox label="Remember me" />
           <a href="#" className="text-white/80 hover:text-white transition-colors">Forgot password?</a>
         </div>
 

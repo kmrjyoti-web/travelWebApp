@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Alert, Button } from '@/shared/components';
+import { Alert, Button, TextField, SelectField } from '@/shared/components';
 import { useB2CListings, useAddToWishlist } from '../hooks/useB2C';
 import type { B2CListingSortBy, SearchListingsParams } from '@/shared/services/b2c.service';
 
@@ -12,13 +12,6 @@ const SORT_OPTIONS: { label: string; value: B2CListingSortBy }[] = [
   { label: 'Highest Rated',     value: 'highest_rated' },
   { label: 'Newest',            value: 'newest' },
 ];
-
-const FIELD: React.CSSProperties = {
-  padding: '0.5rem 0.75rem', borderRadius: '0.375rem',
-  border: '1px solid var(--cui-border-color, #d1d5db)',
-  fontSize: '0.875rem', color: 'var(--cui-body-color)',
-  background: 'var(--cui-body-bg, #fff)',
-};
 
 function fmt(n: number, currency: string) {
   return new Intl.NumberFormat('en-IN', { style: 'currency', currency, maximumFractionDigits: 0 }).format(n);
@@ -50,28 +43,65 @@ export function SearchPanel() {
         display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'flex-end',
       }}>
         <div style={{ flex: '1 1 160px' }}>
-          <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--cui-secondary-color)', marginBottom: '0.25rem' }}>Country</label>
-          <input style={{ ...FIELD, width: '100%', boxSizing: 'border-box' }} placeholder="India, Thailand…" value={draft.destinationCountry ?? ''} onChange={(e) => setDraftField('destinationCountry', e.target.value || undefined)} />
+          <TextField
+            label="Country"
+            variant="outlined"
+            size="sm"
+            placeholder="India, Thailand…"
+            value={draft.destinationCountry ?? ''}
+            onChange={(e) => setDraftField('destinationCountry', e.target.value || undefined)}
+          />
         </div>
         <div style={{ flex: '1 1 160px' }}>
-          <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--cui-secondary-color)', marginBottom: '0.25rem' }}>City</label>
-          <input style={{ ...FIELD, width: '100%', boxSizing: 'border-box' }} placeholder="Goa, Bali…" value={draft.destinationCity ?? ''} onChange={(e) => setDraftField('destinationCity', e.target.value || undefined)} />
+          <TextField
+            label="City"
+            variant="outlined"
+            size="sm"
+            placeholder="Goa, Bali…"
+            value={draft.destinationCity ?? ''}
+            onChange={(e) => setDraftField('destinationCity', e.target.value || undefined)}
+          />
         </div>
         <div style={{ flex: '1 1 120px' }}>
-          <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--cui-secondary-color)', marginBottom: '0.25rem' }}>Theme</label>
-          <input style={{ ...FIELD, width: '100%', boxSizing: 'border-box' }} placeholder="Adventure…" value={draft.theme ?? ''} onChange={(e) => setDraftField('theme', e.target.value || undefined)} />
+          <TextField
+            label="Theme"
+            variant="outlined"
+            size="sm"
+            placeholder="Adventure…"
+            value={draft.theme ?? ''}
+            onChange={(e) => setDraftField('theme', e.target.value || undefined)}
+          />
         </div>
         <div style={{ flex: '1 1 100px' }}>
-          <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--cui-secondary-color)', marginBottom: '0.25rem' }}>Budget Min</label>
-          <input type="number" style={{ ...FIELD, width: '100%', boxSizing: 'border-box' }} value={draft.budgetMin ?? ''} onChange={(e) => setDraftField('budgetMin', e.target.value ? Number(e.target.value) : undefined)} />
+          <TextField
+            label="Budget Min"
+            variant="outlined"
+            size="sm"
+            type="number"
+            value={draft.budgetMin ?? ''}
+            onChange={(e) => setDraftField('budgetMin', e.target.value ? Number(e.target.value) : undefined)}
+          />
         </div>
         <div style={{ flex: '1 1 100px' }}>
-          <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--cui-secondary-color)', marginBottom: '0.25rem' }}>Budget Max</label>
-          <input type="number" style={{ ...FIELD, width: '100%', boxSizing: 'border-box' }} value={draft.budgetMax ?? ''} onChange={(e) => setDraftField('budgetMax', e.target.value ? Number(e.target.value) : undefined)} />
+          <TextField
+            label="Budget Max"
+            variant="outlined"
+            size="sm"
+            type="number"
+            value={draft.budgetMax ?? ''}
+            onChange={(e) => setDraftField('budgetMax', e.target.value ? Number(e.target.value) : undefined)}
+          />
         </div>
         <div style={{ flex: '1 1 80px' }}>
-          <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--cui-secondary-color)', marginBottom: '0.25rem' }}>Pax</label>
-          <input type="number" min={1} style={{ ...FIELD, width: '100%', boxSizing: 'border-box' }} value={draft.paxCount ?? ''} onChange={(e) => setDraftField('paxCount', e.target.value ? Number(e.target.value) : undefined)} />
+          <TextField
+            label="Pax"
+            variant="outlined"
+            size="sm"
+            type="number"
+            min={1}
+            value={draft.paxCount ?? ''}
+            onChange={(e) => setDraftField('paxCount', e.target.value ? Number(e.target.value) : undefined)}
+          />
         </div>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <Button color="primary" onClick={applySearch}>Search</Button>
@@ -84,13 +114,17 @@ export function SearchPanel() {
         <span style={{ fontSize: '0.875rem', color: 'var(--cui-secondary-color)', flex: 1 }}>
           {isLoading ? 'Searching…' : `${data?.total ?? 0} packages found`}
         </span>
-        <select
-          style={{ ...FIELD, minWidth: 160 }}
-          value={filters.sortBy ?? 'ai_recommended'}
-          onChange={(e) => setFilters((f) => ({ ...f, sortBy: e.target.value as B2CListingSortBy, page: 1 }))}
-        >
-          {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-        </select>
+        <div style={{ minWidth: 180 }}>
+          <SelectField
+            label="Sort By"
+            variant="outlined"
+            size="sm"
+            value={filters.sortBy ?? 'ai_recommended'}
+            onChange={(e) => setFilters((f) => ({ ...f, sortBy: e.target.value as B2CListingSortBy, page: 1 }))}
+          >
+            {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+          </SelectField>
+        </div>
       </div>
 
       {/* Results grid */}

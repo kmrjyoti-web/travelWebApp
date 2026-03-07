@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Icon } from '@/shared/components/Icon';
+import { TextField } from '@/shared/components';
 import { authService } from '@/shared/services/auth.service';
 import { forgotPasswordSchema, type ForgotPasswordFormData } from '../types/auth-form.types';
 import type { LoginView } from '../hooks/useLoginTheme';
@@ -85,17 +86,16 @@ export function ForgotPasswordForm({ onViewChange }: ForgotPasswordFormProps) {
       )}
 
       <div className="tos-login-field">
-        <label htmlFor="forgot-email">Email Address</label>
-        <input
-          id="forgot-email"
+        <TextField
+          label="Email Address"
           type="email"
           placeholder="you@company.com"
-          className={errors.email ? 'tos-error' : ''}
+          variant="outlined"
+          size="sm"
+          error={!!errors.email}
+          helperText={errors.email?.message}
           {...register('email')}
         />
-        {errors.email && (
-          <div className="tos-login-field__error">{errors.email.message}</div>
-        )}
       </div>
 
       <button type="submit" className="tos-login-btn" disabled={isSubmitting}>

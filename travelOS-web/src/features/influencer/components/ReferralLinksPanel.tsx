@@ -1,20 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import { DataTable, StatCard, Alert, Button } from '@/shared/components';
+import { DataTable, StatCard, Alert, Button, TextField } from '@/shared/components';
 import { useReferralLinkStats, useGenerateReferralLink } from '../hooks/useInfluencer';
 import type { ReferralLink } from '@/shared/services/influencer.service';
 
 type LinkRow = ReferralLink & Record<string, unknown>;
-
-const FIELD: React.CSSProperties = {
-  flex: '1 1 180px',
-  padding: '0.5rem 0.75rem',
-  borderRadius: '0.375rem',
-  border: '1px solid var(--cui-border-color, #d1d5db)',
-  fontSize: '0.875rem',
-  color: 'var(--cui-body-color)',
-  background: 'var(--cui-body-bg, #fff)',
-};
 
 interface ReferralLinksPanelProps {
   influencerId: string;
@@ -81,16 +71,24 @@ export function ReferralLinksPanel({ influencerId }: ReferralLinksPanelProps) {
           display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'flex-end',
         }}>
           <div style={{ flex: '2 1 240px' }}>
-            <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--cui-secondary-color)', marginBottom: '0.25rem' }}>
-              Target URL *
-            </label>
-            <input style={FIELD} placeholder="https://example.com/package" value={targetUrl} onChange={(e) => setTargetUrl(e.target.value)} />
+            <TextField
+              label="Target URL *"
+              variant="outlined"
+              size="sm"
+              placeholder="https://example.com/package"
+              value={targetUrl}
+              onChange={(e) => setTargetUrl(e.target.value)}
+            />
           </div>
           <div style={{ flex: '1 1 180px' }}>
-            <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--cui-secondary-color)', marginBottom: '0.25rem' }}>
-              Listing ID (optional)
-            </label>
-            <input style={FIELD} placeholder="listing-uuid" value={listingId} onChange={(e) => setListingId(e.target.value)} />
+            <TextField
+              label="Listing ID (optional)"
+              variant="outlined"
+              size="sm"
+              placeholder="listing-uuid"
+              value={listingId}
+              onChange={(e) => setListingId(e.target.value)}
+            />
           </div>
           <Button
             color="success"

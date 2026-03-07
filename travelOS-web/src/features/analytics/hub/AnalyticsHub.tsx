@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { PageHeader } from '@/shared/components';
+import { PageHeader, TextField } from '@/shared/components';
 import { AgentKPIs, RevenueTrend, ConversionFunnel } from '../components';
 import type { DateRangeParams } from '@/shared/services/analytics.service';
 
@@ -57,19 +57,23 @@ export function AnalyticsHub() {
                 {p.label}
               </button>
             ))}
-            <input
+            <TextField
+              label="From date"
+              variant="outlined"
+              size="sm"
               type="date"
               value={from}
               onChange={(e) => setFrom(e.target.value)}
-              style={{ padding: '0.25rem 0.5rem', borderRadius: '0.375rem', border: '1px solid var(--cui-border-color, #d1d5db)', fontSize: '0.8125rem', color: 'var(--cui-body-color, #374151)', background: 'var(--cui-body-bg, #fff)' }}
               aria-label="From date"
             />
             <span style={{ color: 'var(--cui-secondary-color, #6b7280)', fontSize: '0.875rem' }}>—</span>
-            <input
+            <TextField
+              label="To date"
+              variant="outlined"
+              size="sm"
               type="date"
               value={to}
               onChange={(e) => setTo(e.target.value)}
-              style={{ padding: '0.25rem 0.5rem', borderRadius: '0.375rem', border: '1px solid var(--cui-border-color, #d1d5db)', fontSize: '0.8125rem', color: 'var(--cui-body-color, #374151)', background: 'var(--cui-body-bg, #fff)' }}
               aria-label="To date"
             />
           </div>

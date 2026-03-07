@@ -3,6 +3,7 @@
 import { useUIKitTheme } from "./ThemeProvider";
 import { X, Minus, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { SelectField, Checkbox, FormRange } from "@/shared/components";
 
 const COLOR_PRESETS = [
   ["#0f4c75", "#3282b8"],
@@ -139,34 +140,42 @@ export default function ThemeSettings() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600">Font Family</span>
-                    <select
-                      className="border border-gray-300 rounded px-2 py-1 text-sm bg-white"
-                      value={theme.fontFamily}
-                      onChange={(e) => updateTheme({ fontFamily: e.target.value })}
-                    >
-                      <option value="Inter, sans-serif">Inter</option>
-                      <option value="Roboto, sans-serif">Roboto</option>
-                      <option value="Open Sans, sans-serif">Open Sans</option>
-                      <option value="system-ui, sans-serif">System UI</option>
-                    </select>
+                    <div style={{ minWidth: 140 }}>
+                      <SelectField
+                        label="Font Family"
+                        variant="outlined"
+                        size="sm"
+                        value={theme.fontFamily}
+                        onChange={(e) => updateTheme({ fontFamily: e.target.value })}
+                      >
+                        <option value="Inter, sans-serif">Inter</option>
+                        <option value="Roboto, sans-serif">Roboto</option>
+                        <option value="Open Sans, sans-serif">Open Sans</option>
+                        <option value="system-ui, sans-serif">System UI</option>
+                      </SelectField>
+                    </div>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600">Font Weight</span>
-                    <select
-                      className="border border-gray-300 rounded px-2 py-1 text-sm bg-white"
-                      value={theme.fontWeight}
-                      onChange={(e) => updateTheme({ fontWeight: e.target.value })}
-                    >
-                      <option value="normal">Normal</option>
-                      <option value="bold">Bold</option>
-                    </select>
+                    <div style={{ minWidth: 140 }}>
+                      <SelectField
+                        label="Font Weight"
+                        variant="outlined"
+                        size="sm"
+                        value={theme.fontWeight}
+                        onChange={(e) => updateTheme({ fontWeight: e.target.value })}
+                      >
+                        <option value="normal">Normal</option>
+                        <option value="bold">Bold</option>
+                      </SelectField>
+                    </div>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600 w-24">Font Size ({theme.fontSize}px)</span>
                     <div className="flex items-center space-x-2 flex-1 justify-end">
                       <button className="p-1 border border-gray-300 rounded bg-gray-50 hover:bg-gray-100" onClick={() => updateTheme({ fontSize: Math.max(10, theme.fontSize - 1) })}><Minus size={14} /></button>
-                      <input type="range" min="10" max="24" value={theme.fontSize} onChange={(e) => updateTheme({ fontSize: parseInt(e.target.value) })} className="w-20" />
+                      <FormRange min={10} max={24} value={theme.fontSize} onChange={(e) => updateTheme({ fontSize: parseInt(e.target.value) })} className="w-20" />
                       <button className="p-1 border border-gray-300 rounded bg-gray-50 hover:bg-gray-100" onClick={() => updateTheme({ fontSize: Math.min(24, theme.fontSize + 1) })}><Plus size={14} /></button>
                     </div>
                   </div>
@@ -175,7 +184,7 @@ export default function ThemeSettings() {
                     <span className="text-gray-600 w-24">Zoom ({theme.zoom}%)</span>
                     <div className="flex items-center space-x-2 flex-1 justify-end">
                       <button className="p-1 border border-gray-300 rounded bg-gray-50 hover:bg-gray-100" onClick={() => updateTheme({ zoom: Math.max(50, theme.zoom - 10) })}><Minus size={14} /></button>
-                      <input type="range" min="50" max="150" step="10" value={theme.zoom} onChange={(e) => updateTheme({ zoom: parseInt(e.target.value) })} className="w-20" />
+                      <FormRange min={50} max={150} step={10} value={theme.zoom} onChange={(e) => updateTheme({ zoom: parseInt(e.target.value) })} className="w-20" />
                       <button className="p-1 border border-gray-300 rounded bg-gray-50 hover:bg-gray-100" onClick={() => updateTheme({ zoom: Math.min(150, theme.zoom + 10) })}><Plus size={14} /></button>
                     </div>
                   </div>
@@ -204,7 +213,7 @@ export default function ThemeSettings() {
                     <span className="text-gray-600 w-24">Opacity ({theme.cardBgOpacity}%)</span>
                     <div className="flex items-center space-x-2 flex-1 justify-end">
                       <button className="p-1 border border-gray-300 rounded bg-gray-50 hover:bg-gray-100" onClick={() => updateTheme({ cardBgOpacity: Math.max(0, theme.cardBgOpacity - 5) })}><Minus size={14} /></button>
-                      <input type="range" min="0" max="100" step="5" value={theme.cardBgOpacity} onChange={(e) => updateTheme({ cardBgOpacity: parseInt(e.target.value) })} className="w-20" />
+                      <FormRange min={0} max={100} step={5} value={theme.cardBgOpacity} onChange={(e) => updateTheme({ cardBgOpacity: parseInt(e.target.value) })} className="w-20" />
                       <button className="p-1 border border-gray-300 rounded bg-gray-50 hover:bg-gray-100" onClick={() => updateTheme({ cardBgOpacity: Math.min(100, theme.cardBgOpacity + 5) })}><Plus size={14} /></button>
                     </div>
                   </div>
@@ -215,10 +224,11 @@ export default function ThemeSettings() {
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">App Background</h3>
-                  <label className="flex items-center space-x-2 text-xs text-gray-600 cursor-pointer">
-                    <input type="checkbox" checked={theme.fullPageBg} onChange={(e) => updateTheme({ fullPageBg: e.target.checked })} className="rounded border-gray-300" />
-                    <span>Full Page</span>
-                  </label>
+                  <Checkbox
+                    label="Full Page"
+                    checked={theme.fullPageBg}
+                    onChange={(e) => updateTheme({ fullPageBg: e.target.checked })}
+                  />
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   {BACKGROUNDS.map((bg, i) => (
@@ -238,7 +248,7 @@ export default function ThemeSettings() {
                   <span className="text-gray-600 w-24">Opacity ({theme.bgOpacity}%)</span>
                   <div className="flex items-center space-x-2 flex-1 justify-end">
                     <button className="p-1 border border-gray-300 rounded bg-gray-50 hover:bg-gray-100" onClick={() => updateTheme({ bgOpacity: Math.max(0, theme.bgOpacity - 5) })}><Minus size={14} /></button>
-                    <input type="range" min="0" max="100" step="5" value={theme.bgOpacity} onChange={(e) => updateTheme({ bgOpacity: parseInt(e.target.value) })} className="w-20" />
+                    <FormRange min={0} max={100} step={5} value={theme.bgOpacity} onChange={(e) => updateTheme({ bgOpacity: parseInt(e.target.value) })} className="w-20" />
                     <button className="p-1 border border-gray-300 rounded bg-gray-50 hover:bg-gray-100" onClick={() => updateTheme({ bgOpacity: Math.min(100, theme.bgOpacity + 5) })}><Plus size={14} /></button>
                   </div>
                 </div>
@@ -265,7 +275,7 @@ export default function ThemeSettings() {
                   <span className="text-gray-600 w-24">Opacity ({theme.sidebarBgOpacity}%)</span>
                   <div className="flex items-center space-x-2 flex-1 justify-end">
                     <button className="p-1 border border-gray-300 rounded bg-gray-50 hover:bg-gray-100" onClick={() => updateTheme({ sidebarBgOpacity: Math.max(0, theme.sidebarBgOpacity - 5) })}><Minus size={14} /></button>
-                    <input type="range" min="0" max="100" step="5" value={theme.sidebarBgOpacity} onChange={(e) => updateTheme({ sidebarBgOpacity: parseInt(e.target.value) })} className="w-20" />
+                    <FormRange min={0} max={100} step={5} value={theme.sidebarBgOpacity} onChange={(e) => updateTheme({ sidebarBgOpacity: parseInt(e.target.value) })} className="w-20" />
                     <button className="p-1 border border-gray-300 rounded bg-gray-50 hover:bg-gray-100" onClick={() => updateTheme({ sidebarBgOpacity: Math.min(100, theme.sidebarBgOpacity + 5) })}><Plus size={14} /></button>
                   </div>
                 </div>

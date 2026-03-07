@@ -145,7 +145,7 @@ export function ItineraryListPanel({ onEdit, onCreate }: ItineraryListPanelProps
         </div>
 
         <Button color="primary" leftIcon="Plus" onClick={onCreate} style={{ marginLeft: 'auto' }}>
-          New Itinerary
+          Create Package
         </Button>
       </div>
 
@@ -161,8 +161,8 @@ export function ItineraryListPanel({ onEdit, onCreate }: ItineraryListPanelProps
         emptyTitle="No itineraries yet"
         emptyDescription="Create your first itinerary or adjust your filters."
         rowActions={(row) => [
-          { label: 'Edit',   icon: 'Pencil' as const, onClick: () => onEdit(row.id as string) },
-          { label: 'Delete', icon: 'Trash2' as const, onClick: () => void handleDelete(row), variant: 'danger' as const },
+          { label: 'Edit / Publish', icon: 'PackageCheck' as const, onClick: () => onEdit(row.id as string) },
+          { label: 'Delete',         icon: 'Trash2' as const,        onClick: () => void handleDelete(row), variant: 'danger' as const },
         ]}
       />
 

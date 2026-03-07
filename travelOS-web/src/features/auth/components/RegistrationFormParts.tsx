@@ -5,6 +5,7 @@
  */
 import React from 'react';
 import { Icon } from '@/shared/components/Icon';
+import { TextField, SelectField, Checkbox } from '@/shared/components';
 import type { UserTypeDropdownItem, UserTypeFieldSchema, FieldType } from '../types/user-type.types';
 
 // ── Loading indicator ─────────────────────────────────────────────────────────
@@ -102,48 +103,61 @@ export function DynamicFieldRF({
   error: string | undefined;
   onChange: (val: FieldValue) => void;
 }) {
-  const base: React.CSSProperties = {
-    width: '100%', padding: '10px var(--tos-spacing-md)',
-    background: 'rgba(255,255,255,0.1)',
-    border: `1px solid ${error ? '#ef4444' : 'rgba(255,255,255,0.2)'}`,
-    borderRadius: 'var(--tos-border-radius)',
-    color: '#ffffff', fontSize: 14, outline: 'none',
-  };
   const TEXT_TYPES: FieldType[] = ['text', 'email', 'url', 'phone'];
 
   if (TEXT_TYPES.includes(field.fieldType)) {
     return (
-      <input id={`rf-${field.fieldKey}`}
+      <TextField
+        id={`rf-${field.fieldKey}`}
+        label={field.label}
         type={field.fieldType === 'phone' ? 'text' : field.fieldType}
+        inputMode={field.fieldType === 'phone' ? 'numeric' : undefined}
         placeholder={field.placeholder ?? ''}
         value={typeof value === 'string' ? value : ''}
         onChange={(e) => onChange(e.target.value)}
-        style={base} aria-invalid={!!error}
+        variant="outlined"
+        size="sm"
+        error={!!error}
+        helperText={error}
+        aria-invalid={!!error}
       />
     );
   }
   if (field.fieldType === 'number') {
     return (
-      <input id={`rf-${field.fieldKey}`} type="number"
+      <TextField
+        id={`rf-${field.fieldKey}`}
+        label={field.label}
+        type="number"
         placeholder={field.placeholder ?? ''}
         value={typeof value === 'number' ? value : ''}
         onChange={(e) => onChange(e.target.value === '' ? '' : Number(e.target.value))}
-        style={base} aria-invalid={!!error}
+        variant="outlined"
+        size="sm"
+        error={!!error}
+        helperText={error}
+        aria-invalid={!!error}
       />
     );
   }
   if (field.fieldType === 'select') {
     return (
-      <select id={`rf-${field.fieldKey}`}
+      <SelectField
+        id={`rf-${field.fieldKey}`}
+        label={field.label}
         value={typeof value === 'string' ? value : ''}
         onChange={(e) => onChange(e.target.value)}
-        style={base} aria-invalid={!!error}
+        variant="outlined"
+        size="sm"
+        error={!!error}
+        helperText={error}
+        aria-invalid={!!error}
       >
-        <option value="" style={{ background: '#1a2a3a' }}>— Select —</option>
+        <option value="">— Select —</option>
         {(field.options ?? []).map((o) => (
-          <option key={o.value} value={o.value} style={{ background: '#1a2a3a' }}>{o.label}</option>
+          <option key={o.value} value={o.value}>{o.label}</option>
         ))}
-      </select>
+      </SelectField>
     );
   }
   if (field.fieldType === 'multi_select') {
@@ -153,13 +167,12 @@ export function DynamicFieldRF({
         {(field.options ?? []).map((o) => {
           const checked = sel.includes(o.value);
           return (
-            <label key={o.value} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 13, color: 'rgba(255,255,255,0.85)' }}>
-              <input type="checkbox" checked={checked}
-                onChange={() => onChange(checked ? sel.filter((v) => v !== o.value) : [...sel, o.value])}
-                style={{ width: 16, height: 16 }}
-              />
-              {o.label}
-            </label>
+            <Checkbox
+              key={o.value}
+              label={o.label}
+              checked={checked}
+              onChange={() => onChange(checked ? sel.filter((v) => v !== o.value) : [...sel, o.value])}
+            />
           );
         })}
       </div>
@@ -169,29 +182,34 @@ export function DynamicFieldRF({
     return (
       <input id={`rf-${field.fieldKey}`} type="file"
         onChange={(e) => onChange(e.target.files?.[0]?.name ?? '')}
-        style={{ ...base, padding: '8px', cursor: 'pointer' }} aria-invalid={!!error}
+        style={{ width: '100%', padding: '8px', cursor: 'pointer' }} aria-invalid={!!error}
       />
     );
   }
   if (field.fieldType === 'date') {
     return (
-      <input id={`rf-${field.fieldKey}`} type="date"
+      <TextField
+        id={`rf-${field.fieldKey}`}
+        label={field.label}
+        type="date"
         value={typeof value === 'string' ? value : ''}
         onChange={(e) => onChange(e.target.value)}
-        style={base} aria-invalid={!!error}
+        variant="outlined"
+        size="sm"
+        error={!!error}
+        helperText={error}
+        aria-invalid={!!error}
       />
     );
   }
   if (field.fieldType === 'boolean') {
     return (
-      <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 13, color: 'rgba(255,255,255,0.85)' }}>
-        <input id={`rf-${field.fieldKey}`} type="checkbox"
-          checked={value === true}
-          onChange={(e) => onChange(e.target.checked)}
-          style={{ width: 16, height: 16 }}
-        />
-        {field.label}
-      </label>
+      <Checkbox
+        id={`rf-${field.fieldKey}`}
+        label={field.label}
+        checked={value === true}
+        onChange={(e) => onChange(e.target.checked)}
+      />
     );
   }
   return null;

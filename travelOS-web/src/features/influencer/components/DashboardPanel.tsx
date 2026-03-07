@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { StatCard, Alert, Button, useConfirmDialog } from '@/shared/components';
+import { StatCard, Alert, Button, useConfirmDialog, TextField } from '@/shared/components';
 import { useInfluencerDashboard, useRedeemPoints } from '../hooks/useInfluencer';
 
 function fmt(n: number) {
@@ -106,14 +106,18 @@ export function DashboardPanel({ influencerId }: DashboardPanelProps) {
             </p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <input
-              type="number"
-              min={1}
-              max={profile?.pointsBalance ?? 0}
-              value={redeemAmt}
-              onChange={(e) => setRedeemAmt(Number(e.target.value))}
-              style={{ width: 90, padding: '0.375rem 0.5rem', borderRadius: '0.375rem', border: '1px solid var(--cui-border-color)', fontSize: '0.875rem' }}
-            />
+            <div style={{ width: 110 }}>
+              <TextField
+                label="Points"
+                variant="outlined"
+                size="sm"
+                type="number"
+                min={1}
+                max={profile?.pointsBalance ?? 0}
+                value={redeemAmt}
+                onChange={(e) => setRedeemAmt(Number(e.target.value))}
+              />
+            </div>
             <Button color="primary" disabled={redeeming || !profile?.pointsBalance} onClick={handleRedeem}>
               {redeeming ? 'Redeeming…' : 'Redeem'}
             </Button>

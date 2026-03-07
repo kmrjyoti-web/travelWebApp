@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Icon } from '@/shared/components/Icon';
+import { TextField, SelectField } from '@/shared/components';
 import { useRegistrationStore } from '../stores/registration.store';
 
 // ── ISD → ISO2 mapping ────────────────────────────────────────────────────────
@@ -157,154 +158,111 @@ export function RegistrationStep1({ onNext, onBack }: RegistrationStep1Props) {
 
       {/* Full Name */}
       <div className="tos-login-field">
-        <label htmlFor="s1-name">Full Name</label>
-        <input
-          id="s1-name"
+        <TextField
+          label="Full Name"
           type="text"
           placeholder="John Doe"
           autoComplete="name"
-          className={errors.name ? 'tos-error' : ''}
+          variant="outlined"
+          size="sm"
+          error={!!errors.name}
+          helperText={errors.name?.message}
           {...register('name')}
         />
-        {errors.name && (
-          <div className="tos-login-field__error" role="alert">{errors.name.message}</div>
-        )}
       </div>
 
       {/* Email */}
       <div className="tos-login-field">
-        <label htmlFor="s1-email">Email Address</label>
-        <input
-          id="s1-email"
+        <TextField
+          label="Email Address"
           type="email"
           placeholder="you@company.com"
           autoComplete="email"
-          className={errors.email ? 'tos-error' : ''}
+          variant="outlined"
+          size="sm"
+          error={!!errors.email}
+          helperText={errors.email?.message}
           {...register('email')}
         />
-        {errors.email && (
-          <div className="tos-login-field__error" role="alert">{errors.email.message}</div>
-        )}
       </div>
 
       {/* Phone with ISD prefix */}
       <div className="tos-login-field">
-        <label htmlFor="s1-phone">Phone Number</label>
         <div style={{ display: 'flex', gap: 8 }}>
-          <select
-            id="s1-isd"
-            aria-label="Country code"
-            className={errors.isdCode ? 'tos-error' : ''}
-            style={{
-              width: 110,
-              flexShrink: 0,
-              padding: '10px 8px',
-              background: 'rgba(255,255,255,0.1)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              borderRadius: 'var(--tos-border-radius)',
-              color: '#ffffff',
-              fontSize: 13,
-              outline: 'none',
-            }}
-            {...register('isdCode', {
-              onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
-                const iso2 = ISD_TO_ISO2[e.target.value] ?? 'XX';
-                setCountryIso2(iso2);
-              },
-            })}
-          >
-            {ISD_CODES.map((c) => (
-              <option
-                key={c.code}
-                value={c.code}
-                style={{ background: '#1a2a3a', color: '#ffffff' }}
-              >
-                {c.label}
-              </option>
-            ))}
-          </select>
-          <input
-            id="s1-phone"
-            type="text"
-            inputMode="numeric"
-            placeholder="9876543210"
-            autoComplete="tel-national"
-            className={errors.phone ? 'tos-error' : ''}
-            style={{ flex: 1 }}
-            {...register('phone')}
-          />
-        </div>
-        {(errors.phone || errors.isdCode) && (
-          <div className="tos-login-field__error" role="alert">
-            {errors.phone?.message ?? errors.isdCode?.message}
+          <div style={{ width: 110, flexShrink: 0 }}>
+            <SelectField
+              id="s1-isd"
+              label="Code"
+              variant="outlined"
+              size="sm"
+              error={!!errors.isdCode}
+              {...register('isdCode', {
+                onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
+                  const iso2 = ISD_TO_ISO2[e.target.value] ?? 'XX';
+                  setCountryIso2(iso2);
+                },
+              })}
+            >
+              {ISD_CODES.map((c) => (
+                <option key={c.code} value={c.code}>{c.label}</option>
+              ))}
+            </SelectField>
           </div>
-        )}
+          <div style={{ flex: 1 }}>
+            <TextField
+              label="Phone Number"
+              type="text"
+              inputMode="numeric"
+              placeholder="9876543210"
+              autoComplete="tel-national"
+              variant="outlined"
+              size="sm"
+              error={!!errors.phone}
+              helperText={errors.phone?.message ?? errors.isdCode?.message}
+              {...register('phone')}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Password */}
       <div className="tos-login-field">
-        <label htmlFor="s1-pw">Password</label>
-        <div style={{ position: 'relative' }}>
-          <input
-            id="s1-pw"
-            type={showPw ? 'text' : 'password'}
-            placeholder="Min 8 characters"
-            autoComplete="new-password"
-            style={{ paddingRight: 40 }}
-            className={errors.password ? 'tos-error' : ''}
-            {...register('password')}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPw((s) => !s)}
-            aria-label={showPw ? 'Hide password' : 'Show password'}
-            style={{
-              position: 'absolute', right: 10, top: '50%',
-              transform: 'translateY(-50%)', background: 'transparent',
-              border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer',
-              display: 'flex', alignItems: 'center',
-            }}
-          >
-            <Icon name={showPw ? 'EyeOff' : 'Eye'} size={16} />
-          </button>
-        </div>
-        {errors.password && (
-          <div className="tos-login-field__error" role="alert">{errors.password.message}</div>
-        )}
+        <TextField
+          label="Password"
+          type={showPw ? 'text' : 'password'}
+          placeholder="Min 8 characters"
+          autoComplete="new-password"
+          variant="outlined"
+          size="sm"
+          error={!!errors.password}
+          helperText={errors.password?.message}
+          endIcon={showPw ? 'EyeOff' : 'Eye'}
+          onClickCapture={(e) => {
+            const target = e.target as HTMLElement;
+            if (target.closest('.tos-tf__icon--end')) setShowPw((s) => !s);
+          }}
+          {...register('password')}
+        />
       </div>
 
       {/* Confirm Password */}
       <div className="tos-login-field">
-        <label htmlFor="s1-cpw">Confirm Password</label>
-        <div style={{ position: 'relative' }}>
-          <input
-            id="s1-cpw"
-            type={showCpw ? 'text' : 'password'}
-            placeholder="Re-enter password"
-            autoComplete="new-password"
-            style={{ paddingRight: 40 }}
-            className={errors.confirmPassword ? 'tos-error' : ''}
-            {...register('confirmPassword')}
-          />
-          <button
-            type="button"
-            onClick={() => setShowCpw((s) => !s)}
-            aria-label={showCpw ? 'Hide confirm password' : 'Show confirm password'}
-            style={{
-              position: 'absolute', right: 10, top: '50%',
-              transform: 'translateY(-50%)', background: 'transparent',
-              border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer',
-              display: 'flex', alignItems: 'center',
-            }}
-          >
-            <Icon name={showCpw ? 'EyeOff' : 'Eye'} size={16} />
-          </button>
-        </div>
-        {errors.confirmPassword && (
-          <div className="tos-login-field__error" role="alert">
-            {errors.confirmPassword.message}
-          </div>
-        )}
+        <TextField
+          label="Confirm Password"
+          type={showCpw ? 'text' : 'password'}
+          placeholder="Re-enter password"
+          autoComplete="new-password"
+          variant="outlined"
+          size="sm"
+          error={!!errors.confirmPassword}
+          helperText={errors.confirmPassword?.message}
+          endIcon={showCpw ? 'EyeOff' : 'Eye'}
+          onClickCapture={(e) => {
+            const target = e.target as HTMLElement;
+            if (target.closest('.tos-tf__icon--end')) setShowCpw((s) => !s);
+          }}
+          {...register('confirmPassword')}
+        />
       </div>
 
       {/* Actions */}

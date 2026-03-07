@@ -137,6 +137,71 @@ export type { StatCardProps } from './StatCard';
 
 export { SearchInput } from './SearchInput';
 export type { SearchInputProps } from './SearchInput';
+export { TextField, SelectField, TextareaField } from './TextField';
+export type { TextFieldProps, TextFieldVariant, SelectFieldProps, SelectFieldVariant, TextareaFieldProps, TextareaFieldVariant } from './TextField';
 
 export { BulkActionsBar } from './BulkActionsBar';
 export type { BulkActionsBarProps, BulkAction } from './BulkActionsBar';
+
+// ── CoreUI Pro components ─────────────────────────────────────────────────────
+export { DatePicker } from './DatePicker';
+export type { DatePickerProps } from './DatePicker';
+
+export { DateRangePicker } from './DateRangePicker';
+export type { DateRangePickerProps } from './DateRangePicker';
+
+export { TimePicker } from './TimePicker';
+export type { TimePickerProps } from './TimePicker';
+
+export { Autocomplete } from './Autocomplete';
+export type { AutocompleteProps } from './Autocomplete';
+
+export { MultiSelect } from './MultiSelect';
+export type { MultiSelectProps } from './MultiSelect';
+
+export { RangeSlider } from './RangeSlider';
+export type { RangeSliderProps } from './RangeSlider';
+
+export { Rating } from './Rating';
+export type { RatingProps } from './Rating';
+
+export { Popover } from './Popover';
+export type { PopoverProps } from './Popover';
+
+export { PasswordInput } from './PasswordInput';
+export type { PasswordInputProps } from './PasswordInput';
+
+export { LoadingButton } from './LoadingButton';
+export type { LoadingButtonProps } from './LoadingButton';
+
+export { Stepper } from './Stepper';
+export type { StepperProps } from './Stepper';
+
+export { Calendar } from './Calendar';
+export type { CalendarProps } from './Calendar';
+
+export { SmartTable, SmartPagination } from './SmartTable';
+export type { SmartTableProps, SmartPaginationProps } from './SmartTable';
+
+export { VirtualScroller } from './VirtualScroller';
+export type { VirtualScrollerProps } from './VirtualScroller';
+
+// ── CoreUI Free additional components ────────────────────────────────────────
+export { Accordion, AccordionItem, AccordionHeader, AccordionButton, AccordionBody } from './Accordion';
+export type { AccordionProps, AccordionItemProps } from './Accordion';
+
+export { ButtonGroup, ButtonToolbar } from './ButtonGroup';
+export type { ButtonGroupProps, ButtonToolbarProps } from './ButtonGroup';
+
+export { InputGroup, InputGroupText } from './InputGroup';
+export type { InputGroupProps } from './InputGroup';
+
+export { ListGroup, ListGroupItem } from './ListGroup';
+
+export { FormRange } from './FormRange';
+export type { FormRangeProps } from './FormRange';
+
+// ── Utility / gate components ─────────────────────────────────────────────────
+export { PermissionGate } from './PermissionGate';
+export { FeatureGate } from './FeatureGate';
+export { LoadingSpinner } from './LoadingSpinner';

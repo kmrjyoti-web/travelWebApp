@@ -1,0 +1,212 @@
+/* ═══════════════════════════════════════════════════════════════
+   TravelOS Button — prefix: .tos-btn
+   Overrides CoreUI CButton to produce a consistent single-line
+   compact look across the entire application.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Base reset & shared properties ────────────────────────────── */
+.tos-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1;
+  border-radius: 6px;
+  padding: 7px 14px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s, box-shadow 0.15s;
+  user-select: none;
+  vertical-align: middle;
+}
+
+.tos-btn:focus-visible {
+  outline: 2px solid var(--tos-primary, #4f46e5);
+  outline-offset: 2px;
+}
+
+.tos-btn:disabled,
+.tos-btn.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Size variants ──────────────────────────────────────────────── */
+.tos-btn.btn-sm {
+  font-size: 0.79rem;
+  padding: 5px 12px;
+  gap: 5px;
+  border-radius: 5px;
+}
+
+.tos-btn.btn-lg {
+  font-size: 0.9rem;
+  padding: 9px 20px;
+  gap: 7px;
+  border-radius: 7px;
+}
+
+/* ── Primary (filled indigo) ────────────────────────────────────── */
+.tos-btn.btn-primary {
+  background: var(--tos-primary, #4f46e5);
+  border-color: var(--tos-primary, #4f46e5);
+  color: #fff;
+  font-weight: 600;
+}
+.tos-btn.btn-primary:hover:not(:disabled) {
+  background: #4338ca;
+  border-color: #4338ca;
+}
+.tos-btn.btn-primary:active:not(:disabled) {
+  background: #3730a3;
+  border-color: #3730a3;
+}
+
+/* ── Secondary (white + gray border) ───────────────────────────── */
+.tos-btn.btn-secondary {
+  background: #fff;
+  border-color: #d1d5db;
+  color: #374151;
+}
+.tos-btn.btn-secondary:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+.tos-btn.btn-secondary:active:not(:disabled) {
+  background: #f3f4f6;
+}
+
+/* ── Danger ─────────────────────────────────────────────────────── */
+.tos-btn.btn-danger {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #fff;
+  font-weight: 600;
+}
+.tos-btn.btn-danger:hover:not(:disabled) {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+/* ── Success ────────────────────────────────────────────────────── */
+.tos-btn.btn-success {
+  background: #10b981;
+  border-color: #10b981;
+  color: #fff;
+  font-weight: 600;
+}
+.tos-btn.btn-success:hover:not(:disabled) {
+  background: #059669;
+  border-color: #059669;
+}
+
+/* ── Warning ────────────────────────────────────────────────────── */
+.tos-btn.btn-warning {
+  background: #f59e0b;
+  border-color: #f59e0b;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── Light ──────────────────────────────────────────────────────── */
+.tos-btn.btn-light {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+  color: #374151;
+}
+.tos-btn.btn-light:hover:not(:disabled) {
+  background: #e5e7eb;
+}
+
+/* ── Outline variants ───────────────────────────────────────────── */
+.tos-btn.btn-outline-primary {
+  background: transparent;
+  border-color: var(--tos-primary, #4f46e5);
+  color: var(--tos-primary, #4f46e5);
+  font-weight: 600;
+}
+.tos-btn.btn-outline-primary:hover:not(:disabled) {
+  background: rgba(79, 70, 229, 0.06);
+}
+
+.tos-btn.btn-outline-secondary {
+  background: #fff;
+  border-color: #d1d5db;
+  color: #374151;
+}
+.tos-btn.btn-outline-secondary:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.tos-btn.btn-outline-danger {
+  background: transparent;
+  border-color: #ef4444;
+  color: #ef4444;
+  font-weight: 600;
+}
+.tos-btn.btn-outline-danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.06);
+}
+
+/* ── Ghost variants (no border, no bg) ─────────────────────────── */
+.tos-btn.btn-ghost-primary,
+.tos-btn.btn-ghost-primary.btn-primary {
+  background: transparent;
+  border-color: transparent;
+  color: var(--tos-primary, #4f46e5);
+  font-weight: 500;
+}
+.tos-btn.btn-ghost-primary:hover:not(:disabled) {
+  background: rgba(79, 70, 229, 0.08);
+}
+
+.tos-btn.btn-ghost-secondary,
+.tos-btn.btn-ghost-secondary.btn-secondary {
+  background: transparent;
+  border-color: transparent;
+  color: #6b7280;
+}
+.tos-btn.btn-ghost-secondary:hover:not(:disabled) {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.tos-btn.btn-ghost-danger,
+.tos-btn.btn-ghost-danger.btn-danger {
+  background: transparent;
+  border-color: transparent;
+  color: #ef4444;
+}
+.tos-btn.btn-ghost-danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* ── Dark mode ──────────────────────────────────────────────────── */
+[data-coreui-theme="dark"] .tos-btn.btn-secondary,
+[data-coreui-theme="dark"] .tos-btn.btn-outline-secondary {
+  background: var(--tos-card-bg, #1f2937);
+  border-color: #374151;
+  color: #d1d5db;
+}
+[data-coreui-theme="dark"] .tos-btn.btn-secondary:hover:not(:disabled) {
+  background: #374151;
+}
+[data-coreui-theme="dark"] .tos-btn.btn-ghost-secondary {
+  color: #9ca3af;
+}
+[data-coreui-theme="dark"] .tos-btn.btn-ghost-secondary:hover:not(:disabled) {
+  background: #374151;
+  color: #d1d5db;
+}
+[data-coreui-theme="dark"] .tos-btn.btn-light {
+  background: #374151;
+  border-color: #4b5563;
+  color: #d1d5db;
+}

@@ -6,6 +6,7 @@
  */
 import React, { useState } from 'react';
 import { Icon } from '@/shared/components/Icon';
+import { TextField, SelectField, Checkbox } from '@/shared/components';
 import type { UserTypeFieldSchema, FieldType } from '../types/user-type.types';
 import { useRegistrationStore } from '../stores/registration.store';
 import { StepProgress, LoadingBars } from './RegistrationStep1';
@@ -32,30 +33,23 @@ interface FieldRendererProps {
 }
 
 function FieldRenderer({ field, value, error, onChange }: FieldRendererProps) {
-  const inputBase: React.CSSProperties = {
-    width: '100%',
-    padding: '10px var(--tos-spacing-md)',
-    background: 'rgba(255,255,255,0.1)',
-    border: `1px solid ${error ? '#ef4444' : 'rgba(255,255,255,0.2)'}`,
-    borderRadius: 'var(--tos-border-radius)',
-    color: '#ffffff',
-    fontSize: 14,
-    outline: 'none',
-  };
-
   const textTypes: FieldType[] = ['text', 'email', 'url', 'phone'];
 
   // Text / email / url / phone
   if (textTypes.includes(field.fieldType)) {
     return (
-      <input
+      <TextField
         id={`s3-${field.fieldKey}`}
+        label={field.label}
         type={field.fieldType === 'phone' ? 'text' : field.fieldType}
         inputMode={field.fieldType === 'phone' ? 'numeric' : undefined}
         placeholder={field.placeholder ?? ''}
         value={typeof value === 'string' ? value : ''}
         onChange={(e) => onChange(e.target.value)}
-        style={inputBase}
+        variant="outlined"
+        size="sm"
+        error={!!error}
+        helperText={error}
         aria-describedby={field.helpText ? `${field.fieldKey}-help` : undefined}
         aria-invalid={!!error}
       />
@@ -65,13 +59,17 @@ function FieldRenderer({ field, value, error, onChange }: FieldRendererProps) {
   // Number
   if (field.fieldType === 'number') {
     return (
-      <input
+      <TextField
         id={`s3-${field.fieldKey}`}
+        label={field.label}
         type="number"
         placeholder={field.placeholder ?? ''}
         value={typeof value === 'number' ? value : ''}
         onChange={(e) => onChange(e.target.value === '' ? '' : Number(e.target.value))}
-        style={inputBase}
+        variant="outlined"
+        size="sm"
+        error={!!error}
+        helperText={error}
         aria-invalid={!!error}
       />
     );
@@ -80,26 +78,22 @@ function FieldRenderer({ field, value, error, onChange }: FieldRendererProps) {
   // Select
   if (field.fieldType === 'select') {
     return (
-      <select
+      <SelectField
         id={`s3-${field.fieldKey}`}
+        label={field.label}
         value={typeof value === 'string' ? value : ''}
         onChange={(e) => onChange(e.target.value)}
-        style={{ ...inputBase }}
+        variant="outlined"
+        size="sm"
+        error={!!error}
+        helperText={error}
         aria-invalid={!!error}
       >
-        <option value="" style={{ background: '#1a2a3a', color: '#ffffff' }}>
-          — Select —
-        </option>
+        <option value="">— Select —</option>
         {(field.options ?? []).map((opt) => (
-          <option
-            key={opt.value}
-            value={opt.value}
-            style={{ background: '#1a2a3a', color: '#ffffff' }}
-          >
-            {opt.label}
-          </option>
+          <option key={opt.value} value={opt.value}>{opt.label}</option>
         ))}
-      </select>
+      </SelectField>
     );
   }
 
@@ -115,33 +109,24 @@ function FieldRenderer({ field, value, error, onChange }: FieldRendererProps) {
         {(field.options ?? []).map((opt) => {
           const checked = selected.includes(opt.value);
           return (
-            <label
+            <Checkbox
               key={opt.value}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 8,
-                cursor: 'pointer', fontSize: 13, color: 'rgba(255,255,255,0.85)',
+              label={opt.label}
+              checked={checked}
+              onChange={() => {
+                const next = checked
+                  ? selected.filter((v) => v !== opt.value)
+                  : [...selected, opt.value];
+                onChange(next);
               }}
-            >
-              <input
-                type="checkbox"
-                checked={checked}
-                onChange={() => {
-                  const next = checked
-                    ? selected.filter((v) => v !== opt.value)
-                    : [...selected, opt.value];
-                  onChange(next);
-                }}
-                style={{ width: 16, height: 16 }}
-              />
-              {opt.label}
-            </label>
+            />
           );
         })}
       </div>
     );
   }
 
-  // File upload (capture name only)
+  // File upload (capture name only) — kept as raw input per golden rule exception
   if (field.fieldType === 'file_upload') {
     return (
       <input
@@ -151,11 +136,7 @@ function FieldRenderer({ field, value, error, onChange }: FieldRendererProps) {
           const file = e.target.files?.[0];
           onChange(file ? file.name : '');
         }}
-        style={{
-          ...inputBase,
-          padding: '8px',
-          cursor: 'pointer',
-        }}
+        style={{ width: '100%', padding: '8px', cursor: 'pointer' }}
         aria-invalid={!!error}
       />
     );
@@ -164,12 +145,16 @@ function FieldRenderer({ field, value, error, onChange }: FieldRendererProps) {
   // Date
   if (field.fieldType === 'date') {
     return (
-      <input
+      <TextField
         id={`s3-${field.fieldKey}`}
+        label={field.label}
         type="date"
         value={typeof value === 'string' ? value : ''}
         onChange={(e) => onChange(e.target.value)}
-        style={inputBase}
+        variant="outlined"
+        size="sm"
+        error={!!error}
+        helperText={error}
         aria-invalid={!!error}
       />
     );
@@ -178,21 +163,12 @@ function FieldRenderer({ field, value, error, onChange }: FieldRendererProps) {
   // Boolean (single checkbox)
   if (field.fieldType === 'boolean') {
     return (
-      <label
-        style={{
-          display: 'flex', alignItems: 'center', gap: 8,
-          cursor: 'pointer', fontSize: 13, color: 'rgba(255,255,255,0.85)',
-        }}
-      >
-        <input
-          id={`s3-${field.fieldKey}`}
-          type="checkbox"
-          checked={value === true}
-          onChange={(e) => onChange(e.target.checked)}
-          style={{ width: 16, height: 16 }}
-        />
-        {field.label}
-      </label>
+      <Checkbox
+        id={`s3-${field.fieldKey}`}
+        label={field.label}
+        checked={value === true}
+        onChange={(e) => onChange(e.target.checked)}
+      />
     );
   }
 

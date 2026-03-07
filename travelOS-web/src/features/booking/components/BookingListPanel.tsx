@@ -8,6 +8,7 @@ import {
   useConfirmDialog,
   Alert,
   StatCard,
+  TextField,
 } from '@/shared/components';
 import type { DataTableColumn } from '@/shared/components';
 import { useBookings, useCancelBooking } from '../hooks/useBookings';
@@ -191,19 +192,23 @@ export function BookingListPanel({ onView }: BookingListPanelProps) {
 
         {/* Date range */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-          <input
+          <TextField
+            label="From date"
+            variant="outlined"
+            size="sm"
             type="date"
             value={fromDate}
             onChange={(e) => { setFromDate(e.target.value); setPage(1); }}
-            style={{ padding: '0.25rem 0.5rem', borderRadius: '0.375rem', border: '1px solid var(--cui-border-color, #d1d5db)', fontSize: '0.8125rem', color: 'var(--cui-body-color, #374151)', background: 'var(--cui-body-bg, #fff)' }}
             aria-label="From date"
           />
           <span style={{ color: 'var(--tos-secondary, #6b7280)', fontSize: '0.875rem' }}>—</span>
-          <input
+          <TextField
+            label="To date"
+            variant="outlined"
+            size="sm"
             type="date"
             value={toDate}
             onChange={(e) => { setToDate(e.target.value); setPage(1); }}
-            style={{ padding: '0.25rem 0.5rem', borderRadius: '0.375rem', border: '1px solid var(--cui-border-color, #d1d5db)', fontSize: '0.8125rem', color: 'var(--cui-body-color, #374151)', background: 'var(--cui-body-bg, #fff)' }}
             aria-label="To date"
           />
           {(fromDate || toDate) && (

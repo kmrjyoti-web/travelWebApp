@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { DataTable, Alert, Button } from '@/shared/components';
+import { DataTable, Alert, Button, TextField } from '@/shared/components';
 import { useServiceListings, usePublishListing } from '../hooks/useServiceMarketplace';
 import type { ServiceListing, ServiceListingStatus } from '@/shared/services/service-marketplace.service';
 
@@ -72,12 +72,16 @@ export function ListingsPanel({ onCreateNew, onView }: ListingsPanelProps) {
             {t === 'All' ? 'All Types' : t.charAt(0).toUpperCase() + t.slice(1)}
           </button>
         ))}
-        <input
-          placeholder="Filter by destination…"
-          value={destination}
-          onChange={(e) => { setDestination(e.target.value); setPage(1); }}
-          style={{ marginLeft: 'auto', padding: '0.375rem 0.75rem', borderRadius: '0.375rem', border: '1px solid var(--cui-border-color)', fontSize: '0.8125rem', color: 'var(--cui-body-color)', background: 'var(--cui-body-bg, #fff)', width: 200 }}
-        />
+        <div style={{ marginLeft: 'auto', width: 220 }}>
+          <TextField
+            label="Filter by destination"
+            variant="outlined"
+            size="sm"
+            placeholder="Filter by destination…"
+            value={destination}
+            onChange={(e) => { setDestination(e.target.value); setPage(1); }}
+          />
+        </div>
         <Button color="primary" onClick={onCreateNew}>New Listing</Button>
       </div>
 

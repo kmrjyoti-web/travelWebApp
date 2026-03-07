@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Icon } from '@/shared/components/Icon';
+import { TextField } from '@/shared/components';
 
 export const AiItineraryGenerator: React.FC = () => {
   const [prompt, setPrompt] = useState('');
@@ -22,9 +23,10 @@ export const AiItineraryGenerator: React.FC = () => {
         with activities, hotels, and travel logistics.
       </p>
       <div className="tos-ai-generator__form">
-        <input
-          className="tos-ai-generator__input"
-          type="text"
+        <TextField
+          label="Describe your trip"
+          variant="outlined"
+          size="sm"
           placeholder="e.g., A 7-day romantic honeymoon in Bali focusing on beaches and culture..."
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}

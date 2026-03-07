@@ -44,7 +44,7 @@
   padding: 0 8px 0 16px;
   height: 48px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  background: var(--tos-header-bg, #1b6563);
+  background: var(--tos-header-bg, #111827);
   flex-shrink: 0;
   user-select: none;
 }

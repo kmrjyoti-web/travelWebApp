@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { DataTable, SearchInput, ColorBadge, Alert } from '@/shared/components';
+import { DataTable, SearchInput, ColorBadge, Alert, TextField } from '@/shared/components';
 import type { DataTableColumn } from '@/shared/components';
 import { useB2BListings } from '../hooks/useB2B';
 import type { B2BListingRecord, PaginatedResult } from '@/shared/services/b2b.service';
@@ -107,13 +107,16 @@ export function ListingsPanel() {
           />
         </div>
 
-        <input
-          type="text"
-          value={country}
-          onChange={(e) => { setCountry(e.target.value); setPage(1); }}
-          placeholder="Country…"
-          style={{ padding: '0.375rem 0.625rem', borderRadius: '0.375rem', border: '1px solid var(--cui-border-color, #d1d5db)', fontSize: '0.875rem', color: 'var(--cui-body-color, #374151)', background: 'var(--cui-body-bg, #fff)', width: 130 }}
-        />
+        <div style={{ width: 160 }}>
+          <TextField
+            label="Country"
+            variant="outlined"
+            size="sm"
+            value={country}
+            onChange={(e) => { setCountry(e.target.value); setPage(1); }}
+            placeholder="Country…"
+          />
+        </div>
 
         <div style={{ display: 'flex', gap: '0.375rem', flexWrap: 'wrap' }}>
           {STATUS_FILTERS.map(f => (

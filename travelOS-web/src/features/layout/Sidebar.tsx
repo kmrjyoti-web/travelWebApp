@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SearchInput } from "@/shared/components";
 import {
   Search,
   LayoutDashboard,
@@ -211,16 +212,10 @@ export default function Sidebar({ isOpen }: { isOpen: boolean }) {
         <div className="p-2 flex justify-center">
           {effectiveIsOpen ? (
             <div className="relative w-full">
-              <input
-                type="text"
+              <SearchInput
                 placeholder="Type to search"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-black/20 text-white px-3 py-1.5 rounded text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-color)]"
-              />
-              <Search
-                size={14}
-                className="absolute right-3 top-2 text-[var(--icon-color)]"
+                onChange={(v) => setSearchQuery(v)}
               />
             </div>
           ) : (

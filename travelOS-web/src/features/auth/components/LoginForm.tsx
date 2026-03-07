@@ -15,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Icon } from '@/shared/components/Icon';
+import { TextField, Checkbox } from '@/shared/components';
 import { authService } from '@/shared/services/auth.service';
 import type { LoginSuccessResult, LoginBlockedResult } from '@/shared/services/auth.service';
 import { useAuthStore } from '@/shared/stores/auth.store';
@@ -181,68 +182,47 @@ export function LoginForm({ onViewChange }: LoginFormProps) {
 
       {/* Email */}
       <div className="tos-login-field">
-        <label htmlFor="email">Email Address</label>
-        <input
-          id="email"
+        <TextField
+          label="Email Address"
           type="email"
           placeholder="you@company.com"
           autoComplete="email"
-          className={errors.email ? 'tos-error' : ''}
+          variant="outlined"
+          size="sm"
+          error={!!errors.email}
+          helperText={errors.email?.message}
           {...register('email')}
         />
-        {errors.email && (
-          <div className="tos-login-field__error" role="alert">{errors.email.message}</div>
-        )}
       </div>
 
       {/* Password */}
       <div className="tos-login-field">
-        <label htmlFor="password">Password</label>
-        <div style={{ position: 'relative' }}>
-          <input
-            id="password"
-            type={showPassword ? 'text' : 'password'}
-            placeholder="••••••••"
-            autoComplete="current-password"
-            className={errors.password ? 'tos-error' : ''}
-            style={{ paddingRight: 40 }}
-            {...register('password')}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword((s) => !s)}
-            aria-label={showPassword ? 'Hide password' : 'Show password'}
-            style={{
-              position: 'absolute',
-              right: 10,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              background: 'transparent',
-              border: 'none',
-              color: 'rgba(255,255,255,0.5)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Icon name={showPassword ? 'EyeOff' : 'Eye'} size={16} />
-          </button>
-        </div>
-        {errors.password && (
-          <div className="tos-login-field__error" role="alert">{errors.password.message}</div>
-        )}
+        <TextField
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          placeholder="••••••••"
+          autoComplete="current-password"
+          variant="outlined"
+          size="sm"
+          error={!!errors.password}
+          helperText={errors.password?.message}
+          endIcon={showPassword ? 'EyeOff' : 'Eye'}
+          onClickCapture={(e) => {
+            const target = e.target as HTMLElement;
+            if (target.closest('.tos-tf__icon--end')) {
+              setShowPassword((s) => !s);
+            }
+          }}
+          {...register('password')}
+        />
       </div>
 
       {/* Remember me + Forgot password */}
       <div className="tos-login-row">
-        <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
-          <input
-            type="checkbox"
-            {...register('rememberMe')}
-            style={{ width: 14, height: 14 }}
-          />
-          <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)' }}>Remember me</span>
-        </label>
+        <Checkbox
+          label="Remember me"
+          {...register('rememberMe')}
+        />
         <button
           type="button"
           onClick={() => onViewChange('forgot-password')}

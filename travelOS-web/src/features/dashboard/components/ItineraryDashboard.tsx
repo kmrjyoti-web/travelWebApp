@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Icon } from '@/shared/components';
+import { Icon, TextField, SelectField } from '@/shared/components';
 import type { IconName } from '@/shared/components';
 import {
   BarChart,
@@ -117,16 +117,6 @@ const CARD_TITLE: React.CSSProperties = {
   gap: '0.5rem',
 };
 
-const SELECT_STYLE: React.CSSProperties = {
-  background: 'var(--cui-body-bg, #f9fafb)',
-  border: '1px solid var(--cui-border-color, #e5e7eb)',
-  color: 'var(--cui-body-color, #374151)',
-  fontSize: '0.875rem',
-  borderRadius: '0.5rem',
-  padding: '0.375rem 0.5rem',
-  outline: 'none',
-  cursor: 'pointer',
-};
 
 const TOOLTIP_CONTENT_STYLE = {
   borderRadius: '0.5rem',
@@ -181,16 +171,15 @@ export default function ItineraryDashboard({ showAiPrompt = true }: { showAiProm
               Describe your dream trip, and our AI will instantly craft a personalized, day-by-day itinerary complete with activities, hotels, and travel logistics.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-              <div style={{ position: 'relative', flex: '1 1 200px' }}>
-                <div style={{ position: 'absolute', top: 0, bottom: 0, left: '1rem', display: 'flex', alignItems: 'center', pointerEvents: 'none' }}>
-                  <Icon name="MapPin" size={20} style={{ color: 'rgba(216,180,254,.5)' }} />
-                </div>
-                <input
-                  type="text"
+              <div style={{ flex: '1 1 200px' }}>
+                <TextField
+                  label="Describe your trip"
+                  variant="outlined"
+                  size="sm"
+                  startIcon="MapPin"
                   value={aiPrompt}
                   onChange={(e) => setAiPrompt(e.target.value)}
                   placeholder="e.g., A 7-day romantic honeymoon in Bali focusing on beaches and culture..."
-                  style={{ width: '100%', paddingLeft: '3rem', paddingRight: '1rem', paddingTop: '1rem', paddingBottom: '1rem', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.1)', borderRadius: '0.75rem', color: '#fff', outline: 'none', boxSizing: 'border-box' }}
                 />
               </div>
               <button
@@ -340,15 +329,17 @@ export default function ItineraryDashboard({ showAiPrompt = true }: { showAiProm
               <Icon name="Search" size={20} style={{ color: '#6366f1' }} />
               Trending Searches
             </h3>
-            <select
+            <SelectField
+              label="Region"
+              variant="outlined"
+              size="sm"
               value={trendingSearchRegion}
               onChange={(e) => setTrendingSearchRegion(e.target.value as Region)}
-              style={SELECT_STYLE}
             >
               <option value="World">World</option>
               <option value="India">India</option>
               <option value="Other">Other Countries</option>
-            </select>
+            </SelectField>
           </div>
           <div style={{ height: '16rem' }}>
             <ResponsiveContainer width="100%" height="100%">
@@ -375,15 +366,17 @@ export default function ItineraryDashboard({ showAiPrompt = true }: { showAiProm
               <Icon name="MapPin" size={20} style={{ color: '#f97316' }} />
               Trending Visits
             </h3>
-            <select
+            <SelectField
+              label="Region"
+              variant="outlined"
+              size="sm"
               value={trendingVisitRegion}
               onChange={(e) => setTrendingVisitRegion(e.target.value as Region)}
-              style={SELECT_STYLE}
             >
               <option value="World">World</option>
               <option value="India">India</option>
               <option value="Other">Other Countries</option>
-            </select>
+            </SelectField>
           </div>
           <div style={{ height: '16rem' }}>
             <ResponsiveContainer width="100%" height="100%">

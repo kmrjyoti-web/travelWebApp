@@ -1,12 +1,10 @@
 'use client';
-import React, { useRef, useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Icon } from '@/shared/components/Icon';
+import { OTPInput } from '@/shared/components';
 import { authService } from '@/shared/services/auth.service';
 import { useAuthStore } from '@/shared/stores/auth.store';
-import { otpSchema, type OtpFormData } from '../types/auth-form.types';
 import type { LoginView } from '../hooks/useLoginTheme';
 
 interface OtpFormProps {
@@ -20,11 +18,10 @@ const RESEND_SECONDS = 60;
 export function OtpForm({ email, onViewChange }: OtpFormProps) {
   const router = useRouter();
   const { setUser, setTokens } = useAuthStore();
-  const [digits, setDigits] = useState<string[]>(Array(OTP_LENGTH).fill(''));
+  const [otpValue, setOtpValue] = useState('');
   const [resendTimer, setResendTimer] = useState(RESEND_SECONDS);
   const [apiError, setApiError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Resend countdown
   useEffect(() => {
@@ -33,26 +30,6 @@ export function OtpForm({ email, onViewChange }: OtpFormProps) {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
-
-  const handleDigitChange = (i: number, value: string) => {
-    const d = value.replace(/\D/g, '').slice(0, 1);
-    const next = [...digits];
-    next[i] = d;
-    setDigits(next);
-    if (d && i < OTP_LENGTH - 1) {
-      inputRefs.current[i + 1]?.focus();
-    }
-    // Auto-submit when all filled
-    if (next.every(Boolean) && next.join('').length === OTP_LENGTH) {
-      handleSubmit(next.join(''));
-    }
-  };
-
-  const handleKeyDown = (i: number, e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace' && !digits[i] && i > 0) {
-      inputRefs.current[i - 1]?.focus();
-    }
-  };
 
   const handleSubmit = async (otp: string) => {
     setApiError(null);
@@ -74,8 +51,7 @@ export function OtpForm({ email, onViewChange }: OtpFormProps) {
     if (resendTimer > 0) return;
     await authService.sendOtp(email);
     setResendTimer(RESEND_SECONDS);
-    setDigits(Array(OTP_LENGTH).fill(''));
-    inputRefs.current[0]?.focus();
+    setOtpValue('');
   };
 
   return (
@@ -101,33 +77,29 @@ export function OtpForm({ email, onViewChange }: OtpFormProps) {
             fontSize: 13,
             marginBottom: 'var(--tos-spacing-md)',
           }}
+          role="alert"
         >
           {apiError}
         </div>
       )}
 
       <div className="tos-otp-row">
-        {digits.map((d, i) => (
-          <input
-            key={i}
-            ref={(el) => { inputRefs.current[i] = el; }}
-            type="text"
-            inputMode="numeric"
-            maxLength={1}
-            value={d}
-            onChange={(e) => handleDigitChange(i, e.target.value)}
-            onKeyDown={(e) => handleKeyDown(i, e)}
-            className="tos-otp-input"
-            autoFocus={i === 0}
-          />
-        ))}
+        <OTPInput
+          length={OTP_LENGTH}
+          value={otpValue}
+          error={!!apiError}
+          inputSize="md"
+          autoFocus
+          onChange={(val) => setOtpValue(val)}
+          onComplete={(val) => { void handleSubmit(val); }}
+        />
       </div>
 
       <button
         type="button"
         className="tos-login-btn"
-        disabled={isSubmitting || digits.join('').length < OTP_LENGTH}
-        onClick={() => handleSubmit(digits.join(''))}
+        disabled={isSubmitting || otpValue.length < OTP_LENGTH}
+        onClick={() => { void handleSubmit(otpValue); }}
       >
         {isSubmitting ? (
           <Icon name="LoaderCircle" size={16} style={{ animation: 'spin 1s linear infinite' }} />
@@ -145,7 +117,7 @@ export function OtpForm({ email, onViewChange }: OtpFormProps) {
         ) : (
           <button
             type="button"
-            onClick={handleResend}
+            onClick={() => { void handleResend(); }}
             style={{
               background: 'transparent',
               border: 'none',

@@ -1,0 +1,262 @@
+/* ═══════════════════════════════════════════════════════════════
+   TextField — floating label input  prefix: .tos-tf-
+   Variants: outlined | filled | standard
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Root ──────────────────────────────────────────────────────── */
+.tos-tf {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* ── Wrapper (holds icon + input + label) ─────────────────────── */
+.tos-tf__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* ── Native input ─────────────────────────────────────────────── */
+.tos-tf__input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.9rem;
+  font-family: inherit;
+  line-height: 1.5;
+  color: var(--tos-text, #111827);
+  caret-color: var(--tos-primary, #4f46e5);
+  /* Hide placeholder — label acts as placeholder */
+}
+.tos-tf__input::placeholder { color: transparent; }
+/* Show placeholder when: no label, OR label is floated (has-value) and field is focused */
+.tos-tf--no-label .tos-tf__input::placeholder         { color: var(--tos-text-muted, #9ca3af); }
+.tos-tf--has-value .tos-tf__input::placeholder        { color: var(--tos-text-muted, #9ca3af); }
+.tos-tf--focused.tos-tf--has-value .tos-tf__input::placeholder { color: var(--tos-text-muted, #9ca3af); }
+.tos-tf__input::-webkit-search-cancel-button { display: none; }
+
+/* ── Floating label ───────────────────────────────────────────── */
+.tos-tf__label {
+  position: absolute;
+  pointer-events: none;
+  transition: top 0.15s ease, font-size 0.15s ease, color 0.15s ease, transform 0.15s ease, background 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 28px);
+  line-height: 1;
+}
+.tos-tf__required { color: var(--tos-danger, #dc2626); margin-left: 2px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   OUTLINED variant
+   ═══════════════════════════════════════════════════════════════ */
+.tos-tf--outlined .tos-tf__wrapper {
+  border: 1.5px solid var(--tos-input-border, #d1d5db);
+  border-radius: 6px;
+  padding: 0 12px;
+  height: 54px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  background: var(--tos-card-bg, #fff);
+}
+.tos-tf--outlined .tos-tf__input {
+  padding-top: 18px;
+  padding-bottom: 4px;
+}
+/* Label default position — center of the input */
+.tos-tf--outlined .tos-tf__label {
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: var(--tos-text-muted, #6b7280);
+  background: transparent;
+  padding: 0 2px;
+}
+/* Label floated — sits on the top border */
+.tos-tf--outlined.tos-tf--focused .tos-tf__label,
+.tos-tf--outlined.tos-tf--has-value .tos-tf__label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 0.72rem;
+  background: var(--tos-card-bg, #fff);
+  padding: 0 4px;
+  left: 10px;
+}
+.tos-tf--outlined.tos-tf--focused .tos-tf__label { color: var(--tos-primary, #4f46e5); }
+.tos-tf--outlined.tos-tf--focused .tos-tf__wrapper {
+  border-color: var(--tos-primary, #4f46e5);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FILLED variant
+   ═══════════════════════════════════════════════════════════════ */
+.tos-tf--filled .tos-tf__wrapper {
+  background: var(--tos-input-filled-bg, #f3f4f6);
+  border-radius: 6px 6px 0 0;
+  border-bottom: 1.5px solid var(--tos-input-border, #9ca3af);
+  padding: 0 12px;
+  height: 54px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.tos-tf--filled .tos-tf__input {
+  padding-top: 20px;
+  padding-bottom: 4px;
+}
+.tos-tf--filled .tos-tf__label {
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: var(--tos-text-muted, #6b7280);
+}
+.tos-tf--filled.tos-tf--focused .tos-tf__label,
+.tos-tf--filled.tos-tf--has-value .tos-tf__label {
+  top: 12px;
+  transform: none;
+  font-size: 0.72rem;
+}
+.tos-tf--filled.tos-tf--focused .tos-tf__label { color: var(--tos-primary, #4f46e5); }
+.tos-tf--filled.tos-tf--focused .tos-tf__wrapper {
+  border-bottom-color: var(--tos-primary, #4f46e5);
+  background: var(--tos-input-filled-bg-focus, #ebebf8);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STANDARD variant (underline only)
+   ═══════════════════════════════════════════════════════════════ */
+.tos-tf--standard .tos-tf__wrapper {
+  border-bottom: 1.5px solid var(--tos-input-border, #9ca3af);
+  padding: 0 0 4px;
+  height: 48px;
+  transition: border-color 0.15s;
+}
+.tos-tf--standard .tos-tf__input {
+  padding-top: 20px;
+}
+.tos-tf--standard .tos-tf__label {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: var(--tos-text-muted, #6b7280);
+}
+.tos-tf--standard.tos-tf--focused .tos-tf__label,
+.tos-tf--standard.tos-tf--has-value .tos-tf__label {
+  top: 4px;
+  transform: none;
+  font-size: 0.72rem;
+}
+.tos-tf--standard.tos-tf--focused .tos-tf__label { color: var(--tos-primary, #4f46e5); }
+.tos-tf--standard.tos-tf--focused .tos-tf__wrapper { border-bottom-color: var(--tos-primary, #4f46e5); }
+
+/* ── Icons ────────────────────────────────────────────────────── */
+.tos-tf__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tos-text-muted, #6b7280);
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.tos-tf__icon--start { margin-right: 8px; }
+.tos-tf__icon--end   { margin-left:  8px; }
+
+/* Shift label right when start icon present */
+.tos-tf--has-start-icon.tos-tf--outlined .tos-tf__label,
+.tos-tf--has-start-icon.tos-tf--filled   .tos-tf__label { left: 40px; }
+.tos-tf--has-start-icon.tos-tf--outlined.tos-tf--focused .tos-tf__label,
+.tos-tf--has-start-icon.tos-tf--outlined.tos-tf--has-value .tos-tf__label { left: 38px; }
+.tos-tf--has-start-icon.tos-tf--standard .tos-tf__label { left: 30px; }
+
+/* Focused: icon colour matches label */
+.tos-tf--focused .tos-tf__icon { color: var(--tos-primary, #4f46e5); }
+
+/* ── Error state ──────────────────────────────────────────────── */
+.tos-tf--error .tos-tf__label { color: var(--tos-danger, #dc2626) !important; }
+.tos-tf--error.tos-tf--outlined .tos-tf__wrapper { border-color:        var(--tos-danger, #dc2626) !important; box-shadow: none !important; }
+.tos-tf--error.tos-tf--filled   .tos-tf__wrapper { border-bottom-color: var(--tos-danger, #dc2626) !important; }
+.tos-tf--error.tos-tf--standard .tos-tf__wrapper { border-bottom-color: var(--tos-danger, #dc2626) !important; }
+.tos-tf--error .tos-tf__icon { color: var(--tos-danger, #dc2626); }
+
+/* ── Disabled ─────────────────────────────────────────────────── */
+.tos-tf--disabled { opacity: 0.55; pointer-events: none; }
+.tos-tf--disabled.tos-tf--outlined .tos-tf__wrapper {
+  background: var(--tos-input-disabled-bg, #f9fafb);
+  border-style: dashed;
+}
+.tos-tf--disabled.tos-tf--filled .tos-tf__wrapper { opacity: 0.7; }
+
+/* ── Read-only ────────────────────────────────────────────────── */
+.tos-tf--readonly .tos-tf__wrapper { background: var(--tos-input-readonly-bg, #f9fafb); }
+
+/* ── Helper text ──────────────────────────────────────────────── */
+.tos-tf__helper {
+  margin: 4px 0 0;
+  font-size: 0.72rem;
+  color: var(--tos-text-muted, #6b7280);
+  padding-left: 2px;
+  line-height: 1.3;
+}
+.tos-tf--error .tos-tf__helper { color: var(--tos-danger, #dc2626); }
+
+/* ── Textarea adjustments ─────────────────────────────────────── */
+.tos-tf--textarea.tos-tf--outlined .tos-tf__wrapper  { height: auto; padding-top: 0; padding-bottom: 0; }
+.tos-tf--textarea.tos-tf--outlined .tos-tf__label    { top: 14px; transform: none; font-size: 0.9rem; }
+.tos-tf--textarea.tos-tf--outlined.tos-tf--focused .tos-tf__label,
+.tos-tf--textarea.tos-tf--outlined.tos-tf--has-value .tos-tf__label { top: 0; transform: translateY(-50%); }
+
+.tos-tf--textarea.tos-tf--filled  .tos-tf__wrapper   { height: auto; }
+.tos-tf--textarea.tos-tf--filled  .tos-tf__label     { top: 10px; transform: none; }
+.tos-tf--textarea.tos-tf--filled.tos-tf--focused .tos-tf__label,
+.tos-tf--textarea.tos-tf--filled.tos-tf--has-value .tos-tf__label { top: 10px; font-size: 0.68rem; }
+
+.tos-tf--textarea.tos-tf--standard .tos-tf__wrapper  { height: auto; }
+.tos-tf--textarea.tos-tf--standard .tos-tf__label    { top: 10px; transform: none; }
+.tos-tf--textarea.tos-tf--standard.tos-tf--focused .tos-tf__label,
+.tos-tf--textarea.tos-tf--standard.tos-tf--has-value .tos-tf__label { top: 0; transform: none; font-size: 0.72rem; }
+
+/* ── Size sm ──────────────────────────────────────────────────── */
+.tos-tf--sm.tos-tf--outlined .tos-tf__wrapper {
+  height: 42px;
+  padding: 0 10px;
+}
+.tos-tf--sm.tos-tf--filled   .tos-tf__wrapper { height: 42px; padding: 0 10px; }
+.tos-tf--sm.tos-tf--standard .tos-tf__wrapper { height: 38px; padding: 0; }
+
+/* Input: larger text, minimal top offset so text sits centered */
+.tos-tf--sm .tos-tf__input {
+  font-size: 0.9rem;
+  padding-top: 6px;
+  padding-bottom: 0;
+}
+
+/* Label at rest: vertically centered */
+.tos-tf--sm.tos-tf--outlined .tos-tf__label,
+.tos-tf--sm.tos-tf--filled   .tos-tf__label  { font-size: 0.9rem; }
+.tos-tf--sm.tos-tf--standard .tos-tf__label  { font-size: 0.9rem; }
+
+/* Label floated: small, sits on the top border */
+.tos-tf--sm.tos-tf--outlined.tos-tf--focused .tos-tf__label,
+.tos-tf--sm.tos-tf--outlined.tos-tf--has-value .tos-tf__label { font-size: 0.65rem; }
+.tos-tf--sm.tos-tf--filled.tos-tf--focused .tos-tf__label,
+.tos-tf--sm.tos-tf--filled.tos-tf--has-value .tos-tf__label   { font-size: 0.65rem; top: 8px; }
+.tos-tf--sm.tos-tf--standard.tos-tf--focused .tos-tf__label,
+.tos-tf--sm.tos-tf--standard.tos-tf--has-value .tos-tf__label { font-size: 0.65rem; }
+
+/* ── Dark mode ────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .tos-tf--outlined.tos-tf--focused .tos-tf__label,
+  .tos-tf--outlined.tos-tf--has-value .tos-tf__label {
+    background: var(--tos-card-bg, #1f2937);
+  }
+}
+[data-coreui-theme="dark"] .tos-tf--outlined.tos-tf--focused .tos-tf__label,
+[data-coreui-theme="dark"] .tos-tf--outlined.tos-tf--has-value .tos-tf__label {
+  background: var(--tos-card-bg, #1f2937);
+}

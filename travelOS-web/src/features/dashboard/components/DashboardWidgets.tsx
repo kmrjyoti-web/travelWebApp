@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { SelectField } from '@/shared/components';
 import {
   MapPin,
   Star,
@@ -228,16 +229,18 @@ export const TravelAlertsWidget = () => {
           <Bell className="mr-2 text-rose-500" size={20} />
           Travel Alerts & News
         </h3>
-        <select
+        <SelectField
+          label="Region"
+          variant="outlined"
+          size="sm"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-xs rounded-lg focus:ring-rose-500 focus:border-rose-500 block p-1.5 outline-none"
         >
           <option value="All">All Regions</option>
           <option value="Japan">Japan</option>
           <option value="France">France</option>
           <option value="Indonesia">Indonesia</option>
-        </select>
+        </SelectField>
       </div>
       <div className="space-y-3 flex-1 overflow-y-auto pr-2 custom-scrollbar">
         {filteredAlerts.map((alert) => (
@@ -292,32 +295,40 @@ export const WeatherAdvisoryWidget = () => {
       </div>
 
       <div className="flex space-x-2 mb-4">
-        <select
-          value={country}
-          onChange={(e) => { setCountry(e.target.value); setCity(e.target.value === 'Japan' ? 'Tokyo' : 'Paris'); }}
-          className="flex-1 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-xs rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block p-2 outline-none"
-        >
-          <option value="Japan">Japan</option>
-          <option value="France">France</option>
-          <option value="Indonesia">Indonesia</option>
-        </select>
-        <select
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          className="flex-1 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-xs rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block p-2 outline-none"
-        >
-          {isJapan ? (
-            <>
-              <option value="Tokyo">Tokyo</option>
-              <option value="Kyoto">Kyoto</option>
-            </>
-          ) : (
-            <>
-              <option value="Paris">Paris</option>
-              <option value="Lyon">Lyon</option>
-            </>
-          )}
-        </select>
+        <div style={{ flex: 1 }}>
+          <SelectField
+            label="Country"
+            variant="outlined"
+            size="sm"
+            value={country}
+            onChange={(e) => { setCountry(e.target.value); setCity(e.target.value === 'Japan' ? 'Tokyo' : 'Paris'); }}
+          >
+            <option value="Japan">Japan</option>
+            <option value="France">France</option>
+            <option value="Indonesia">Indonesia</option>
+          </SelectField>
+        </div>
+        <div style={{ flex: 1 }}>
+          <SelectField
+            label="City"
+            variant="outlined"
+            size="sm"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+          >
+            {isJapan ? (
+              <>
+                <option value="Tokyo">Tokyo</option>
+                <option value="Kyoto">Kyoto</option>
+              </>
+            ) : (
+              <>
+                <option value="Paris">Paris</option>
+                <option value="Lyon">Lyon</option>
+              </>
+            )}
+          </SelectField>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4 flex-1">
