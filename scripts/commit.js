@@ -7,10 +7,10 @@
  *
  * Auto-detects which folders changed and commits to correct repo:
  *
- *   SharedCore/    → github.com/kmrjyotigit/SHAREDCORE
- *   travelOS-web/  → github.com/kmrjyoti-web/MyNodeProject  [travelOS-web]
- *   products/      → github.com/kmrjyoti-web/MyNodeProject  [products]
- *   root files     → github.com/kmrjyoti-web/MyNodeProject  [root]
+ *   SharedCore/    → github.com/kmrjyoti-web/sharedcode
+ *   travelOS-web/  → github.com/kmrjyoti-web/travelWebApp  [travelOS-web]
+ *   products/      → github.com/kmrjyoti-web/travelWebApp  [products]
+ *   root files     → github.com/kmrjyoti-web/travelWebApp  [root]
  *
  * Both repos get pushed automatically.
  * Notion log entry is printed at the end — copy it to Notion.
@@ -101,7 +101,7 @@ if (changed.sharedCore) {
     runLoud('git add -A', SHAREDCORE);
     runLoud(`git commit -m "${fullMessage}"`, SHAREDCORE);
     runLoud('git push', SHAREDCORE);
-    console.log('✅  SharedCore committed & pushed → github.com/kmrjyotigit/SHAREDCORE\n');
+    console.log('✅  SharedCore committed & pushed → github.com/kmrjyoti-web/sharedcode\n');
   } catch (e) {
     console.error('❌  SharedCore commit failed:', e.message, '\n');
   }
@@ -129,7 +129,7 @@ if (myProjectChanged) {
 
     runLoud(`git commit -m "${commitMsg}"`, ROOT);
     runLoud('git push', ROOT);
-    console.log(`✅  MyNodeProject committed & pushed → github.com/kmrjyoti-web/MyNodeProject\n`);
+    console.log(`✅  MyNodeProject committed & pushed → github.com/kmrjyoti-web/travelWebApp\n`);
   } catch (e) {
     console.error('❌  MyNodeProject commit failed:', e.message, '\n');
   }
@@ -146,12 +146,12 @@ console.log('📋  NOTION LOG — copy this entry:');
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 console.log(`📅  ${dateStr} ${timeStr}`);
 console.log(`💬  ${message}`);
-if (changed.sharedCore)  console.log(`📦  SharedCore  → github.com/kmrjyotigit/SHAREDCORE`);
+if (changed.sharedCore)  console.log(`📦  SharedCore  → github.com/kmrjyoti-web/sharedcode`);
 if (myProjectChanged) {
   const scopes = [];
   if (changed.travelOsWeb) scopes.push('travelOS-web');
   if (changed.products)    scopes.push('products');
   if (changed.root)        scopes.push('root');
-  console.log(`🌐  MyNodeProject [${scopes.join(', ')}] → github.com/kmrjyoti-web/MyNodeProject`);
+  console.log(`🌐  MyNodeProject [${scopes.join(', ')}] → github.com/kmrjyoti-web/travelWebApp`);
 }
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
