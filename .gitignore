@@ -30,5 +30,5 @@ node_modules/
 # Claude memory (local only)
 .claude/
 
-# SharedCore is its own git repo — tracked separately
+# SharedCore has its own git repo → github.com/kmrjyotigit/SHAREDCORE
 SharedCore/

@@ -7,6 +7,7 @@
     "dev:web":     "PORT=9200 npm run dev --prefix travelOS-web",
     "dev:api":     "PORT=9201 npm run dev --workspace=apps/travel-os --prefix SharedCore",
     "stop:all":    "node scripts/dev.js stop",
-    "restart:all": "node scripts/dev.js restart"
+    "restart:all": "node scripts/dev.js restart",
+    "commit": "node scripts/commit.js"
   }
 }
