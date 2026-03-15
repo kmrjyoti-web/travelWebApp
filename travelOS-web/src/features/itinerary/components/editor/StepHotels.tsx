@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { useFormContext, useFieldArray } from 'react-hook-form';
-import { Input, Select, Textarea, Button } from '@/shared/components';
+import { TextField, SelectField, TextareaField, Button } from '@/shared/components';
 import { Icon } from '@/shared/components/Icon';
 import type { FullItineraryFormData } from '../../types/editor.types';
 
@@ -54,11 +54,11 @@ export function StepHotels() {
 
           <div className="tos-form-grid">
             <div className="tos-form-grid__span2">
-              <Input icon="Building2" floatingLabel="Hotel Name *"
+              <TextField startIcon="Building2" label="Hotel Name *" size="xs"
                 {...register(`hotels.${idx}.name`)}
-                errorMessage={errors.hotels?.[idx]?.name?.message} />
+                error={!!errors.hotels?.[idx]?.name} helperText={errors.hotels?.[idx]?.name?.message} />
             </div>
-            <Input icon="MapPin" floatingLabel="Address"
+            <TextField startIcon="MapPin" label="Address" size="xs"
               {...register(`hotels.${idx}.address`)} />
             <div className="tos-star-row">
               <label className="tos-stepper__label">Star Rating</label>
@@ -68,18 +68,18 @@ export function StepHotels() {
                 ))}
               </div>
             </div>
-            <Input icon="Calendar" floatingLabel="Check-In Date" type="date"
+            <TextField startIcon="Calendar" label="Check-In Date" type="date" size="xs"
               {...register(`hotels.${idx}.checkIn`)} />
-            <Input icon="Calendar" floatingLabel="Check-Out Date" type="date"
+            <TextField startIcon="Calendar" label="Check-Out Date" type="date" size="xs"
               {...register(`hotels.${idx}.checkOut`)} />
-            <Select icon="BedDouble" floatingLabel="Room Type"
+            <SelectField label="Room Type" size="xs"
               {...register(`hotels.${idx}.roomType`)}>
               {ROOM_TYPES.map(r => <option key={r} value={r}>{r}</option>)}
-            </Select>
-            <Input icon="DollarSign" floatingLabel="Price / Night (optional)" type="number"
+            </SelectField>
+            <TextField startIcon="DollarSign" label="Price / Night (optional)" type="number" size="xs"
               {...register(`hotels.${idx}.pricePerNight`, { valueAsNumber: true })} />
             <div className="tos-form-grid__span2">
-              <Textarea icon="FileText" floatingLabel="Notes / Amenities"
+              <TextareaField label="Notes / Amenities" size="sm"
                 {...register(`hotels.${idx}.notes`)} />
             </div>
           </div>

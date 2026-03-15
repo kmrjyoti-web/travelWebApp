@@ -54,7 +54,7 @@ function EventModal({
           <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#111827' }}>
             {initial.name ? 'Edit Event' : 'Add Event'}
           </h3>
-          <Button color="secondary" variant="ghost" size="sm" onClick={onClose}
+          <Button color="secondary" variant="ghost" size="xs" onClick={onClose}
             style={{ borderRadius: '50%', width: 28, height: 28, padding: 0 }}>
             <Icon name="X" size={14} />
           </Button>
@@ -64,16 +64,16 @@ function EventModal({
         <div style={{ padding: '1.25rem' }}>
           {/* Category + Name */}
           <div style={g2}>
-            <SelectField label="Category" variant="outlined" size="sm" value={item.category}
+            <SelectField label="Category" variant="outlined" size="xs" value={item.category}
               onChange={(e) => set({ category: e.target.value })}>
               {EVENT_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
             </SelectField>
-            <TextField label="Date" variant="outlined" size="sm" type="date" startIcon="Calendar"
+            <TextField label="Date" variant="outlined" size="xs" type="date" startIcon="Calendar"
               value={item.date} onChange={(e) => set({ date: e.target.value })} />
           </div>
 
           <div style={mb}>
-            <TextField label="Event Name" variant="outlined" size="sm" startIcon="Tag" required
+            <TextField label="Event Name" variant="outlined" size="xs" startIcon="Tag" required
               value={item.name} onChange={(e) => set({ name: e.target.value })} />
           </div>
 
@@ -84,15 +84,15 @@ function EventModal({
 
           {/* Venue + Fee */}
           <div style={g2}>
-            <TextField label="Venue" variant="outlined" size="sm" startIcon="MapPin"
+            <TextField label="Venue" variant="outlined" size="xs" startIcon="MapPin"
               value={item.venue} onChange={(e) => set({ venue: e.target.value })} />
             <div style={{ display: 'flex', gap: 6 }}>
               <div style={{ flex: 1 }}>
-                <TextField label="Entry Fee" variant="outlined" size="sm" type="number" startIcon="DollarSign" min={0}
+                <TextField label="Entry Fee" variant="outlined" size="xs" type="number" startIcon="DollarSign" min={0}
                   value={item.entryFee || ''} onChange={(e) => set({ entryFee: +e.target.value })} />
               </div>
               <div style={{ flex: '0 0 72px' }}>
-                <TextField label="CCY" variant="outlined" size="sm"
+                <TextField label="CCY" variant="outlined" size="xs"
                   value={item.currency} onChange={(e) => set({ currency: e.target.value })} />
               </div>
             </div>
@@ -100,9 +100,9 @@ function EventModal({
 
           {/* Lat / Lng */}
           <div style={{ ...g2, marginBottom: '0.875rem' }}>
-            <TextField label="Latitude" variant="outlined" size="sm" type="number"
+            <TextField label="Latitude" variant="outlined" size="xs" type="number"
               value={item.latitude || ''} onChange={(e) => set({ latitude: +e.target.value })} />
-            <TextField label="Longitude" variant="outlined" size="sm" type="number"
+            <TextField label="Longitude" variant="outlined" size="xs" type="number"
               value={item.longitude || ''} onChange={(e) => set({ longitude: +e.target.value })} />
           </div>
 
@@ -122,11 +122,11 @@ function EventModal({
             </div>
             <div style={{ display: 'flex', gap: 4 }}>
               <div style={{ flex: 1 }}>
-                <TextField label="Add tag and press Enter" variant="outlined" size="sm"
+                <TextField label="Add tag and press Enter" variant="outlined" size="xs"
                   value={tagDraft} onChange={(e) => setTagDraft(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addTag(); } }} />
               </div>
-              <Button size="sm" color="secondary" onClick={addTag} type="button">
+              <Button size="xs" color="secondary" onClick={addTag} type="button">
                 <Icon name="Plus" size={12} />
               </Button>
             </div>
@@ -135,8 +135,8 @@ function EventModal({
 
         {/* Footer */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: '0.875rem 1.25rem', borderTop: '1px solid #e5e7eb' }}>
-          <Button color="secondary" variant="ghost" size="sm" leftIcon="X" onClick={onClose}>Cancel</Button>
-          <Button color="primary" size="sm" leftIcon="Check" disabled={!item.name}
+          <Button color="secondary" variant="ghost" size="xs" leftIcon="X" onClick={onClose}>Cancel</Button>
+          <Button color="primary" size="xs" leftIcon="Check" disabled={!item.name}
             onClick={() => { onSave(item); onClose(); }}>
             Save Event
           </Button>
@@ -153,36 +153,39 @@ function EventModal({
 function EventCard({ item, onEdit, onDelete }: {
   item: LocalEvent; onEdit: () => void; onDelete: () => void;
 }) {
+  const [hovered, setHovered] = useState(false);
   const badgeColor = CATEGORY_COLORS[item.category] ?? '#6b7280';
 
   return (
-    <div style={{ border: '1px solid #e5e7eb', borderRadius: 8, background: '#fff', marginBottom: 8, overflow: 'hidden' }}>
+    <div
+      style={{ border: '1px solid #e5e7eb', borderRadius: 8, background: '#fff', overflow: 'hidden', position: 'relative' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       <div style={{ padding: '0.75rem 0.875rem' }}>
-        {/* Category badge + date */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+        {/* Row 1: Category badge + Event name + date */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 5 }}>
           <span style={{
-            display: 'inline-block', padding: '2px 10px', borderRadius: 4,
+            display: 'inline-block', padding: '2px 8px', borderRadius: 4, flexShrink: 0,
             background: badgeColor, color: '#fff',
-            fontSize: '0.62rem', fontWeight: 800, letterSpacing: '0.07em', textTransform: 'uppercase',
+            fontSize: '0.6rem', fontWeight: 800, letterSpacing: '0.07em', textTransform: 'uppercase',
           }}>
             {item.category}
           </span>
+          <span style={{ fontWeight: 700, fontSize: '0.85rem', color: '#111827', flex: 1, lineHeight: 1.3, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {item.name || <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>Unnamed event</span>}
+          </span>
           {item.date && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.72rem', color: '#6b7280' }}>
-              <Icon name="Calendar" size={11} style={{ color: '#4f46e5' }} />
+            <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: '0.7rem', color: '#6b7280', flexShrink: 0 }}>
+              <Icon name="Calendar" size={10} style={{ color: '#4f46e5' }} />
               {item.date}
             </span>
           )}
         </div>
 
-        {/* Event name */}
-        <p style={{ margin: '0 0 4px', fontWeight: 700, fontSize: '0.875rem', color: '#111827', lineHeight: 1.3 }}>
-          {item.name || <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>Unnamed event</span>}
-        </p>
-
         {/* Venue */}
         {item.venue && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.75rem', color: '#6b7280', marginBottom: 4 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.72rem', color: '#6b7280', marginBottom: 4 }}>
             <Icon name="MapPin" size={11} style={{ flexShrink: 0, color: '#4f46e5' }} />
             {item.venue}
           </div>
@@ -190,43 +193,43 @@ function EventCard({ item, onEdit, onDelete }: {
 
         {/* Description */}
         {item.description && (
-          <p style={{ margin: '4px 0', fontSize: '0.75rem', color: '#6b7280', lineHeight: 1.5 }}>
-            {item.description.length > 100 ? item.description.slice(0, 100) + '…' : item.description}
+          <p style={{ margin: '4px 0', fontSize: '0.72rem', color: '#6b7280', lineHeight: 1.5 }}>
+            {item.description.length > 80 ? item.description.slice(0, 80) + '…' : item.description}
           </p>
         )}
 
         {/* Fee + tags */}
-        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px 12px', marginTop: 6 }}>
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '4px 10px', marginTop: 5 }}>
           {item.entryFee > 0 && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.72rem', color: '#6b7280' }}>
-              <Icon name="DollarSign" size={11} />
+            <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: '0.7rem', color: '#059669', fontWeight: 600 }}>
+              <Icon name="DollarSign" size={10} />
               {item.currency} {item.entryFee}
             </span>
           )}
-          {item.tags.slice(0, 4).map((t) => (
-            <span key={t} style={{ padding: '2px 8px', borderRadius: 20, fontSize: '0.65rem', background: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb' }}>
+          {item.tags.slice(0, 3).map((t) => (
+            <span key={t} style={{ padding: '1px 7px', borderRadius: 20, fontSize: '0.62rem', background: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb' }}>
               {t}
             </span>
           ))}
-          {item.tags.length > 4 && (
-            <span style={{ padding: '2px 8px', borderRadius: 20, fontSize: '0.65rem', background: '#ede9fe', color: '#4f46e5' }}>
-              +{item.tags.length - 4} more
+          {item.tags.length > 3 && (
+            <span style={{ padding: '1px 7px', borderRadius: 20, fontSize: '0.62rem', background: '#ede9fe', color: '#4f46e5' }}>
+              +{item.tags.length - 3}
             </span>
           )}
         </div>
       </div>
 
-      {/* Edit / Delete */}
-      <div style={{ display: 'flex', borderTop: '1px solid #f0f0f0' }}>
-        <Button color="primary" variant="ghost" size="sm" leftIcon="Pencil" onClick={onEdit}
-          style={{ flex: 1, borderRadius: 0, borderRight: '1px solid #f0f0f0', justifyContent: 'center', fontSize: '0.75rem' }}>
-          Edit
-        </Button>
-        <Button color="danger" variant="ghost" size="sm" leftIcon="Trash2" onClick={onDelete}
-          style={{ flex: 1, borderRadius: 0, justifyContent: 'center', fontSize: '0.75rem' }}>
-          Delete
-        </Button>
-      </div>
+      {/* Hover: Edit / Delete */}
+      {hovered && (
+        <div style={{ position: 'absolute', top: 6, right: 6, display: 'flex', gap: 4 }}>
+          <button onClick={onEdit} title="Edit" style={{ width: 26, height: 26, borderRadius: 6, border: '1px solid #c4b5fd', background: '#f5f3ff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#7c3aed' }}>
+            <Icon name="Pencil" size={11} />
+          </button>
+          <button onClick={onDelete} title="Delete" style={{ width: 26, height: 26, borderRadius: 6, border: '1px solid #fecaca', background: '#fef2f2', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+            <Icon name="Trash2" size={11} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -268,16 +271,19 @@ export function SectionLocalEvents() {
         </div>
       )}
 
-      {/* Event cards */}
-      {events.map((event, i) => (
-        <EventCard key={event.id} item={event} onEdit={() => openEdit(i)} onDelete={() => remove(i)} />
-      ))}
+      {/* Event cards — 2 per row */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+        {events.map((event, i) => (
+          <EventCard key={event.id} item={event} onEdit={() => openEdit(i)} onDelete={() => remove(i)} />
+        ))}
+      </div>
 
       {/* Add Event — bottom */}
-      <Button color="primary" variant="outline" size="sm" leftIcon="Plus" onClick={openAdd}
-        style={{ width: '100%', justifyContent: 'center', marginTop: 4 }}>
-        Add Event
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+        <Button color="primary" variant="outline" size="sm" leftIcon="Plus" onClick={openAdd}>
+          Add Event
+        </Button>
+      </div>
 
       {/* Modal */}
       {showModal && (

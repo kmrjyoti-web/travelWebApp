@@ -36,7 +36,7 @@ function ForecastModal({
               {day.theme || 'Untitled Day'}
             </h3>
           </div>
-          <Button color="secondary" variant="ghost" size="sm" onClick={onClose}
+          <Button color="secondary" variant="ghost" size="xs" onClick={onClose}
             style={{ borderRadius: '50%', width: 28, height: 28, padding: 0 }}>
             <Icon name="X" size={14} />
           </Button>
@@ -75,8 +75,8 @@ function ForecastModal({
 
         {/* Footer */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: '0.875rem 1.25rem', borderTop: '1px solid #e5e7eb' }}>
-          <Button color="secondary" variant="ghost" size="sm" leftIcon="X" onClick={onClose}>Cancel</Button>
-          <Button color="primary" size="sm" leftIcon="Check" onClick={() => { onSave(forecast, attire); onClose(); }}>
+          <Button color="secondary" variant="ghost" size="xs" leftIcon="X" onClick={onClose}>Cancel</Button>
+          <Button color="primary" size="xs" leftIcon="Check" onClick={() => { onSave(forecast, attire); onClose(); }}>
             Save
           </Button>
         </div>
@@ -107,14 +107,14 @@ function DayForecastCard({
           <span style={{ color: '#4f46e5', marginRight: 6 }}>Day {day.day}:</span>
           {day.theme || <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>No theme set</span>}
         </p>
-        <Button color="primary" variant="ghost" size="sm" leftIcon="Pencil" onClick={onEdit}
+        <Button color="primary" variant="ghost" size="xs" leftIcon="Pencil" onClick={onEdit}
           style={{ fontSize: '0.72rem', padding: '3px 10px' }}>
           Edit
         </Button>
       </div>
 
-      {/* Forecast + Attire rows */}
-      <div style={{ padding: '0.75rem 0.875rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      {/* Forecast + Attire — 2 columns */}
+      <div style={{ padding: '0.75rem 0.875rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
         {/* Forecast */}
         <div style={{ display: 'flex', gap: 8 }}>
           <span style={{ fontSize: '0.9rem', flexShrink: 0, marginTop: 1 }}>☀️</span>
@@ -128,10 +128,8 @@ function DayForecastCard({
           </div>
         </div>
 
-        <div style={{ borderTop: '1px solid #f0f0f0', margin: '2px 0' }} />
-
         {/* Attire */}
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', gap: 8, borderLeft: '1px solid #f0f0f0', paddingLeft: '0.75rem' }}>
           <Icon name="Shirt" size={14} style={{ color: '#4f46e5', flexShrink: 0, marginTop: 3 }} />
           <div>
             <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: 2 }}>

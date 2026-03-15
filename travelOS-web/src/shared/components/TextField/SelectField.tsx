@@ -10,7 +10,7 @@ export interface SelectFieldProps
   helperText?: string;
   error?: boolean;
   variant?: SelectFieldVariant;
-  size?: 'sm' | 'md';
+  size?: 'xs' | 'sm' | 'md';
   children: React.ReactNode;
 }
 
@@ -46,6 +46,7 @@ export const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(
     const rootClass = [
       'tos-tf',
       `tos-tf--${variant}`,
+      size === 'xs' ? 'tos-tf--xs'       :
       size === 'sm' ? 'tos-tf--sm'       : '',
       focused       ? 'tos-tf--focused'  : '',
       hasValue      ? 'tos-tf--has-value': '',

@@ -13,22 +13,22 @@ function LocationEditor({ title, loc, onChange }: { title: string; loc: Location
       <p style={{ fontWeight: 700, fontSize: '0.875rem', marginBottom: '0.75rem' }}>{title}</p>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
         <div style={{ marginBottom: '0.75rem' }}>
-          <TextField label="City" variant="outlined" size="sm" startIcon="MapPin" value={loc.city} onChange={(e) => onChange({ ...loc, city: e.target.value })} />
+          <TextField label="City" variant="outlined" size="xs" startIcon="MapPin" value={loc.city} onChange={(e) => onChange({ ...loc, city: e.target.value })} />
         </div>
         <div style={{ marginBottom: '0.75rem' }}>
-          <TextField label="Country" variant="outlined" size="sm" startIcon="Globe" value={loc.country} onChange={(e) => onChange({ ...loc, country: e.target.value })} />
+          <TextField label="Country" variant="outlined" size="xs" startIcon="Globe" value={loc.country} onChange={(e) => onChange({ ...loc, country: e.target.value })} />
         </div>
         <div style={{ marginBottom: '0.75rem' }}>
-          <TextField label="Country ISO2" variant="outlined" size="sm" maxLength={2} value={loc.countryIso2} onChange={(e) => onChange({ ...loc, countryIso2: e.target.value.toUpperCase() })} />
+          <TextField label="Country ISO2" variant="outlined" size="xs" maxLength={2} value={loc.countryIso2} onChange={(e) => onChange({ ...loc, countryIso2: e.target.value.toUpperCase() })} />
         </div>
         <div style={{ marginBottom: '0.75rem' }}>
-          <TextField label="Latitude" variant="outlined" size="sm" type="number" value={loc.latitude || ''} onChange={(e) => onChange({ ...loc, latitude: +e.target.value })} />
+          <TextField label="Latitude" variant="outlined" size="xs" type="number" value={loc.latitude || ''} onChange={(e) => onChange({ ...loc, latitude: +e.target.value })} />
         </div>
         <div style={{ marginBottom: '0.75rem' }}>
-          <TextField label="Longitude" variant="outlined" size="sm" type="number" value={loc.longitude || ''} onChange={(e) => onChange({ ...loc, longitude: +e.target.value })} />
+          <TextField label="Longitude" variant="outlined" size="xs" type="number" value={loc.longitude || ''} onChange={(e) => onChange({ ...loc, longitude: +e.target.value })} />
         </div>
         <div style={{ marginBottom: '0.75rem' }}>
-          <TextField label="Timezone" variant="outlined" size="sm" value={loc.timezone} onChange={(e) => onChange({ ...loc, timezone: e.target.value })} />
+          <TextField label="Timezone" variant="outlined" size="xs" value={loc.timezone} onChange={(e) => onChange({ ...loc, timezone: e.target.value })} />
         </div>
       </div>
     </div>
@@ -54,18 +54,18 @@ export function SectionSearchDetails() {
         <p style={{ fontWeight: 700, fontSize: '0.875rem', marginBottom: '0.75rem' }}>Destination Info</p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
           <div style={{ marginBottom: '0.75rem' }}>
-            <TextField label="Destination Country" variant="outlined" size="sm" startIcon="Globe" value={sd.destinationCountry} onChange={(e) => update('searchDetails', { ...sd, destinationCountry: e.target.value })} />
+            <TextField label="Destination Country" variant="outlined" size="xs" startIcon="Globe" value={sd.destinationCountry} onChange={(e) => update('searchDetails', { ...sd, destinationCountry: e.target.value })} />
           </div>
           <div style={{ marginBottom: '0.75rem' }}>
-            <TextField label="Destination City" variant="outlined" size="sm" startIcon="MapPin" value={sd.destinationCity} onChange={(e) => update('searchDetails', { ...sd, destinationCity: e.target.value })} />
+            <TextField label="Destination City" variant="outlined" size="xs" startIcon="MapPin" value={sd.destinationCity} onChange={(e) => update('searchDetails', { ...sd, destinationCity: e.target.value })} />
           </div>
           <div style={{ marginBottom: '0.75rem' }}>
-            <TextField label="Country ISO2" variant="outlined" size="sm" maxLength={2} value={sd.destinationCountryIso2} onChange={(e) => update('searchDetails', { ...sd, destinationCountryIso2: e.target.value.toUpperCase() })} />
+            <TextField label="Country ISO2" variant="outlined" size="xs" maxLength={2} value={sd.destinationCountryIso2} onChange={(e) => update('searchDetails', { ...sd, destinationCountryIso2: e.target.value.toUpperCase() })} />
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
           <div style={{ marginBottom: '0.75rem' }}>
-            <TextField label="Theme / Category" variant="outlined" size="sm" startIcon="Tag" value={sd.theme} onChange={(e) => update('searchDetails', { ...sd, theme: e.target.value })} />
+            <TextField label="Theme / Category" variant="outlined" size="xs" startIcon="Tag" value={sd.theme} onChange={(e) => update('searchDetails', { ...sd, theme: e.target.value })} />
           </div>
           <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-end', paddingBottom: 4 }}>
             <Checkbox label="Featured Package" checked={sd.isFeatured} onChange={(e) => update('searchDetails', { ...sd, isFeatured: e.target.checked })} />
@@ -91,11 +91,11 @@ export function SectionSearchDetails() {
         </div>
         <div style={{ display: 'flex', gap: 6 }}>
           <div style={{ flex: 1 }}>
-            <TextField label="Add keyword" variant="outlined" size="sm" startIcon="Search" value={kwDraft}
+            <TextField label="Add keyword" variant="outlined" size="xs" startIcon="Search" value={kwDraft}
               onChange={(e) => setKwDraft(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addKeyword(); } }} />
           </div>
-          <Button size="sm" color="secondary" onClick={addKeyword} type="button"><Icon name="Plus" size={12} /> Add</Button>
+          <Button size="xs" color="secondary" onClick={addKeyword} type="button"><Icon name="Plus" size={12} /> Add</Button>
         </div>
       </div>
     </div>

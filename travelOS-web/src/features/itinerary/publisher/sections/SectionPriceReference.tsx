@@ -44,7 +44,7 @@ export function SectionPriceReference() {
       {/* Price Tiers */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
         <span style={{ fontWeight: 700, fontSize: '0.875rem' }}>Price Tiers ({pr.tiers.length})</span>
-        <Button color="primary" size="sm" onClick={addTier}><Icon name="Plus" size={14} /> Add Tier</Button>
+        <Button color="primary" size="xs" onClick={addTier}><Icon name="Plus" size={14} /> Add Tier</Button>
       </div>
 
       {pr.tiers.length === 0 && (
@@ -58,10 +58,10 @@ export function SectionPriceReference() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
             <div style={{ display: 'flex', gap: 8, alignItems: 'center', flex: 1 }}>
               <div style={{ flex: '0 0 150px' }}>
-                <TextField label="Tier Name" variant="outlined" size="sm" startIcon="Tag" value={tier.label} onChange={(e) => updateTier(i, { ...tier, label: e.target.value })} />
+                <TextField label="Tier Name" variant="outlined" size="xs" startIcon="Tag" value={tier.label} onChange={(e) => updateTier(i, { ...tier, label: e.target.value })} />
               </div>
               <div style={{ flex: '0 0 150px' }}>
-                <SelectField label="Price Type" variant="outlined" size="sm" value={tier.priceType} onChange={(e) => updateTier(i, { ...tier, priceType: e.target.value as PriceType })}>
+                <SelectField label="Price Type" variant="outlined" size="xs" value={tier.priceType} onChange={(e) => updateTier(i, { ...tier, priceType: e.target.value as PriceType })}>
                   {PRICE_TYPES.map((p) => <option key={p.value} value={p.value}>{p.label}</option>)}
                 </SelectField>
               </div>
@@ -74,25 +74,25 @@ export function SectionPriceReference() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr', gap: 8 }}>
             <div style={{ marginBottom: '0.75rem' }}>
-              <TextField label="Selling Price" variant="outlined" size="sm" type="number" startIcon="DollarSign" min={0} value={tier.sellingPrice || ''} onChange={(e) => updateTier(i, { ...tier, sellingPrice: +e.target.value })} />
+              <TextField label="Selling Price" variant="outlined" size="xs" type="number" startIcon="DollarSign" min={0} value={tier.sellingPrice || ''} onChange={(e) => updateTier(i, { ...tier, sellingPrice: +e.target.value })} />
             </div>
             <div style={{ marginBottom: '0.75rem' }}>
-              <TextField label="Was Price" variant="outlined" size="sm" type="number" startIcon="DollarSign" min={0} value={tier.wasPrice || ''} onChange={(e) => updateTier(i, { ...tier, wasPrice: +e.target.value })} />
+              <TextField label="Was Price" variant="outlined" size="xs" type="number" startIcon="DollarSign" min={0} value={tier.wasPrice || ''} onChange={(e) => updateTier(i, { ...tier, wasPrice: +e.target.value })} />
             </div>
             <div style={{ marginBottom: '0.75rem' }}>
-              <SelectField label="Currency" variant="outlined" size="sm" value={tier.currency} onChange={(e) => updateTier(i, { ...tier, currency: e.target.value })}>
+              <SelectField label="Currency" variant="outlined" size="xs" value={tier.currency} onChange={(e) => updateTier(i, { ...tier, currency: e.target.value })}>
                 {CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
               </SelectField>
             </div>
             <div style={{ marginBottom: '0.75rem' }}>
-              <TextField label="Min Pax" variant="outlined" size="sm" type="number" min={1} value={tier.minPax} onChange={(e) => updateTier(i, { ...tier, minPax: +e.target.value })} />
+              <TextField label="Min Pax" variant="outlined" size="xs" type="number" min={1} value={tier.minPax} onChange={(e) => updateTier(i, { ...tier, minPax: +e.target.value })} />
             </div>
             <div style={{ marginBottom: '0.75rem' }}>
-              <TextField label="Max Pax" variant="outlined" size="sm" type="number" min={1} value={tier.maxPax} onChange={(e) => updateTier(i, { ...tier, maxPax: +e.target.value })} />
+              <TextField label="Max Pax" variant="outlined" size="xs" type="number" min={1} value={tier.maxPax} onChange={(e) => updateTier(i, { ...tier, maxPax: +e.target.value })} />
             </div>
           </div>
           <div style={{ marginBottom: '0.75rem' }}>
-            <TextField label="Description" variant="outlined" size="sm" startIcon="FileText" value={tier.description} onChange={(e) => updateTier(i, { ...tier, description: e.target.value })} />
+            <TextField label="Description" variant="outlined" size="xs" startIcon="FileText" value={tier.description} onChange={(e) => updateTier(i, { ...tier, description: e.target.value })} />
           </div>
         </div>
       ))}
@@ -145,33 +145,33 @@ export function SectionPriceReference() {
                     </td>
                     {/* Sale Price */}
                     <td style={{ padding: '0.4rem 0.5rem', borderBottom: '1px solid #f0f0f0' }}>
-                      <TextField type="number" size="sm" variant="outlined" placeholder="0.00" min={0} value={row.salePrice || ''} disabled={!row.enabled} onChange={(e) => setRow({ salePrice: +e.target.value })} />
+                      <TextField type="number" size="xs" variant="outlined" placeholder="0.00" min={0} value={row.salePrice || ''} disabled={!row.enabled} onChange={(e) => setRow({ salePrice: +e.target.value })} />
                     </td>
                     {/* Discount Price */}
                     <td style={{ padding: '0.4rem 0.5rem', borderBottom: '1px solid #f0f0f0' }}>
-                      <TextField type="number" size="sm" variant="outlined" placeholder="0.00" min={0} value={row.discountPrice || ''} disabled={!row.enabled} onChange={(e) => setRow({ discountPrice: +e.target.value })} />
+                      <TextField type="number" size="xs" variant="outlined" placeholder="0.00" min={0} value={row.discountPrice || ''} disabled={!row.enabled} onChange={(e) => setRow({ discountPrice: +e.target.value })} />
                     </td>
                     {/* Budget Min */}
                     <td style={{ padding: '0.4rem 0.5rem', borderBottom: '1px solid #f0f0f0' }}>
-                      <TextField type="number" size="sm" variant="outlined" placeholder="0" min={0} value={row.budgetMin || ''} disabled={!row.enabled} onChange={(e) => setRow({ budgetMin: +e.target.value })} />
+                      <TextField type="number" size="xs" variant="outlined" placeholder="0" min={0} value={row.budgetMin || ''} disabled={!row.enabled} onChange={(e) => setRow({ budgetMin: +e.target.value })} />
                     </td>
                     {/* Budget Max */}
                     <td style={{ padding: '0.4rem 0.5rem', borderBottom: '1px solid #f0f0f0' }}>
-                      <TextField type="number" size="sm" variant="outlined" placeholder="0" min={0} value={row.budgetMax || ''} disabled={!row.enabled} onChange={(e) => setRow({ budgetMax: +e.target.value })} />
+                      <TextField type="number" size="xs" variant="outlined" placeholder="0" min={0} value={row.budgetMax || ''} disabled={!row.enabled} onChange={(e) => setRow({ budgetMax: +e.target.value })} />
                     </td>
                     {/* Base Currency */}
                     <td style={{ padding: '0.4rem 0.5rem', borderBottom: '1px solid #f0f0f0' }}>
-                      <SelectField size="sm" variant="outlined" value={row.baseCurrency} disabled={!row.enabled} onChange={(e) => setRow({ baseCurrency: e.target.value })}>
+                      <SelectField size="xs" variant="outlined" value={row.baseCurrency} disabled={!row.enabled} onChange={(e) => setRow({ baseCurrency: e.target.value })}>
                         {CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
                       </SelectField>
                     </td>
                     {/* Tax */}
                     <td style={{ padding: '0.4rem 0.5rem', borderBottom: '1px solid #f0f0f0' }}>
-                      <TextField type="number" size="sm" variant="outlined" placeholder="0" min={0} max={100} endIcon="Percent" value={row.tax || ''} disabled={!row.enabled} onChange={(e) => setRow({ tax: +e.target.value })} />
+                      <TextField type="number" size="xs" variant="outlined" placeholder="0" min={0} max={100} endIcon="Percent" value={row.tax || ''} disabled={!row.enabled} onChange={(e) => setRow({ tax: +e.target.value })} />
                     </td>
                     {/* Max Discount */}
                     <td style={{ padding: '0.4rem 0.5rem', borderBottom: '1px solid #f0f0f0' }}>
-                      <TextField type="number" size="sm" variant="outlined" placeholder="0" min={0} max={100} endIcon="Percent" value={row.maxDiscount || ''} disabled={!row.enabled} onChange={(e) => setRow({ maxDiscount: +e.target.value })} />
+                      <TextField type="number" size="xs" variant="outlined" placeholder="0" min={0} max={100} endIcon="Percent" value={row.maxDiscount || ''} disabled={!row.enabled} onChange={(e) => setRow({ maxDiscount: +e.target.value })} />
                     </td>
                   </tr>
                 );
@@ -186,10 +186,10 @@ export function SectionPriceReference() {
         <p style={{ fontWeight: 700, fontSize: '0.875rem', marginBottom: '0.75rem' }}>Pricing Rules</p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
           <div style={{ marginBottom: '0.75rem' }}>
-            <TextField label="Markup %" variant="outlined" size="sm" type="number" min={0} max={100} value={pr.markup} onChange={(e) => update('priceReference', { ...pr, markup: +e.target.value })} />
+            <TextField label="Markup %" variant="outlined" size="xs" type="number" min={0} max={100} value={pr.markup} onChange={(e) => update('priceReference', { ...pr, markup: +e.target.value })} />
           </div>
           <div style={{ marginBottom: '0.75rem' }}>
-            <TextField label="Tax %" variant="outlined" size="sm" type="number" min={0} max={100} value={pr.taxPercentage} onChange={(e) => update('priceReference', { ...pr, taxPercentage: +e.target.value })} />
+            <TextField label="Tax %" variant="outlined" size="xs" type="number" min={0} max={100} value={pr.taxPercentage} onChange={(e) => update('priceReference', { ...pr, taxPercentage: +e.target.value })} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6, justifyContent: 'flex-end' }}>
             <Checkbox label="Show Markup to Customer" checked={pr.showMarkup} onChange={(e) => update('priceReference', { ...pr, showMarkup: e.target.checked })} />

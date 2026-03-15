@@ -6,3 +6,24 @@ agent@travelos.com	Password@123	AGENT
 vikram@example.com	Password@123	CUSTOMER
 Scalar API Docs
 http://localhost:3500/docs (make sure the API server is running)
+
+notion syc
+
+
+Password reset done. You have 13 TravelOS users — all with password Password@123:
+
+Email	Role
+superadmin@travelos.com	PLATFORM_ADMIN
+admin@travelos.com	ADMIN
+developer@travelos.com	ADMIN
+support@travelos.com	ADMIN
+verifier@travelos.com	ADMIN
+agent@travelos.com	AGENT_OWNER
+dmc@travelos.com	DMC_OWNER
+influencer@travelos.com	AGENT
+provider@travelos.com	AGENT
+customer@travelos.com	CUSTOMER
+vikram@example.com	CUSTOMER
+priya@example.com	CUSTOMER
+rahul@example.com	CUSTOMER
+Try login again: admin@travelos.com / Password@123

@@ -50,7 +50,7 @@ export function SectionItineraryMapping() {
         {mapping.enableMap && (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
             <div style={{ marginBottom: '0.75rem' }}>
-              <SelectField label="Map Style" variant="outlined" size="sm" value={mapping.mapStyle} onChange={(e) => set({ mapStyle: e.target.value as ItineraryMapping['mapStyle'] })}>
+              <SelectField label="Map Style" variant="outlined" size="xs" value={mapping.mapStyle} onChange={(e) => set({ mapStyle: e.target.value as ItineraryMapping['mapStyle'] })}>
                 {MAP_STYLES.map((s) => <option key={s} value={s} style={{ textTransform: 'capitalize' }}>{s}</option>)}
               </SelectField>
             </div>
@@ -72,11 +72,11 @@ export function SectionItineraryMapping() {
             <span style={{ fontWeight: 700, fontSize: '0.875rem' }}>Waypoints ({mapping.waypoints.length})</span>
             <div style={{ display: 'flex', gap: 8 }}>
               {daily.days.length > 0 && (
-                <Button size="sm" color="secondary" onClick={autoPopulate}>
+                <Button size="xs" color="secondary" onClick={autoPopulate}>
                   <Icon name="Sparkles" size={12} /> Auto-populate from Itinerary
                 </Button>
               )}
-              <Button size="sm" color="primary" onClick={addWaypoint}><Icon name="Plus" size={12} /> Add Waypoint</Button>
+              <Button size="xs" color="primary" onClick={addWaypoint}><Icon name="Plus" size={12} /> Add Waypoint</Button>
             </div>
           </div>
 
@@ -90,18 +90,18 @@ export function SectionItineraryMapping() {
             <div key={i} style={{ border: '1px solid var(--cui-border-color)', borderRadius: 8, padding: '0.75rem', marginBottom: '0.5rem', background: 'var(--cui-card-bg, #fff)', display: 'grid', gridTemplateColumns: 'auto 2fr 1fr 1fr 1fr auto', gap: 8, alignItems: 'end' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 28, height: 28, background: 'var(--cui-primary, #1B4F72)', color: '#fff', borderRadius: '50%', fontSize: '0.75rem', fontWeight: 700, marginBottom: 2 }}>{wp.order}</div>
               <div style={{ marginBottom: '0.75rem' }}>
-                <TextField label="Label" variant="outlined" size="sm" startIcon="Tag" value={wp.label} onChange={(e) => updateWp(i, { ...wp, label: e.target.value })} />
+                <TextField label="Label" variant="outlined" size="xs" startIcon="Tag" value={wp.label} onChange={(e) => updateWp(i, { ...wp, label: e.target.value })} />
               </div>
               <div style={{ marginBottom: '0.75rem' }}>
-                <SelectField label="Day" variant="outlined" size="sm" value={wp.day} onChange={(e) => updateWp(i, { ...wp, day: +e.target.value })}>
+                <SelectField label="Day" variant="outlined" size="xs" value={wp.day} onChange={(e) => updateWp(i, { ...wp, day: +e.target.value })}>
                   {daily.days.length > 0 ? daily.days.map((d) => <option key={d.day} value={d.day}>Day {d.day}</option>) : <option value={1}>Day 1</option>}
                 </SelectField>
               </div>
               <div style={{ marginBottom: '0.75rem' }}>
-                <TextField label="Latitude" variant="outlined" size="sm" type="number" step={0.000001} value={wp.latitude || ''} onChange={(e) => updateWp(i, { ...wp, latitude: +e.target.value })} />
+                <TextField label="Latitude" variant="outlined" size="xs" type="number" step={0.000001} value={wp.latitude || ''} onChange={(e) => updateWp(i, { ...wp, latitude: +e.target.value })} />
               </div>
               <div style={{ marginBottom: '0.75rem' }}>
-                <TextField label="Longitude" variant="outlined" size="sm" type="number" step={0.000001} value={wp.longitude || ''} onChange={(e) => updateWp(i, { ...wp, longitude: +e.target.value })} />
+                <TextField label="Longitude" variant="outlined" size="xs" type="number" step={0.000001} value={wp.longitude || ''} onChange={(e) => updateWp(i, { ...wp, longitude: +e.target.value })} />
               </div>
               <button type="button" onClick={() => removeWp(i)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: 4, marginBottom: 2 }}><Icon name="Trash2" size={15} /></button>
             </div>

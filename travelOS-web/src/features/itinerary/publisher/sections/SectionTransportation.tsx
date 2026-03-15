@@ -26,7 +26,7 @@ function ModalShell({ title, onClose, onSave, saveDisabled, children }: {
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1.25rem', borderBottom: '1px solid #e5e7eb' }}>
           <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#111827' }}>{title}</h3>
-          <Button color="secondary" variant="ghost" size="sm" onClick={onClose} style={{ borderRadius: '50%', width: 28, height: 28, padding: 0 }}>
+          <Button color="secondary" variant="ghost" size="xs" onClick={onClose} style={{ borderRadius: '50%', width: 28, height: 28, padding: 0 }}>
             <Icon name="X" size={14} />
           </Button>
         </div>
@@ -34,8 +34,8 @@ function ModalShell({ title, onClose, onSave, saveDisabled, children }: {
         <div style={{ padding: '1.25rem' }}>{children}</div>
         {/* Footer */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: '0.875rem 1.25rem', borderTop: '1px solid #e5e7eb' }}>
-          <Button color="secondary" variant="ghost" size="sm" leftIcon="X" onClick={onClose}>Cancel</Button>
-          <Button color="primary" size="sm" leftIcon="Check" disabled={saveDisabled} onClick={onSave}>Save</Button>
+          <Button color="secondary" variant="ghost" size="xs" leftIcon="X" onClick={onClose}>Cancel</Button>
+          <Button color="primary" size="xs" leftIcon="Check" disabled={saveDisabled} onClick={onSave}>Save</Button>
         </div>
       </div>
     </div>
@@ -57,27 +57,27 @@ function FlightModal({ initial, onSave, onClose }: { initial: FlightSegment; onS
       saveDisabled={!item.airline && !item.flightNumber}
       onSave={() => { onSave(item); onClose(); }}>
       <div style={g3}>
-        <TextField label="Airline" variant="outlined" size="sm" startIcon="Tag" value={item.airline} onChange={(e) => set({ airline: e.target.value })} />
-        <TextField label="Flight No." variant="outlined" size="sm" value={item.flightNumber} onChange={(e) => set({ flightNumber: e.target.value })} />
-        <SelectField label="Class" variant="outlined" size="sm" value={item.classType} onChange={(e) => set({ classType: e.target.value })}>
+        <TextField label="Airline" variant="outlined" size="xs" startIcon="Tag" value={item.airline} onChange={(e) => set({ airline: e.target.value })} />
+        <TextField label="Flight No." variant="outlined" size="xs" value={item.flightNumber} onChange={(e) => set({ flightNumber: e.target.value })} />
+        <SelectField label="Class" variant="outlined" size="xs" value={item.classType} onChange={(e) => set({ classType: e.target.value })}>
           {FLIGHT_CLASSES.map((c) => <option key={c} value={c}>{c}</option>)}
         </SelectField>
       </div>
       <div style={g2}>
-        <TextField label="From" variant="outlined" size="sm" startIcon="MapPin" value={item.from} onChange={(e) => set({ from: e.target.value })} />
-        <TextField label="To" variant="outlined" size="sm" startIcon="MapPin" value={item.to} onChange={(e) => set({ to: e.target.value })} />
+        <TextField label="From" variant="outlined" size="xs" startIcon="MapPin" value={item.from} onChange={(e) => set({ from: e.target.value })} />
+        <TextField label="To" variant="outlined" size="xs" startIcon="MapPin" value={item.to} onChange={(e) => set({ to: e.target.value })} />
       </div>
       <div style={g3}>
-        <TextField label="Departure Date" variant="outlined" size="sm" type="date" startIcon="Calendar" value={item.departureDate} onChange={(e) => set({ departureDate: e.target.value })} />
-        <TextField label="Dep Time" variant="outlined" size="sm" type="time" value={item.departureTime} onChange={(e) => set({ departureTime: e.target.value })} />
-        <TextField label="Arr Time" variant="outlined" size="sm" type="time" value={item.arrivalTime} onChange={(e) => set({ arrivalTime: e.target.value })} />
+        <TextField label="Departure Date" variant="outlined" size="xs" type="date" startIcon="Calendar" value={item.departureDate} onChange={(e) => set({ departureDate: e.target.value })} />
+        <TextField label="Dep Time" variant="outlined" size="xs" type="time" value={item.departureTime} onChange={(e) => set({ departureTime: e.target.value })} />
+        <TextField label="Arr Time" variant="outlined" size="xs" type="time" value={item.arrivalTime} onChange={(e) => set({ arrivalTime: e.target.value })} />
       </div>
       <div style={{ display: 'flex', gap: '0.75rem', ...mb }}>
         <div style={{ flex: 1 }}>
-          <TextField label="Price" variant="outlined" size="sm" type="number" startIcon="DollarSign" min={0} value={item.price || ''} onChange={(e) => set({ price: +e.target.value })} />
+          <TextField label="Price" variant="outlined" size="xs" type="number" startIcon="DollarSign" min={0} value={item.price || ''} onChange={(e) => set({ price: +e.target.value })} />
         </div>
         <div style={{ flex: '0 0 72px' }}>
-          <TextField label="CCY" variant="outlined" size="sm" value={item.currency} onChange={(e) => set({ currency: e.target.value })} />
+          <TextField label="CCY" variant="outlined" size="xs" value={item.currency} onChange={(e) => set({ currency: e.target.value })} />
         </div>
       </div>
       <TextareaField label="Notes" variant="outlined" size="sm" minRows={2} value={item.notes} onChange={(e) => set({ notes: e.target.value })} />
@@ -98,27 +98,27 @@ function TrainModal({ initial, onSave, onClose }: { initial: TrainSegment; onSav
       saveDisabled={!item.trainName && !item.trainNumber}
       onSave={() => { onSave(item); onClose(); }}>
       <div style={g3}>
-        <TextField label="Train Name" variant="outlined" size="sm" startIcon="Tag" value={item.trainName} onChange={(e) => set({ trainName: e.target.value })} />
-        <TextField label="Train No." variant="outlined" size="sm" value={item.trainNumber} onChange={(e) => set({ trainNumber: e.target.value })} />
-        <SelectField label="Class" variant="outlined" size="sm" value={item.classType} onChange={(e) => set({ classType: e.target.value })}>
+        <TextField label="Train Name" variant="outlined" size="xs" startIcon="Tag" value={item.trainName} onChange={(e) => set({ trainName: e.target.value })} />
+        <TextField label="Train No." variant="outlined" size="xs" value={item.trainNumber} onChange={(e) => set({ trainNumber: e.target.value })} />
+        <SelectField label="Class" variant="outlined" size="xs" value={item.classType} onChange={(e) => set({ classType: e.target.value })}>
           {TRAIN_CLASSES.map((c) => <option key={c} value={c}>{c}</option>)}
         </SelectField>
       </div>
       <div style={g2}>
-        <TextField label="From" variant="outlined" size="sm" startIcon="MapPin" value={item.from} onChange={(e) => set({ from: e.target.value })} />
-        <TextField label="To" variant="outlined" size="sm" startIcon="MapPin" value={item.to} onChange={(e) => set({ to: e.target.value })} />
+        <TextField label="From" variant="outlined" size="xs" startIcon="MapPin" value={item.from} onChange={(e) => set({ from: e.target.value })} />
+        <TextField label="To" variant="outlined" size="xs" startIcon="MapPin" value={item.to} onChange={(e) => set({ to: e.target.value })} />
       </div>
       <div style={g3}>
-        <TextField label="Departure Date" variant="outlined" size="sm" type="date" startIcon="Calendar" value={item.departureDate} onChange={(e) => set({ departureDate: e.target.value })} />
-        <TextField label="Dep Time" variant="outlined" size="sm" type="time" value={item.departureTime} onChange={(e) => set({ departureTime: e.target.value })} />
-        <TextField label="Arr Time" variant="outlined" size="sm" type="time" value={item.arrivalTime} onChange={(e) => set({ arrivalTime: e.target.value })} />
+        <TextField label="Departure Date" variant="outlined" size="xs" type="date" startIcon="Calendar" value={item.departureDate} onChange={(e) => set({ departureDate: e.target.value })} />
+        <TextField label="Dep Time" variant="outlined" size="xs" type="time" value={item.departureTime} onChange={(e) => set({ departureTime: e.target.value })} />
+        <TextField label="Arr Time" variant="outlined" size="xs" type="time" value={item.arrivalTime} onChange={(e) => set({ arrivalTime: e.target.value })} />
       </div>
       <div style={{ display: 'flex', gap: '0.75rem', ...mb }}>
         <div style={{ flex: 1 }}>
-          <TextField label="Price" variant="outlined" size="sm" type="number" startIcon="DollarSign" min={0} value={item.price || ''} onChange={(e) => set({ price: +e.target.value })} />
+          <TextField label="Price" variant="outlined" size="xs" type="number" startIcon="DollarSign" min={0} value={item.price || ''} onChange={(e) => set({ price: +e.target.value })} />
         </div>
         <div style={{ flex: '0 0 72px' }}>
-          <TextField label="CCY" variant="outlined" size="sm" value={item.currency} onChange={(e) => set({ currency: e.target.value })} />
+          <TextField label="CCY" variant="outlined" size="xs" value={item.currency} onChange={(e) => set({ currency: e.target.value })} />
         </div>
       </div>
       <TextareaField label="Notes" variant="outlined" size="sm" minRows={2} value={item.notes} onChange={(e) => set({ notes: e.target.value })} />
@@ -138,19 +138,19 @@ function OtherModal({ initial, onSave, onClose }: { initial: OtherTransport; onS
       saveDisabled={!item.type}
       onSave={() => { onSave(item); onClose(); }}>
       <div style={g2}>
-        <TextField label="Transport Type" variant="outlined" size="sm" startIcon="Tag" required value={item.type} onChange={(e) => set({ type: e.target.value })} />
-        <TextField label="Date" variant="outlined" size="sm" type="date" startIcon="Calendar" value={item.date} onChange={(e) => set({ date: e.target.value })} />
+        <TextField label="Transport Type" variant="outlined" size="xs" startIcon="Tag" required value={item.type} onChange={(e) => set({ type: e.target.value })} />
+        <TextField label="Date" variant="outlined" size="xs" type="date" startIcon="Calendar" value={item.date} onChange={(e) => set({ date: e.target.value })} />
       </div>
       <div style={g2}>
-        <TextField label="From" variant="outlined" size="sm" startIcon="MapPin" value={item.from} onChange={(e) => set({ from: e.target.value })} />
-        <TextField label="To" variant="outlined" size="sm" startIcon="MapPin" value={item.to} onChange={(e) => set({ to: e.target.value })} />
+        <TextField label="From" variant="outlined" size="xs" startIcon="MapPin" value={item.from} onChange={(e) => set({ from: e.target.value })} />
+        <TextField label="To" variant="outlined" size="xs" startIcon="MapPin" value={item.to} onChange={(e) => set({ to: e.target.value })} />
       </div>
       <div style={{ display: 'flex', gap: '0.75rem', ...mb }}>
         <div style={{ flex: 1 }}>
-          <TextField label="Price" variant="outlined" size="sm" type="number" startIcon="DollarSign" min={0} value={item.price || ''} onChange={(e) => set({ price: +e.target.value })} />
+          <TextField label="Price" variant="outlined" size="xs" type="number" startIcon="DollarSign" min={0} value={item.price || ''} onChange={(e) => set({ price: +e.target.value })} />
         </div>
         <div style={{ flex: '0 0 72px' }}>
-          <TextField label="CCY" variant="outlined" size="sm" value={item.currency} onChange={(e) => set({ currency: e.target.value })} />
+          <TextField label="CCY" variant="outlined" size="xs" value={item.currency} onChange={(e) => set({ currency: e.target.value })} />
         </div>
       </div>
       <div style={mb}>
@@ -167,19 +167,32 @@ function TransportCard({ icon, badge, badgeColor, title, subtitle, meta, onEdit,
   title: string; subtitle?: string; meta: { icon: React.ReactNode; text: string }[];
   onEdit: () => void; onDelete: () => void;
 }) {
+  const [hovered, setHovered] = React.useState(false);
+
   return (
-    <div style={{ border: '1px solid #e5e7eb', borderRadius: 8, background: '#fff', marginBottom: 8, overflow: 'hidden' }}>
-      <div style={{ padding: '0.75rem 0.875rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '2px 10px', borderRadius: 4, background: badgeColor, color: '#fff', fontSize: '0.62rem', fontWeight: 800, letterSpacing: '0.07em', textTransform: 'uppercase' }}>
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ border: '1px solid #e5e7eb', borderRadius: 8, background: '#fff', marginBottom: 8, overflow: 'hidden', position: 'relative' }}
+    >
+      <div style={{ padding: '0.6rem 0.875rem' }}>
+        {/* Row 1: badge + title + subtitle inline */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5, flexWrap: 'wrap' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '2px 10px', borderRadius: 4, background: badgeColor, color: '#fff', fontSize: '0.62rem', fontWeight: 800, letterSpacing: '0.07em', textTransform: 'uppercase', flexShrink: 0 }}>
             {icon}{badge}
           </span>
+          <span style={{ fontWeight: 700, fontSize: '0.875rem', color: '#111827' }}>
+            {title || <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>Unnamed</span>}
+          </span>
+          {subtitle && (
+            <span style={{ fontSize: '0.75rem', color: '#6b7280', borderLeft: '1px solid #e5e7eb', paddingLeft: 8 }}>
+              {subtitle}
+            </span>
+          )}
         </div>
-        <p style={{ margin: '0 0 4px', fontWeight: 700, fontSize: '0.875rem', color: '#111827', lineHeight: 1.3 }}>
-          {title || <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>Unnamed</span>}
-        </p>
-        {subtitle && <p style={{ margin: '0 0 6px', fontSize: '0.75rem', color: '#6b7280' }}>{subtitle}</p>}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 16px', marginTop: 4 }}>
+
+        {/* Row 2: meta chips */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 14px' }}>
           {meta.filter((m) => m.text).map((m, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.75rem', color: '#6b7280' }}>
               {m.icon}{m.text}
@@ -187,16 +200,18 @@ function TransportCard({ icon, badge, badgeColor, title, subtitle, meta, onEdit,
           ))}
         </div>
       </div>
-      <div style={{ display: 'flex', borderTop: '1px solid #f0f0f0' }}>
-        <Button color="primary" variant="ghost" size="sm" leftIcon="Pencil" onClick={onEdit}
-          style={{ flex: 1, borderRadius: 0, borderRight: '1px solid #f0f0f0', justifyContent: 'center', fontSize: '0.75rem' }}>
-          Edit
-        </Button>
-        <Button color="danger" variant="ghost" size="sm" leftIcon="Trash2" onClick={onDelete}
-          style={{ flex: 1, borderRadius: 0, justifyContent: 'center', fontSize: '0.75rem' }}>
-          Delete
-        </Button>
-      </div>
+
+      {/* Hover actions */}
+      {hovered && (
+        <div style={{ position: 'absolute', top: 6, right: 6, display: 'flex', gap: 4 }}>
+          <button onClick={onEdit} title="Edit" style={{ width: 26, height: 26, borderRadius: 6, border: '1px solid #c4b5fd', background: '#f5f3ff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#7c3aed' }}>
+            <Icon name="Pencil" size={11} />
+          </button>
+          <button onClick={onDelete} title="Delete" style={{ width: 26, height: 26, borderRadius: 6, border: '1px solid #fecaca', background: '#fef2f2', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+            <Icon name="Trash2" size={11} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -271,26 +286,29 @@ export function SectionTransportation() {
               No flights added — click &quot;Add Flight&quot; below
             </div>
           )}
-          {transport.flights.map((f, i) => (
-            <TransportCard key={f.id}
-              icon={<Icon name="Plane" size={10} />}
-              badge="Flight" badgeColor="#3b82f6"
-              title={[f.airline, f.flightNumber].filter(Boolean).join(' · ') || 'Unnamed flight'}
-              subtitle={f.classType}
-              meta={[
-                { icon: <Icon name="MapPin" size={11} />, text: f.from && f.to ? `${f.from} → ${f.to}` : '' },
-                { icon: <Icon name="Calendar" size={11} />, text: f.departureDate },
-                { icon: <Icon name="Clock" size={11} />, text: f.departureTime && f.arrivalTime ? `${f.departureTime} – ${f.arrivalTime}` : '' },
-                { icon: <Icon name="DollarSign" size={11} />, text: f.price > 0 ? `${f.currency} ${f.price}` : '' },
-              ]}
-              onEdit={() => openEdit('flights', i)}
-              onDelete={() => removeFlight(i)}
-            />
-          ))}
-          <Button color="primary" variant="outline" size="sm" leftIcon="Plus" onClick={() => openAdd('flights')}
-            style={{ width: '100%', justifyContent: 'center', marginTop: 4 }}>
-            Add Flight
-          </Button>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+            {transport.flights.map((f, i) => (
+              <TransportCard key={f.id}
+                icon={<Icon name="Plane" size={10} />}
+                badge="Flight" badgeColor="#3b82f6"
+                title={[f.airline, f.flightNumber].filter(Boolean).join(' · ') || 'Unnamed flight'}
+                subtitle={f.classType}
+                meta={[
+                  { icon: <Icon name="MapPin" size={11} />, text: f.from && f.to ? `${f.from} → ${f.to}` : '' },
+                  { icon: <Icon name="Calendar" size={11} />, text: f.departureDate },
+                  { icon: <Icon name="Clock" size={11} />, text: f.departureTime && f.arrivalTime ? `${f.departureTime} – ${f.arrivalTime}` : '' },
+                  { icon: <Icon name="DollarSign" size={11} />, text: f.price > 0 ? `${f.currency} ${f.price}` : '' },
+                ]}
+                onEdit={() => openEdit('flights', i)}
+                onDelete={() => removeFlight(i)}
+              />
+            ))}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+            <Button color="primary" variant="outline" size="sm" leftIcon="Plus" onClick={() => openAdd('flights')}>
+              Add Flight
+            </Button>
+          </div>
         </>
       )}
 
@@ -302,26 +320,29 @@ export function SectionTransportation() {
               No trains added — click &quot;Add Train&quot; below
             </div>
           )}
-          {transport.trains.map((t, i) => (
-            <TransportCard key={t.id}
-              icon={<Icon name="TrainFront" size={10} />}
-              badge="Train" badgeColor="#8b5cf6"
-              title={[t.trainName, t.trainNumber].filter(Boolean).join(' · ') || 'Unnamed train'}
-              subtitle={t.classType}
-              meta={[
-                { icon: <Icon name="MapPin" size={11} />, text: t.from && t.to ? `${t.from} → ${t.to}` : '' },
-                { icon: <Icon name="Calendar" size={11} />, text: t.departureDate },
-                { icon: <Icon name="Clock" size={11} />, text: t.departureTime && t.arrivalTime ? `${t.departureTime} – ${t.arrivalTime}` : '' },
-                { icon: <Icon name="DollarSign" size={11} />, text: t.price > 0 ? `${t.currency} ${t.price}` : '' },
-              ]}
-              onEdit={() => openEdit('trains', i)}
-              onDelete={() => removeTrain(i)}
-            />
-          ))}
-          <Button color="primary" variant="outline" size="sm" leftIcon="Plus" onClick={() => openAdd('trains')}
-            style={{ width: '100%', justifyContent: 'center', marginTop: 4 }}>
-            Add Train
-          </Button>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+            {transport.trains.map((t, i) => (
+              <TransportCard key={t.id}
+                icon={<Icon name="TrainFront" size={10} />}
+                badge="Train" badgeColor="#8b5cf6"
+                title={[t.trainName, t.trainNumber].filter(Boolean).join(' · ') || 'Unnamed train'}
+                subtitle={t.classType}
+                meta={[
+                  { icon: <Icon name="MapPin" size={11} />, text: t.from && t.to ? `${t.from} → ${t.to}` : '' },
+                  { icon: <Icon name="Calendar" size={11} />, text: t.departureDate },
+                  { icon: <Icon name="Clock" size={11} />, text: t.departureTime && t.arrivalTime ? `${t.departureTime} – ${t.arrivalTime}` : '' },
+                  { icon: <Icon name="DollarSign" size={11} />, text: t.price > 0 ? `${t.currency} ${t.price}` : '' },
+                ]}
+                onEdit={() => openEdit('trains', i)}
+                onDelete={() => removeTrain(i)}
+              />
+            ))}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+            <Button color="primary" variant="outline" size="sm" leftIcon="Plus" onClick={() => openAdd('trains')}>
+              Add Train
+            </Button>
+          </div>
         </>
       )}
 
@@ -333,25 +354,28 @@ export function SectionTransportation() {
               No other transport added — click &quot;Add Transport&quot; below
             </div>
           )}
-          {transport.other.map((o, i) => (
-            <TransportCard key={o.id}
-              icon={<Icon name="BusFront" size={10} />}
-              badge={o.type || 'Other'} badgeColor="#f59e0b"
-              title={o.type || 'Unnamed transport'}
-              subtitle={o.description}
-              meta={[
-                { icon: <Icon name="MapPin" size={11} />, text: o.from && o.to ? `${o.from} → ${o.to}` : '' },
-                { icon: <Icon name="Calendar" size={11} />, text: o.date },
-                { icon: <Icon name="DollarSign" size={11} />, text: o.price > 0 ? `${o.currency} ${o.price}` : '' },
-              ]}
-              onEdit={() => openEdit('other', i)}
-              onDelete={() => removeOther(i)}
-            />
-          ))}
-          <Button color="primary" variant="outline" size="sm" leftIcon="Plus" onClick={() => openAdd('other')}
-            style={{ width: '100%', justifyContent: 'center', marginTop: 4 }}>
-            Add Transport
-          </Button>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+            {transport.other.map((o, i) => (
+              <TransportCard key={o.id}
+                icon={<Icon name="BusFront" size={10} />}
+                badge={o.type || 'Other'} badgeColor="#f59e0b"
+                title={o.type || 'Unnamed transport'}
+                subtitle={o.description}
+                meta={[
+                  { icon: <Icon name="MapPin" size={11} />, text: o.from && o.to ? `${o.from} → ${o.to}` : '' },
+                  { icon: <Icon name="Calendar" size={11} />, text: o.date },
+                  { icon: <Icon name="DollarSign" size={11} />, text: o.price > 0 ? `${o.currency} ${o.price}` : '' },
+                ]}
+                onEdit={() => openEdit('other', i)}
+                onDelete={() => removeOther(i)}
+              />
+            ))}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+            <Button color="primary" variant="outline" size="sm" leftIcon="Plus" onClick={() => openAdd('other')}>
+              Add Transport
+            </Button>
+          </div>
         </>
       )}
 

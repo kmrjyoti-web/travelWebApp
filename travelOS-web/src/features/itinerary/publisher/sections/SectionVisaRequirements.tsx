@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { createPortal } from 'react-dom';
-import { Button, TextField, TextareaField } from '@/shared/components';
+import { Button, TextField, TextareaField, SmartDialog } from '@/shared/components';
+import { TagsInput } from '@/shared/components/forms';
 import { Icon } from '@/shared/components/Icon';
 import { usePublishStore } from '../stores/publishStore';
 import type { VisaApplicationStep, VisaOfficialSource } from '../types/publish.types';
@@ -20,81 +20,38 @@ function StepModal({
 }) {
   const [item, setItem] = useState<VisaApplicationStep>({ ...initial });
   const set = (p: Partial<VisaApplicationStep>) => setItem((i) => ({ ...i, ...p }));
-  const [docDraft, setDocDraft] = useState('');
-  const addDoc = () => {
-    if (docDraft.trim()) { set({ documents: [...item.documents, docDraft.trim()] }); setDocDraft(''); }
-  };
 
-  const modal = (
-    <div
-      style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+  return (
+    <SmartDialog
+      isOpen
+      onClose={onClose}
+      title={initial.title ? 'Edit Step' : 'Add Step'}
+      onConfirm={() => { onSave(item); onClose(); }}
+      confirmText="Save"
+      confirmIcon="Save"
+      confirmDisabled={!item.title}
+      cancelText="Cancel"
+      size="lg"
     >
-      <div style={{ background: '#fff', borderRadius: 12, width: 500, maxWidth: '95vw', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 20px 60px rgba(0,0,0,0.3)', border: '1px solid #e5e7eb' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
+        <TextField label="Step Title" variant="outlined"
+          value={item.title} onChange={(e) => set({ title: e.target.value })} />
 
-        {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1.25rem', borderBottom: '1px solid #e5e7eb' }}>
-          <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#111827' }}>
-            {initial.title ? 'Edit Step' : 'Add Step'}
-          </h3>
-          <button type="button" onClick={onClose} style={{ background: 'none', border: '1px solid #e5e7eb', borderRadius: '50%', width: 28, height: 28, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6b7280' }}>
-            <Icon name="X" size={14} />
-          </button>
-        </div>
+        <TextareaField label="Description" variant="outlined" minRows={4}
+          value={item.description} onChange={(e) => set({ description: e.target.value })} />
 
-        {/* Body */}
-        <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
-          <TextField label="Step Title" variant="outlined"
-            value={item.title} onChange={(e) => set({ title: e.target.value })} />
+        <TextField label="Estimated Duration" variant="outlined" placeholder="e.g. 2-3 Weeks"
+          value={item.estimatedDuration} onChange={(e) => set({ estimatedDuration: e.target.value })} />
 
-          <TextareaField label="Description" variant="outlined" minRows={4}
-            value={item.description} onChange={(e) => set({ description: e.target.value })} />
-
-          <TextField label="Estimated Duration" variant="outlined" placeholder="e.g. 2-3 Weeks"
-            value={item.estimatedDuration} onChange={(e) => set({ estimatedDuration: e.target.value })} />
-
-          {/* Required Documents */}
-          <div>
-            <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#374151', display: 'block', marginBottom: 6 }}>
-              Required Documents
-            </span>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 6 }}>
-              {item.documents.map((d, i) => (
-                <span key={i} style={{ background: '#f3f4f6', padding: '3px 10px', borderRadius: 20, fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: 4, border: '1px solid #e5e7eb' }}>
-                  <Icon name="FileText" size={11} style={{ color: '#4f46e5' }} />
-                  {d}
-                  <span style={{ cursor: 'pointer', color: '#ef4444', lineHeight: 1, marginLeft: 2 }}
-                    onClick={() => set({ documents: item.documents.filter((_, j) => j !== i) })}>×</span>
-                </span>
-              ))}
-            </div>
-            <div style={{ display: 'flex', gap: 4 }}>
-              <div style={{ flex: 1 }}>
-                <TextField label="" variant="outlined" placeholder="Add document..."
-                  value={docDraft} onChange={(e) => setDocDraft(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addDoc(); } }} />
-              </div>
-              <Button size="sm" color="secondary" onClick={addDoc} type="button">
-                <Icon name="Plus" size={12} />
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: '0.875rem 1.25rem', borderTop: '1px solid #e5e7eb' }}>
-          <Button color="secondary" variant="ghost" size="sm" onClick={onClose}>Cancel</Button>
-          <Button color="primary" size="sm" disabled={!item.title}
-            onClick={() => { onSave(item); onClose(); }}>
-            Save
-          </Button>
-        </div>
+        <TagsInput
+          label="Required Documents"
+          placeholder="Add document…"
+          value={item.documents}
+          onChange={(docs) => set({ documents: docs })}
+        />
       </div>
-    </div>
+    </SmartDialog>
   );
-
-  if (typeof window === 'undefined') return null;
-  return createPortal(modal, document.body);
 }
 
 /* ── Step Display Card ──────────────────────────────────────────── */
@@ -138,12 +95,12 @@ function StepCard({ step, index, onEdit, onDelete }: {
             </div>
           </div>
           <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
-            <button type="button" onClick={onEdit} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#4f46e5', padding: 4 }}>
+            <Button type="button" color="primary" variant="ghost" size="xs" onClick={onEdit}>
               <Icon name="Pencil" size={14} />
-            </button>
-            <button type="button" onClick={onDelete} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: 4 }}>
+            </Button>
+            <Button type="button" color="danger" variant="ghost" size="xs" onClick={onDelete}>
               <Icon name="Trash2" size={14} />
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -206,7 +163,7 @@ export function SectionVisaRequirements() {
       <div style={block}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
           {sectionLabel('Application Process')}
-          <Button color="primary" variant="outline" size="sm" leftIcon="Plus"
+          <Button color="primary" variant="outline" size="xs" leftIcon="Plus"
             onClick={() => setStepModal({ idx: null })}
             style={{ marginBottom: '0.75rem' }}>
             Add Step
@@ -234,14 +191,10 @@ export function SectionVisaRequirements() {
       <div style={block}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
           {sectionLabel('Official Sources')}
-          <button type="button" onClick={addSource} style={{
-            width: 28, height: 28, borderRadius: 6, border: '1px solid #4f46e5',
-            background: 'transparent', cursor: 'pointer', color: '#4f46e5',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0, marginBottom: '0.75rem',
-          }}>
+          <Button type="button" color="primary" variant="outline" size="xs" onClick={addSource}
+            style={{ marginBottom: '0.75rem' }}>
             <Icon name="Plus" size={14} />
-          </button>
+          </Button>
         </div>
 
         {visa.officialSources.length === 0 && (
@@ -253,20 +206,16 @@ export function SectionVisaRequirements() {
         {visa.officialSources.map((src, i) => (
           <div key={i} style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 8 }}>
             <div style={{ flex: '0 0 200px' }}>
-              <TextField label="" variant="outlined" size="sm" placeholder="Source name"
+              <TextField label="" variant="outlined" size="xs" placeholder="Source name"
                 value={src.name} onChange={(e) => updateSource(i, { name: e.target.value })} />
             </div>
             <div style={{ flex: 1 }}>
-              <TextField label="" variant="outlined" size="sm" placeholder="https://…"
+              <TextField label="" variant="outlined" size="xs" placeholder="https://…"
                 value={src.url} onChange={(e) => updateSource(i, { url: e.target.value })} />
             </div>
-            <button type="button" onClick={() => removeSource(i)} style={{
-              background: 'none', border: '1px solid #fee2e2', borderRadius: 6,
-              width: 28, height: 28, cursor: 'pointer', color: '#ef4444', flexShrink: 0,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
+            <Button type="button" color="danger" variant="outline" size="xs" onClick={() => removeSource(i)}>
               <Icon name="Trash2" size={13} />
-            </button>
+            </Button>
           </div>
         ))}
       </div>

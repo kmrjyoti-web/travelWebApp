@@ -21,7 +21,7 @@ export interface TextFieldProps
   /** Lucide icon shown at the end (inside the field) */
   endIcon?: IconName;
   /** Field size */
-  size?: 'sm' | 'md';
+  size?: 'xs' | 'sm' | 'md';
 }
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
@@ -80,6 +80,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     const rootClass = [
       'tos-tf',
       `tos-tf--${variant}`,
+      size === 'xs'  ? 'tos-tf--xs'             :
       size === 'sm'  ? 'tos-tf--sm'             : '',
       focused        ? 'tos-tf--focused'         : '',
       hasValue       ? 'tos-tf--has-value'       : '',

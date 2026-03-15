@@ -27,7 +27,7 @@ function ListEditor({
         <div key={i} style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 6 }}>
           <span style={{ color, flexShrink: 0 }}><Icon name={icon as 'Check'} size={13} /></span>
           <div style={{ flex: 1 }}>
-            <TextField label={title} variant="outlined" size="sm" value={item} onChange={(e) => edit(i, e.target.value)} />
+            <TextField label={title} variant="outlined" size="xs" value={item} onChange={(e) => edit(i, e.target.value)} />
           </div>
           <button type="button" onClick={() => remove(i)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', flexShrink: 0 }}>
             <Icon name="Trash2" size={14} />
@@ -37,12 +37,12 @@ function ListEditor({
 
       <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
         <div style={{ flex: 1 }}>
-          <TextField label={placeholder} variant="outlined" size="sm" value={draft}
+          <TextField label={placeholder} variant="outlined" size="xs" value={draft}
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); add(); } }}
           />
         </div>
-        <Button size="sm" color="secondary" onClick={add} type="button">
+        <Button size="xs" color="secondary" onClick={add} type="button">
           <Icon name="Plus" size={12} /> Add
         </Button>
       </div>

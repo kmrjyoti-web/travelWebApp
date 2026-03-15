@@ -63,7 +63,7 @@ function HotelModal({
           <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#111827' }}>
             {initial.hotelName ? 'Edit Hotel' : 'Add Hotel'}
           </h3>
-          <Button color="secondary" variant="ghost" size="sm" onClick={onClose}
+          <Button color="secondary" variant="ghost" size="xs" onClick={onClose}
             style={{ borderRadius: '50%', width: 28, height: 28, padding: 0 }}>
             <Icon name="X" size={14} />
           </Button>
@@ -73,7 +73,7 @@ function HotelModal({
         <div style={{ padding: '1.25rem' }}>
           {/* Type + Name */}
           <div style={{ ...grid2, marginBottom: '0.875rem' }}>
-            <SelectField label="Property Type" variant="outlined" size="sm" value={item.type}
+            <SelectField label="Property Type" variant="outlined" size="xs" value={item.type}
               onChange={(e) => set({ type: e.target.value as AccommodationItem['type'] })}>
               {TYPES.map((t) => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
             </SelectField>
@@ -92,29 +92,29 @@ function HotelModal({
           </div>
 
           <div style={mb}>
-            <TextField label="Hotel / Property Name" variant="outlined" size="sm" startIcon="Tag" required
+            <TextField label="Hotel / Property Name" variant="outlined" size="xs" startIcon="Tag" required
               value={item.hotelName} onChange={(e) => set({ hotelName: e.target.value })} />
           </div>
 
           {/* Check-in / Check-out */}
           <div style={{ ...grid2, ...mb }}>
-            <TextField label="Check-in Date" variant="outlined" size="sm" type="date" startIcon="Calendar"
+            <TextField label="Check-in Date" variant="outlined" size="xs" type="date" startIcon="Calendar"
               value={item.checkInDate} onChange={(e) => set({ checkInDate: e.target.value })} />
-            <TextField label="Check-out Date" variant="outlined" size="sm" type="date" startIcon="Calendar"
+            <TextField label="Check-out Date" variant="outlined" size="xs" type="date" startIcon="Calendar"
               value={item.checkOutDate} onChange={(e) => set({ checkOutDate: e.target.value })} />
           </div>
 
           {/* Room + Price */}
           <div style={{ ...grid2, ...mb }}>
-            <TextField label="Room Type" variant="outlined" size="sm" startIcon="Tag"
+            <TextField label="Room Type" variant="outlined" size="xs" startIcon="Tag"
               value={item.roomType} onChange={(e) => set({ roomType: e.target.value })} />
             <div style={{ display: 'flex', gap: 6 }}>
               <div style={{ flex: 1 }}>
-                <TextField label="Price / Night" variant="outlined" size="sm" type="number" startIcon="DollarSign" min={0}
+                <TextField label="Price / Night" variant="outlined" size="xs" type="number" startIcon="DollarSign" min={0}
                   value={item.price || ''} onChange={(e) => set({ price: +e.target.value })} />
               </div>
               <div style={{ flex: '0 0 72px' }}>
-                <TextField label="CCY" variant="outlined" size="sm"
+                <TextField label="CCY" variant="outlined" size="xs"
                   value={item.currency} onChange={(e) => set({ currency: e.target.value })} />
               </div>
             </div>
@@ -146,8 +146,8 @@ function HotelModal({
 
         {/* Footer */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: '0.875rem 1.25rem', borderTop: '1px solid #e5e7eb' }}>
-          <Button color="secondary" variant="ghost" size="sm" leftIcon="X" onClick={onClose}>Cancel</Button>
-          <Button color="primary" size="sm" leftIcon="Check" disabled={!item.hotelName}
+          <Button color="secondary" variant="ghost" size="xs" leftIcon="X" onClick={onClose}>Cancel</Button>
+          <Button color="primary" size="xs" leftIcon="Check" disabled={!item.hotelName}
             onClick={() => { onSave(item); onClose(); }}>
             Save Hotel
           </Button>
@@ -165,43 +165,45 @@ function HotelCard({ item, onEdit, onDelete }: {
   item: AccommodationItem; onEdit: () => void; onDelete: () => void;
 }) {
   const typeColor = TYPE_COLORS[item.type] ?? '#6b7280';
+  const [hovered, setHovered] = React.useState(false);
   const nights = item.checkInDate && item.checkOutDate
     ? Math.max(0, Math.round((new Date(item.checkOutDate).getTime() - new Date(item.checkInDate).getTime()) / 86400000))
     : null;
 
   return (
-    <div style={{ border: '1px solid #e5e7eb', borderRadius: 8, background: '#fff', marginBottom: 8, overflow: 'hidden' }}>
-      <div style={{ padding: '0.75rem 0.875rem' }}>
-        {/* Type badge + stars row */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ position: 'relative', border: '1px solid #e5e7eb', borderRadius: 8, background: '#fff', marginBottom: 8, overflow: 'hidden' }}
+    >
+      <div style={{ padding: '0.65rem 0.875rem' }}>
+        {/* Row 1: Type badge + Hotel name + Stars */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5, minWidth: 0 }}>
           <span style={{
-            display: 'inline-block', padding: '2px 10px', borderRadius: 4,
+            display: 'inline-block', padding: '2px 10px', borderRadius: 4, flexShrink: 0,
             background: typeColor, color: '#fff',
             fontSize: '0.62rem', fontWeight: 800, letterSpacing: '0.07em', textTransform: 'uppercase',
           }}>
             {item.type}
           </span>
-          <span style={{ color: '#f59e0b', fontSize: '0.82rem', letterSpacing: 1 }}>
+          <span style={{ fontWeight: 700, fontSize: '0.875rem', color: '#111827', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+            {item.hotelName || <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>Unnamed property</span>}
+          </span>
+          <span style={{ color: '#f59e0b', fontSize: '0.78rem', letterSpacing: 1, flexShrink: 0 }}>
             {'★'.repeat(item.rating)}{'☆'.repeat(5 - item.rating)}
           </span>
         </div>
 
-        {/* Hotel name */}
-        <p style={{ margin: '0 0 6px', fontWeight: 700, fontSize: '0.875rem', color: '#111827', lineHeight: 1.3 }}>
-          {item.hotelName || <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>Unnamed property</span>}
-        </p>
-
-        {/* Room type */}
+        {/* Row 2: Room type */}
         {item.roomType && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.75rem', color: '#6b7280', marginBottom: 4 }}>
-            <Icon name="BedDouble" size={12} style={{ flexShrink: 0 }} />
-            {item.roomType}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.75rem', color: '#6b7280', marginBottom: 3 }}>
+            <Icon name="BedDouble" size={12} style={{ flexShrink: 0 }} />{item.roomType}
           </div>
         )}
 
-        {/* Dates */}
+        {/* Row 3: Dates */}
         {(item.checkInDate || item.checkOutDate) && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.75rem', color: '#6b7280', marginBottom: 4 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.75rem', color: '#6b7280', marginBottom: 3 }}>
             <Icon name="Calendar" size={12} style={{ flexShrink: 0, color: '#4f46e5' }} />
             {item.checkInDate || '—'} → {item.checkOutDate || '—'}
             {nights !== null && nights > 0 && (
@@ -212,43 +214,37 @@ function HotelCard({ item, onEdit, onDelete }: {
           </div>
         )}
 
-        {/* Price */}
+        {/* Row 4: Price */}
         {item.price > 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.75rem', color: '#6b7280', marginBottom: 4 }}>
-            <Icon name="DollarSign" size={12} style={{ flexShrink: 0 }} />
-            {item.currency} {item.price} / night
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.75rem', color: '#6b7280', marginBottom: 3 }}>
+            <Icon name="DollarSign" size={12} style={{ flexShrink: 0 }} />{item.currency} {item.price} / night
           </div>
         )}
 
-        {/* Facilities chips */}
+        {/* Row 5: Facilities */}
         {item.facilities.length > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 4 }}>
             {item.facilities.slice(0, 5).map((f) => (
-              <span key={f} style={{
-                padding: '2px 8px', borderRadius: 20, fontSize: '0.65rem',
-                background: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb',
-              }}>{f}</span>
+              <span key={f} style={{ padding: '2px 8px', borderRadius: 20, fontSize: '0.65rem', background: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb' }}>{f}</span>
             ))}
             {item.facilities.length > 5 && (
-              <span style={{ padding: '2px 8px', borderRadius: 20, fontSize: '0.65rem', background: '#ede9fe', color: '#4f46e5' }}>
-                +{item.facilities.length - 5} more
-              </span>
+              <span style={{ padding: '2px 8px', borderRadius: 20, fontSize: '0.65rem', background: '#ede9fe', color: '#4f46e5' }}>+{item.facilities.length - 5} more</span>
             )}
           </div>
         )}
       </div>
 
-      {/* Edit / Delete */}
-      <div style={{ display: 'flex', borderTop: '1px solid #f0f0f0' }}>
-        <Button color="primary" variant="ghost" size="sm" leftIcon="Pencil" onClick={onEdit}
-          style={{ flex: 1, borderRadius: 0, borderRight: '1px solid #f0f0f0', justifyContent: 'center', fontSize: '0.75rem' }}>
-          Edit
-        </Button>
-        <Button color="danger" variant="ghost" size="sm" leftIcon="Trash2" onClick={onDelete}
-          style={{ flex: 1, borderRadius: 0, justifyContent: 'center', fontSize: '0.75rem' }}>
-          Delete
-        </Button>
-      </div>
+      {/* Hover actions */}
+      {hovered && (
+        <div style={{ position: 'absolute', top: 6, right: 6, display: 'flex', gap: 4 }}>
+          <button type="button" onClick={onEdit} title="Edit" style={{ width: 26, height: 26, borderRadius: 6, border: '1px solid #c4b5fd', background: '#f5f3ff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#7c3aed' }}>
+            <Icon name="Pencil" size={11} />
+          </button>
+          <button type="button" onClick={onDelete} title="Delete" style={{ width: 26, height: 26, borderRadius: 6, border: '1px solid #fecaca', background: '#fef2f2', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+            <Icon name="Trash2" size={11} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -290,16 +286,19 @@ export function SectionAccommodation() {
         </div>
       )}
 
-      {/* Hotel cards */}
-      {items.map((item, i) => (
-        <HotelCard key={item.id} item={item} onEdit={() => openEdit(i)} onDelete={() => remove(i)} />
-      ))}
+      {/* Hotel cards — 2 per row */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+        {items.map((item, i) => (
+          <HotelCard key={item.id} item={item} onEdit={() => openEdit(i)} onDelete={() => remove(i)} />
+        ))}
+      </div>
 
       {/* Add Hotel — bottom */}
-      <Button color="primary" variant="outline" size="sm" leftIcon="Plus" onClick={openAdd}
-        style={{ width: '100%', justifyContent: 'center', marginTop: 4 }}>
-        Add Hotel
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+        <Button color="primary" variant="outline" size="sm" leftIcon="Plus" onClick={openAdd}>
+          Add Hotel
+        </Button>
+      </div>
 
       {/* Modal */}
       {showModal && (

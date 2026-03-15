@@ -7,6 +7,7 @@ import { Icon } from '@/shared/components/Icon';
 import type { IconName } from '@/shared/components/Icon';
 import { usePublishStore } from '../stores/publishStore';
 import type { ItineraryDay, ActivityItem } from '../types/publish.types';
+import './activity-card.css';
 
 /* ── Constants ─────────────────────────────────────────────────── */
 const TIME_SLOTS    = ['Morning', 'Late Morning', 'Afternoon', 'Late Afternoon', 'Evening', 'Night'];
@@ -56,22 +57,22 @@ function ActivityModal({
           <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#111827' }}>
             {initial.title ? 'Edit Activity' : 'Add Activity'}
           </h3>
-          <Button color="secondary" variant="ghost" size="sm" onClick={onClose} style={{ borderRadius: '50%', width: 28, height: 28, padding: 0 }}>
+          <Button color="secondary" variant="ghost" size="xs" onClick={onClose} style={{ borderRadius: '50%', width: 28, height: 28, padding: 0 }}>
             <Icon name="X" size={14} />
           </Button>
         </div>
         <div style={{ padding: '1.25rem' }}>
           <div style={mb}>
-            <SelectField label="Time" variant="outlined" size="sm" value={act.time} onChange={(e) => set({ time: e.target.value })}>
+            <SelectField label="Time" variant="outlined" size="xs" value={act.time} onChange={(e) => set({ time: e.target.value })}>
               {TIME_SLOTS.map((t) => <option key={t} value={t}>{t}</option>)}
             </SelectField>
           </div>
           <div style={mb}>
-            <TextField label="Activity Title" variant="outlined" size="sm" startIcon="FileText" required
+            <TextField label="Activity Title" variant="outlined" size="xs" startIcon="FileText" required
               value={act.title} onChange={(e) => set({ title: e.target.value })} />
           </div>
           <div style={mb}>
-            <SelectField label="Type" variant="outlined" size="sm" value={act.activityType} onChange={(e) => set({ activityType: e.target.value })}>
+            <SelectField label="Type" variant="outlined" size="xs" value={act.activityType} onChange={(e) => set({ activityType: e.target.value })}>
               {ACTIVITY_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
             </SelectField>
           </div>
@@ -80,29 +81,29 @@ function ActivityModal({
               value={act.description} onChange={(e) => set({ description: e.target.value })} />
           </div>
           <div style={mb}>
-            <TextField label="Location" variant="outlined" size="sm" startIcon="MapPin"
+            <TextField label="Location" variant="outlined" size="xs" startIcon="MapPin"
               value={act.location} onChange={(e) => set({ location: e.target.value })} />
           </div>
           <div style={{ ...mb, display: 'flex', gap: '0.5rem' }}>
             <div style={{ flex: 1 }}>
-              <TextField label="Cost" variant="outlined" size="sm" startIcon="DollarSign" type="number" min={0}
+              <TextField label="Cost" variant="outlined" size="xs" startIcon="DollarSign" type="number" min={0}
                 value={act.cost || ''} onChange={(e) => set({ cost: +e.target.value })} />
             </div>
             <div style={{ flex: '0 0 70px' }}>
-              <TextField label="CCY" variant="outlined" size="sm"
+              <TextField label="CCY" variant="outlined" size="xs"
                 value={act.currency} onChange={(e) => set({ currency: e.target.value })} />
             </div>
           </div>
           <div style={grid2}>
-            <TextField label="Lat" variant="outlined" size="sm" type="number"
+            <TextField label="Lat" variant="outlined" size="xs" type="number"
               value={act.latitude || ''} onChange={(e) => set({ latitude: +e.target.value })} />
-            <TextField label="Lng" variant="outlined" size="sm" type="number"
+            <TextField label="Lng" variant="outlined" size="xs" type="number"
               value={act.longitude || ''} onChange={(e) => set({ longitude: +e.target.value })} />
           </div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: '0.875rem 1.25rem', borderTop: '1px solid #e5e7eb' }}>
-          <Button color="secondary" variant="ghost" size="sm" leftIcon="X" onClick={onClose}>Cancel</Button>
-          <Button color="primary" size="sm" leftIcon="Check" disabled={!act.title} onClick={() => { onSave(act); onClose(); }}>Save Changes</Button>
+          <Button color="secondary" variant="ghost" size="xs" leftIcon="X" onClick={onClose}>Cancel</Button>
+          <Button color="primary" size="xs" leftIcon="Check" disabled={!act.title} onClick={() => { onSave(act); onClose(); }}>Save Changes</Button>
         </div>
       </div>
     </div>
@@ -142,22 +143,22 @@ function DayMetaModal({
           <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#111827' }}>
             Edit Day {day.day} Details
           </h3>
-          <Button color="secondary" variant="ghost" size="sm" onClick={onClose} style={{ borderRadius: '50%', width: 28, height: 28, padding: 0 }}>
+          <Button color="secondary" variant="ghost" size="xs" onClick={onClose} style={{ borderRadius: '50%', width: 28, height: 28, padding: 0 }}>
             <Icon name="X" size={14} />
           </Button>
         </div>
         <div style={{ padding: '1.25rem' }}>
           <div style={mb}>
-            <TextField label="Day Theme / Title" variant="outlined" size="sm" startIcon="Sun"
+            <TextField label="Day Theme / Title" variant="outlined" size="xs" startIcon="Sun"
               value={local.theme} onChange={(e) => set({ theme: e.target.value })} />
           </div>
           <div style={mb}>
-            <TextField label="Weather Forecast" variant="outlined" size="sm" startIcon="Cloud"
+            <TextField label="Weather Forecast" variant="outlined" size="xs" startIcon="Cloud"
               value={local.weather.forecast}
               onChange={(e) => setLocal((d) => ({ ...d, weather: { ...d.weather, forecast: e.target.value } }))} />
           </div>
           <div style={mb}>
-            <TextField label="Dress Code" variant="outlined" size="sm" startIcon="Shirt"
+            <TextField label="Dress Code" variant="outlined" size="xs" startIcon="Shirt"
               value={local.weather.dressCode}
               onChange={(e) => setLocal((d) => ({ ...d, weather: { ...d.weather, dressCode: e.target.value } }))} />
           </div>
@@ -168,8 +169,8 @@ function DayMetaModal({
           </div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: '0.875rem 1.25rem', borderTop: '1px solid #e5e7eb' }}>
-          <Button color="secondary" variant="ghost" size="sm" leftIcon="X" onClick={onClose}>Cancel</Button>
-          <Button color="primary" size="sm" leftIcon="Check" onClick={() => { onSave(local); onClose(); }}>Save</Button>
+          <Button color="secondary" variant="ghost" size="xs" leftIcon="X" onClick={onClose}>Cancel</Button>
+          <Button color="primary" size="xs" leftIcon="Check" onClick={() => { onSave(local); onClose(); }}>Save</Button>
         </div>
       </div>
     </div>
@@ -275,17 +276,16 @@ function DayEditor({ day, onChange, onRemove }: { day: ItineraryDay; onChange: (
 
       {open && (
         <div style={{ padding: '0.875rem 1rem' }}>
-          {/* ── Info card: THEME / FORECAST / DRESS CODE ── */}
+          {/* ── Info card: 2×2 grid ── */}
           <div style={{
+            display: 'grid', gridTemplateColumns: '1fr 1fr',
             border: '1px solid #e5e7eb', borderRadius: 8,
             background: '#fafafa', marginBottom: '0.875rem', overflow: 'hidden',
           }}>
-            <InfoRow icon="Sun" label="THEME" value={day.theme} empty="No theme set" />
-            <InfoRow icon="Cloud" label="FORECAST" value={day.weather.forecast} empty="No forecast set" divider />
-            <InfoRow icon="Shirt" label="DRESS CODE" value={day.weather.dressCode} empty="No dress code set" divider />
-            {day.notes && (
-              <InfoRow icon="FileText" label="NOTES" value={day.notes} divider />
-            )}
+            <InfoRow icon="Sun"      label="THEME"      value={day.theme}                empty="No theme set"    />
+            <InfoRow icon="Cloud"    label="FORECAST"   value={day.weather.forecast}     empty="No forecast set" borderLeft />
+            <InfoRow icon="Shirt"    label="DRESS CODE" value={day.weather.dressCode}    empty="No dress code set" divider />
+            <InfoRow icon="FileText" label="NOTES"      value={day.notes}                empty="No notes"        divider borderLeft />
           </div>
 
           {/* ── Activities heading ── */}
@@ -315,22 +315,25 @@ function DayEditor({ day, onChange, onRemove }: { day: ItineraryDay; onChange: (
                 {timeKey}
               </div>
 
-              {grouped[timeKey].map(({ act, idx }) => (
-                <ActivityCard
-                  key={idx}
-                  act={act}
-                  onEdit={() => openEditAct(idx)}
-                  onDelete={() => removeAct(idx)}
-                />
-              ))}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+                {grouped[timeKey].map(({ act, idx }) => (
+                  <ActivityCard
+                    key={idx}
+                    act={act}
+                    onEdit={() => openEditAct(idx)}
+                    onDelete={() => removeAct(idx)}
+                  />
+                ))}
+              </div>
             </div>
           ))}
 
           {/* ── Add Activity — bottom of accordion ── */}
-          <Button size="sm" color="primary" variant="outline" leftIcon="Plus" onClick={openAddAct}
-            style={{ width: '100%', justifyContent: 'center', marginTop: 4 }}>
-            Add Activity
-          </Button>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+            <Button size="sm" color="primary" variant="outline" leftIcon="Plus" onClick={openAddAct}>
+              Add Activity
+            </Button>
+          </div>
         </div>
       )}
 
@@ -354,14 +357,15 @@ function DayEditor({ day, onChange, onRemove }: { day: ItineraryDay; onChange: (
 }
 
 /* ── Info Row (inside day card) ────────────────────────────────── */
-function InfoRow({ icon, label, value, empty, divider }: {
-  icon: IconName; label: string; value?: string; empty?: string; divider?: boolean;
+function InfoRow({ icon, label, value, empty, divider, borderLeft }: {
+  icon: IconName; label: string; value?: string; empty?: string; divider?: boolean; borderLeft?: boolean;
 }) {
   return (
     <div style={{
       display: 'flex', alignItems: 'flex-start', gap: 10,
       padding: '0.6rem 0.875rem',
       borderTop: divider ? '1px solid #f0f0f0' : 'none',
+      borderLeft: borderLeft ? '1px solid #f0f0f0' : 'none',
     }}>
       <Icon name={icon} size={13} style={{ color: '#6b7280', marginTop: 1, flexShrink: 0 }} />
       <div>
@@ -380,58 +384,66 @@ function InfoRow({ icon, label, value, empty, divider }: {
 function ActivityCard({ act, onEdit, onDelete }: {
   act: ActivityItem; onEdit: () => void; onDelete: () => void;
 }) {
+  const typeKey = (act.activityType || 'other').toLowerCase();
+  const [hovered, setHovered] = React.useState(false);
+
   return (
-    <div style={{
-      border: '1px solid #e5e7eb', borderRadius: 8,
-      background: '#fff', marginBottom: 8,
-      overflow: 'hidden',
-    }}>
-      <div style={{ padding: '0.75rem 0.875rem' }}>
-        {/* Type label */}
-        <div style={{ fontSize: '0.65rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
-          {act.activityType}
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ position: 'relative', border: '1px solid #e5e7eb', borderRadius: 8, background: '#fff', overflow: 'hidden', marginBottom: 6 }}
+    >
+      <div style={{ display: 'flex', alignItems: 'stretch' }}>
+        {/* Left accent bar */}
+        <div className={`act-card__accent act-card__accent--${typeKey}`} style={{ width: 4, flexShrink: 0 }} />
+
+        <div style={{ padding: '0.55rem 0.75rem', flex: 1, minWidth: 0 }}>
+          {/* Row 1: Type badge + Title */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: act.description || act.location || act.cost > 0 ? 3 : 0, minWidth: 0 }}>
+            <span className={`act-card__type act-card__type--${typeKey}`} style={{ fontSize: '0.6rem', fontWeight: 800, padding: '1px 7px', borderRadius: 4, letterSpacing: '0.06em', textTransform: 'uppercase', flexShrink: 0 }}>
+              {act.activityType}
+            </span>
+            <span style={{ fontWeight: 700, fontSize: '0.85rem', color: '#111827', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {act.title || <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>Untitled</span>}
+            </span>
+          </div>
+
+          {/* Row 3: Description */}
+          {act.description && (
+            <div style={{ fontSize: '0.75rem', color: '#6b7280', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginBottom: act.location || act.cost > 0 ? 3 : 0 }}>
+              {act.description}
+            </div>
+          )}
+
+          {/* Row 4: Location (left, long) + Price (right) */}
+          {(act.location || act.cost > 0) && (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+              {act.location ? (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: '0.72rem', color: '#6b7280', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                  <Icon name="MapPin" size={11} />{act.location}
+                </span>
+              ) : <span />}
+              {act.cost > 0 && (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: '0.72rem', color: '#10b981', fontWeight: 700, flexShrink: 0 }}>
+                  <Icon name="DollarSign" size={11} />{act.currency} {act.cost}
+                </span>
+              )}
+            </div>
+          )}
         </div>
-
-        {/* Title */}
-        <p style={{ margin: '0 0 4px', fontWeight: 700, fontSize: '0.875rem', color: '#111827', lineHeight: 1.3 }}>
-          {act.title}
-        </p>
-
-        {/* Description */}
-        {act.description && (
-          <p style={{ margin: '0 0 6px', fontSize: '0.78rem', color: '#6b7280', lineHeight: 1.45 }}>
-            {act.description}
-          </p>
-        )}
-
-        {/* Location */}
-        {act.location && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.75rem', color: '#6b7280' }}>
-            <Icon name="MapPin" size={12} style={{ color: '#4f46e5', flexShrink: 0 }} />
-            {act.location}
-          </div>
-        )}
-
-        {/* Cost */}
-        {act.cost > 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.75rem', color: '#6b7280', marginTop: 4 }}>
-            <Icon name="DollarSign" size={12} style={{ flexShrink: 0 }} />
-            {act.currency} {act.cost}
-          </div>
-        )}
       </div>
 
-      {/* Action buttons */}
-      <div style={{ display: 'flex', borderTop: '1px solid #f0f0f0' }}>
-        <Button color="primary" variant="ghost" size="sm" leftIcon="Pencil" onClick={onEdit}
-          style={{ flex: 1, borderRadius: 0, borderRight: '1px solid #f0f0f0', justifyContent: 'center', fontSize: '0.75rem' }}>
-          Edit
-        </Button>
-        <Button color="danger" variant="ghost" size="sm" leftIcon="Trash2" onClick={onDelete}
-          style={{ flex: 1, borderRadius: 0, justifyContent: 'center', fontSize: '0.75rem' }}>
-          Delete
-        </Button>
-      </div>
+      {/* Hover actions */}
+      {hovered && (
+        <div style={{ position: 'absolute', top: 6, right: 6, display: 'flex', gap: 4 }}>
+          <button type="button" onClick={onEdit} title="Edit" style={{ width: 26, height: 26, borderRadius: 6, border: '1px solid #c4b5fd', background: '#f5f3ff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#7c3aed' }}>
+            <Icon name="Pencil" size={11} />
+          </button>
+          <button type="button" onClick={onDelete} title="Delete" style={{ width: 26, height: 26, borderRadius: 6, border: '1px solid #fecaca', background: '#fef2f2', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+            <Icon name="Trash2" size={11} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -457,7 +469,7 @@ export function SectionDailyItinerary() {
   return (
     <div>
       <div style={{ marginBottom: '0.75rem' }}>
-        <TextField label="Itinerary Title" variant="outlined" size="sm" startIcon="FileText"
+        <TextField label="Itinerary Title" variant="outlined" size="xs" startIcon="FileText"
           value={daily.title || genInfo.title}
           onChange={(e) => update('dailyItinerary', { ...daily, title: e.target.value })} />
       </div>
@@ -471,12 +483,15 @@ export function SectionDailyItinerary() {
         <span style={{ fontWeight: 700, fontSize: '0.875rem', color: '#374151' }}>
           {daily.days.length} Day{daily.days.length !== 1 ? 's' : ''}
         </span>
-        <Button color="primary" size="sm" leftIcon="Plus" onClick={addDay}>Add Day</Button>
+        {daily.days.length > 0 && (
+          <Button color="primary" size="xs" leftIcon="Plus" onClick={addDay}>Add Day</Button>
+        )}
       </div>
 
       {daily.days.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '2rem', color: '#9ca3af', border: '2px dashed #e5e7eb', borderRadius: 8 }}>
-          No days added yet. Click &quot;Add Day&quot; to start building the itinerary.
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', minHeight: '160px', textAlign: 'center', padding: '2rem 2rem 1.5rem', color: '#9ca3af', border: '2px dashed #e5e7eb', borderRadius: 8 }}>
+          <span>No days added yet. Click &quot;Add Day&quot; to start building the itinerary.</span>
+          <Button color="primary" size="xs" leftIcon="Plus" onClick={addDay}>Add Day</Button>
         </div>
       )}
 

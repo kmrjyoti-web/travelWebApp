@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useForm, useWatch, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Input, Select, Textarea, Checkbox, Button, Icon, CitySearch } from '@/shared/components';
+import { TextField, SelectField, TextareaField, Checkbox, Button, Icon, CitySearch } from '@/shared/components';
 import { useCurrencies } from '@/shared/hooks';
 import { useCreateItinerary } from '@/shared/hooks/useItinerary';
 import { NumberStepper } from './NumberStepper';
@@ -112,31 +112,37 @@ export function SelfItineraryForm({ onSuccess, onCancel }: SelfItineraryFormProp
               />
             )}
           />
-          <Input
-            icon="Calendar"
-            floatingLabel="Start Date"
+          <TextField
+            startIcon="Calendar"
+            label="Start Date"
             type="date"
             {...register('startDate')}
-            errorMessage={errors.startDate?.message}
+            error={!!errors.startDate}
+            helperText={errors.startDate?.message}
+            size="xs"
           />
-          <Input
-            icon="Calendar"
-            floatingLabel="End Date"
+          <TextField
+            startIcon="Calendar"
+            label="End Date"
             type="date"
             {...register('endDate')}
-            errorMessage={errors.endDate?.message}
+            error={!!errors.endDate}
+            helperText={errors.endDate?.message}
+            size="xs"
           />
           <Controller
             name="days"
             control={control}
             render={({ field }) => (
-              <Input
-                icon="Clock"
-                floatingLabel="Days"
+              <TextField
+                startIcon="Clock"
+                label="Days"
                 type="number"
                 value={field.value || ''}
                 readOnly
-                errorMessage={errors.days?.message}
+                error={!!errors.days}
+                helperText={errors.days?.message}
+                size="xs"
               />
             )}
           />
@@ -178,68 +184,74 @@ export function SelfItineraryForm({ onSuccess, onCancel }: SelfItineraryFormProp
           <Icon name="Compass" size={14} /> Travel Preferences
         </h6>
         <div className="tos-form-grid">
-          <Select
-            icon="Wallet"
-            floatingLabel="Budget"
+          <SelectField
+            label="Budget"
             {...register('budget')}
-            errorMessage={errors.budget?.message}
+            error={!!errors.budget}
+            helperText={errors.budget?.message}
+            size="xs"
           >
             {BUDGET_OPTIONS.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
             ))}
-          </Select>
-          <Select
-            icon="DollarSign"
-            floatingLabel="Currency"
+          </SelectField>
+          <SelectField
+            label="Currency"
             {...register('currency')}
-            errorMessage={errors.currency?.message}
+            error={!!errors.currency}
+            helperText={errors.currency?.message}
             disabled={currenciesLoading}
+            size="xs"
           >
             {currenciesLoading && <option value="">Loading currencies…</option>}
             {currencyOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>
             ))}
-          </Select>
-          <Select
-            icon="Building"
-            floatingLabel="Accommodation"
+          </SelectField>
+          <SelectField
+            label="Accommodation"
             {...register('accommodationType')}
-            errorMessage={errors.accommodationType?.message}
+            error={!!errors.accommodationType}
+            helperText={errors.accommodationType?.message}
+            size="xs"
           >
             {ACCOMMODATION_OPTIONS.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
             ))}
-          </Select>
-          <Select
-            icon="Star"
-            floatingLabel="Star Rating"
+          </SelectField>
+          <SelectField
+            label="Star Rating"
             {...register('starRating')}
-            errorMessage={errors.starRating?.message}
+            error={!!errors.starRating}
+            helperText={errors.starRating?.message}
+            size="xs"
           >
             {STAR_RATING_OPTIONS.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
             ))}
-          </Select>
-          <Select
-            icon="UtensilsCrossed"
-            floatingLabel="Food Preference"
+          </SelectField>
+          <SelectField
+            label="Food Preference"
             {...register('food')}
-            errorMessage={errors.food?.message}
+            error={!!errors.food}
+            helperText={errors.food?.message}
+            size="xs"
           >
             {FOOD_OPTIONS.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
             ))}
-          </Select>
-          <Select
-            icon="Compass"
-            floatingLabel="Trip Nature"
+          </SelectField>
+          <SelectField
+            label="Trip Nature"
             {...register('tripNature')}
-            errorMessage={errors.tripNature?.message}
+            error={!!errors.tripNature}
+            helperText={errors.tripNature?.message}
+            size="xs"
           >
             {TRIP_NATURE_OPTIONS.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
             ))}
-          </Select>
+          </SelectField>
 
           {/* Services multi-select */}
           <div className="tos-form-grid__full">
@@ -277,11 +289,12 @@ export function SelfItineraryForm({ onSuccess, onCancel }: SelfItineraryFormProp
 
           {/* Interests */}
           <div className="tos-form-grid__full">
-            <Textarea
-              icon="MessageSquare"
-              floatingLabel="Interests & Preferences"
+            <TextareaField
+              label="Interests & Preferences"
               {...register('interests')}
-              errorMessage={errors.interests?.message}
+              error={!!errors.interests}
+              helperText={errors.interests?.message}
+              size="sm"
             />
           </div>
         </div>
@@ -293,33 +306,33 @@ export function SelfItineraryForm({ onSuccess, onCancel }: SelfItineraryFormProp
           <Icon name="Plane" size={14} /> Transport Preferences
         </h6>
         <div className="tos-form-grid tos-form-grid--3col">
-          <Select
-            icon="PlaneTakeoff"
-            floatingLabel="Flight Departure"
+          <SelectField
+            label="Flight Departure"
             {...register('flightDepartureTime')}
+            size="xs"
           >
             {TIME_PREF_OPTIONS.map((opt) => (
               <option key={opt} value={opt}>{opt === 'any' ? 'Any Time' : opt.charAt(0).toUpperCase() + opt.slice(1)}</option>
             ))}
-          </Select>
-          <Select
-            icon="PlaneLanding"
-            floatingLabel="Flight Arrival"
+          </SelectField>
+          <SelectField
+            label="Flight Arrival"
             {...register('flightArrivalTime')}
+            size="xs"
           >
             {TIME_PREF_OPTIONS.map((opt) => (
               <option key={opt} value={opt}>{opt === 'any' ? 'Any Time' : opt.charAt(0).toUpperCase() + opt.slice(1)}</option>
             ))}
-          </Select>
-          <Select
-            icon="TrainFront"
-            floatingLabel="Train Preference"
+          </SelectField>
+          <SelectField
+            label="Train Preference"
             {...register('trainPreference')}
+            size="xs"
           >
             {TRAIN_PREF_OPTIONS.map((opt) => (
               <option key={opt} value={opt}>{opt === 'any' ? 'Any' : opt.toUpperCase()}</option>
             ))}
-          </Select>
+          </SelectField>
         </div>
       </div>
 

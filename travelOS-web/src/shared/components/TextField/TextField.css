@@ -92,7 +92,11 @@
   border-color: var(--tos-primary, #4f46e5);
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
 }
-
+.tos-tf--sm .tos-tf__input {
+    font-size: 1rem;
+    padding-top: 1px;
+    padding-bottom: 0;
+}
 /* ═══════════════════════════════════════════════════════════════
    FILLED variant
    ═══════════════════════════════════════════════════════════════ */
@@ -229,12 +233,7 @@
 .tos-tf--sm.tos-tf--filled   .tos-tf__wrapper { height: 42px; padding: 0 10px; }
 .tos-tf--sm.tos-tf--standard .tos-tf__wrapper { height: 38px; padding: 0; }
 
-/* Input: larger text, minimal top offset so text sits centered */
-.tos-tf--sm .tos-tf__input {
-  font-size: 0.9rem;
-  padding-top: 6px;
-  padding-bottom: 0;
-}
+/* sm input override is defined after outlined section (line 95) */
 
 /* Label at rest: vertically centered */
 .tos-tf--sm.tos-tf--outlined .tos-tf__label,
@@ -248,6 +247,51 @@
 .tos-tf--sm.tos-tf--filled.tos-tf--has-value .tos-tf__label   { font-size: 0.65rem; top: 8px; }
 .tos-tf--sm.tos-tf--standard.tos-tf--focused .tos-tf__label,
 .tos-tf--sm.tos-tf--standard.tos-tf--has-value .tos-tf__label { font-size: 0.65rem; }
+
+/* ── Size xs — compact, no padding/margin/whitespace ─────────── */
+.tos-tf--xs.tos-tf--outlined .tos-tf__wrapper {
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 4px;
+}
+.tos-tf--xs.tos-tf--filled   .tos-tf__wrapper { height: 32px; padding: 0 8px; }
+.tos-tf--xs.tos-tf--standard .tos-tf__wrapper { height: 28px; padding: 0; }
+
+.tos-tf--xs .tos-tf__input {
+  font-size: 1rem;
+  padding-top: 1px;
+  padding-bottom: 0;
+}
+
+/* Label at rest — centered */
+.tos-tf--xs.tos-tf--outlined .tos-tf__label {
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--tos-text-muted, #6b7280);
+  background: transparent;
+  padding: 0 2px;
+}
+/* Label shifted right when start icon present */
+.tos-tf--xs.tos-tf--has-start-icon.tos-tf--outlined .tos-tf__label {
+  left: 25px;
+}
+/* Label floated — on top border */
+.tos-tf--xs.tos-tf--outlined.tos-tf--focused .tos-tf__label,
+.tos-tf--xs.tos-tf--outlined.tos-tf--has-value .tos-tf__label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 0.6rem;
+  background: var(--tos-card-bg, #fff);
+  padding: 0 3px;
+  left: 6px;
+}
+
+.tos-tf--xs .tos-tf__helper {
+  margin: 2px 0 0;
+  font-size: 0.65rem;
+}
 
 /* ── Dark mode ────────────────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {

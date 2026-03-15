@@ -27,6 +27,7 @@ export function AiSearchTab({ itineraryId, values, onChange }: AiSearchTabProps)
       {/* AI Summary */}
       <TextareaField
         label="AI Summary"
+        size="sm"
         value={values.aiSummary}
         onChange={(e) => onChange({ aiSummary: e.target.value })}
         placeholder="A compelling AI-optimised summary of this itinerary..."
@@ -100,6 +101,7 @@ export function AiSearchTab({ itineraryId, values, onChange }: AiSearchTabProps)
         {values.freshnessEnabled && (
           <TextField
             label="Last Reviewed Date"
+            size="xs"
             type="date"
             value={values.freshnessDate ?? ''}
             onChange={(e) => onChange({ freshnessDate: e.target.value || null })}

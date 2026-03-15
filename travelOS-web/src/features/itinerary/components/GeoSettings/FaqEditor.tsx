@@ -115,6 +115,7 @@ export function FaqEditor({ itineraryId, value, onChange }: FaqEditorProps) {
 
           <TextField
             label="Question"
+            size="xs"
             value={faq.question}
             onChange={(e) => handleChange(idx, 'question', e.target.value)}
             placeholder="e.g. What is included in this tour?"
@@ -123,6 +124,7 @@ export function FaqEditor({ itineraryId, value, onChange }: FaqEditorProps) {
 
           <TextareaField
             label="Answer"
+            size="sm"
             value={faq.answer}
             onChange={(e) => handleChange(idx, 'answer', e.target.value)}
             placeholder="Provide a concise, helpful answer..."

@@ -57,6 +57,7 @@ export function SeoControlsTab({ values, onChange }: SeoControlsTabProps) {
       <div>
         <TextField
           label="SEO Title"
+          size="xs"
           value={values.seoTitle}
           onChange={(e) => onChange({ seoTitle: e.target.value })}
           placeholder="Best 7-Day Paris Itinerary | TravelOS"
@@ -87,6 +88,7 @@ export function SeoControlsTab({ values, onChange }: SeoControlsTabProps) {
       <div>
         <TextareaField
           label="Meta Description"
+          size="sm"
           value={values.metaDescription}
           onChange={(e) => onChange({ metaDescription: e.target.value })}
           placeholder="Discover the perfect 7-day Paris itinerary with expertly curated..."
@@ -119,6 +121,7 @@ export function SeoControlsTab({ values, onChange }: SeoControlsTabProps) {
         <div style={{ flex: 1 }}>
           <TextField
             label="URL Slug"
+            size="xs"
             value={values.slug}
             onChange={(e) => onChange({ slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '') })}
             placeholder="paris-7-day-itinerary"
@@ -141,6 +144,7 @@ export function SeoControlsTab({ values, onChange }: SeoControlsTabProps) {
       {/* Canonical URL */}
       <TextField
         label="Canonical URL"
+        size="xs"
         type="url"
         value={values.canonicalUrl}
         onChange={(e) => onChange({ canonicalUrl: e.target.value })}
@@ -152,6 +156,7 @@ export function SeoControlsTab({ values, onChange }: SeoControlsTabProps) {
       {/* Robots */}
       <SelectField
         label="Robots Directive"
+        size="xs"
         value={values.robots}
         onChange={(e) => onChange({ robots: e.target.value })}
         helperText="Controls crawler indexing and link following behaviour"
@@ -169,6 +174,7 @@ export function SeoControlsTab({ values, onChange }: SeoControlsTabProps) {
       {/* OG Title */}
       <TextField
         label="OG Title"
+        size="xs"
         value={values.ogTitle}
         onChange={(e) => onChange({ ogTitle: e.target.value })}
         placeholder="Discover Paris in 7 Days"
@@ -179,6 +185,7 @@ export function SeoControlsTab({ values, onChange }: SeoControlsTabProps) {
       {/* OG Image URL */}
       <TextField
         label="OG Image URL"
+        size="xs"
         type="url"
         value={values.ogImageUrl}
         onChange={(e) => onChange({ ogImageUrl: e.target.value })}
@@ -190,6 +197,7 @@ export function SeoControlsTab({ values, onChange }: SeoControlsTabProps) {
       {/* Twitter Card */}
       <SelectField
         label="Twitter Card Type"
+        size="xs"
         value={values.twitterCard}
         onChange={(e) => onChange({ twitterCard: e.target.value as TwitterCard })}
         helperText="summary_large_image shows a large preview image on X/Twitter"

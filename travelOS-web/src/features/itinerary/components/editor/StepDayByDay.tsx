@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { useFormContext, useFieldArray, Controller } from 'react-hook-form';
-import { Input, Select, Textarea, Button } from '@/shared/components';
+import { TextField, SelectField, TextareaField, Button } from '@/shared/components';
 import { Icon } from '@/shared/components/Icon';
 import type { FullItineraryFormData } from '../../types/editor.types';
 import { ACTIVITY_TYPES } from '../../types/editor.types';
@@ -53,11 +53,13 @@ export function StepDayByDay() {
 
       {dayFields.length === 0 && (
         <div className="tos-empty-state">
-          <Icon name="CalendarDays" size={32} />
-          <p>Click "Auto-generate" to create day-by-day structure, or add days manually.</p>
-          <Button type="button" color="secondary" size="sm"
+          <div className="tos-empty-state__body">
+            <Icon name="CalendarDays" size={32} />
+            <p>Click "Auto-generate" to create day-by-day structure, or add days manually.</p>
+          </div>
+          <Button type="button" color="primary" size="sm"
             onClick={() => appendDay({ day: 1, date: getDayDate(1), title: 'Day 1', activities: [] })}>
-            + Add Day
+            <Icon name="Plus" size={14} /> Add Day
           </Button>
         </div>
       )}
@@ -87,9 +89,9 @@ function DayCard({ dayIdx, control, register, errors, onRemove }: {
       <div className="tos-day-card__header">
         <span className="tos-day-card__badge">Day {dayIdx + 1}</span>
         <div className="tos-form-grid" style={{ flex: 1, gap: '8px' }}>
-          <Input icon="Calendar" floatingLabel="Date" type="date"
+          <TextField startIcon="Calendar" label="Date" type="date" size="xs"
             {...register(`itineraryDays.${dayIdx}.date`)} />
-          <Input icon="Tag" floatingLabel="Day Title"
+          <TextField startIcon="Tag" label="Day Title" size="xs"
             {...register(`itineraryDays.${dayIdx}.title`)} />
         </div>
         <button type="button" className="tos-icon-btn tos-icon-btn--danger" onClick={onRemove} aria-label="Remove day">
@@ -101,27 +103,27 @@ function DayCard({ dayIdx, control, register, errors, onRemove }: {
         {fields.map((act, actIdx) => (
           <div key={act.id} className="tos-activity-row">
             <div className="tos-form-grid tos-form-grid--activity">
-              <Input icon="Clock" floatingLabel="Time" type="time"
+              <TextField startIcon="Clock" label="Time" type="time" size="xs"
                 {...register(`itineraryDays.${dayIdx}.activities.${actIdx}.time`)} />
               <Controller name={`itineraryDays.${dayIdx}.activities.${actIdx}.type`} control={control}
                 render={({ field }) => (
-                  <Select icon="Tag" floatingLabel="Type" value={field.value} onChange={field.onChange}>
+                  <SelectField label="Type" size="xs" value={field.value} onChange={field.onChange}>
                     {ACTIVITY_TYPES.map(t => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
-                  </Select>
+                  </SelectField>
                 )} />
               <div className="tos-form-grid__span2">
-                <Input icon="MapPin" floatingLabel="Activity Title"
+                <TextField startIcon="MapPin" label="Activity Title" size="xs"
                   {...register(`itineraryDays.${dayIdx}.activities.${actIdx}.title`)}
-                  errorMessage={errors.itineraryDays?.[dayIdx]?.activities?.[actIdx]?.title?.message} />
+                  error={!!errors.itineraryDays?.[dayIdx]?.activities?.[actIdx]?.title} helperText={errors.itineraryDays?.[dayIdx]?.activities?.[actIdx]?.title?.message} />
               </div>
-              <Input icon="MapPin" floatingLabel="Location"
+              <TextField startIcon="MapPin" label="Location" size="xs"
                 {...register(`itineraryDays.${dayIdx}.activities.${actIdx}.location`)} />
-              <Input icon="Clock" floatingLabel="Duration"
+              <TextField startIcon="Clock" label="Duration" size="xs"
                 {...register(`itineraryDays.${dayIdx}.activities.${actIdx}.duration`)} />
-              <Input icon="DollarSign" floatingLabel="Cost (optional)" type="number"
+              <TextField startIcon="DollarSign" label="Cost (optional)" type="number" size="xs"
                 {...register(`itineraryDays.${dayIdx}.activities.${actIdx}.cost`, { valueAsNumber: true })} />
               <div className="tos-form-grid__span3">
-                <Textarea icon="FileText" floatingLabel="Notes"
+                <TextareaField label="Notes" size="sm"
                   {...register(`itineraryDays.${dayIdx}.activities.${actIdx}.description`)} />
               </div>
             </div>

@@ -2,23 +2,42 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Header from '@/features/layout/Header';
-import HorizontalMenu from '@/features/layout/HorizontalMenu';
-import Footer from '@/features/layout/Footer';
-import { DefaultSidebar } from '@/shared/components/layout';
+import dynamic from 'next/dynamic';
+import { DefaultHeader, DefaultSidebar, DefaultFooter } from '@/shared/components/layout';
 import { SidePanelRenderer, SidePanelTaskbar } from '@/shared/components';
-import { useUIStore } from '@/shared/stores/ui.store';
 import { useUIKitTheme } from '@/features/theme/ThemeProvider';
 import { useAuthStore } from '@/shared/stores/auth.store';
+
+const HorizontalMenu = dynamic(
+  () => import('@/features/layout/HorizontalMenu'),
+  { ssr: false },
+);
+
+const DevToolsPanel = dynamic(
+  () => import('@/features/developer-tools').then((m) => ({ default: m.DevToolsPanel })),
+  { ssr: false },
+);
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
   const { theme } = useUIKitTheme();
   const router = useRouter();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const { toggleSidebar } = useUIStore();
+  const isDevMode = process.env.NODE_ENV === 'development';
 
-  // Wait for Zustand persist to rehydrate from localStorage before checking auth.
+  // DevTools shortcut (dev only)
+  useEffect(() => {
+    if (!isDevMode) return;
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toUpperCase() === 'D') {
+        e.preventDefault();
+        import('@/features/developer-tools').then((m) => m.useDevToolsStore.getState().toggle());
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [isDevMode]);
+
   useEffect(() => {
     setHydrated(true);
   }, []);
@@ -31,33 +50,36 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (!hydrated) return null;
 
+  const isBoxed = theme.layoutWidth === 'boxed';
+  const isRtl = theme.sidebarPosition === 'right';
+  const isHorizontal = theme.menuOrientation === 'horizontal';
+
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden font-sans relative">
+    <div className="tos-layout">
       {/* Background Layer */}
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-300"
-        style={{
-          backgroundImage: 'var(--app-bg-image)',
-          backgroundColor: 'var(--app-bg-color)',
-          opacity: 'var(--app-bg-opacity)',
-        }}
-      />
+      <div className="tos-layout__bg" />
 
       {/* Content Layer */}
-      <div className={`relative z-10 flex flex-col h-full w-full transition-all duration-300 ${theme.layoutWidth === 'boxed' ? 'max-w-[1600px] mx-auto shadow-2xl ring-1 ring-black/5 bg-white/5' : ''}`}>
-        <Header toggleSidebar={toggleSidebar} />
-        {theme.menuOrientation === 'horizontal' && <HorizontalMenu />}
-        <div className={`flex-1 flex overflow-hidden ${theme.sidebarPosition === 'right' ? 'flex-row-reverse' : 'flex-row'}`}>
-          {theme.menuOrientation === 'vertical' && <DefaultSidebar />}
-          <main className="flex-1 overflow-y-auto p-4 md:p-8">
-            {children}
-          </main>
+      <div className={`tos-layout__content ${isBoxed ? 'tos-layout--boxed' : ''}`}>
+        <DefaultHeader />
+        {isHorizontal && <HorizontalMenu />}
+        <div className={`tos-layout__body ${isRtl ? 'tos-layout__body--rtl' : ''}`}>
+          {/* Sidebar takes full height from header to bottom */}
+          {!isHorizontal && <DefaultSidebar />}
+          {/* Content column: main + footer */}
+          <div className="tos-layout__content-col">
+            <main className="tos-layout__main">
+              {children}
+            </main>
+            <DefaultFooter />
+          </div>
         </div>
-        <Footer />
       </div>
-      {/* SidePanel system — renders panels + minimized taskbar globally */}
+
+      {/* SidePanel system */}
       <SidePanelRenderer />
       <SidePanelTaskbar />
+      {isDevMode && <DevToolsPanel />}
     </div>
   );
 }

@@ -12,10 +12,12 @@ export function DefaultFooter() {
         </a>
         . All rights reserved.
       </span>
-      <span style={{ display: 'flex', gap: 'var(--tos-spacing-md)' }}>
+      <span className="tos-footer__right">
         <a href="/privacy">Privacy Policy</a>
         <a href="/terms">Terms of Service</a>
-        <span style={{ color: 'var(--tos-text-muted)' }}>v4.0.0</span>
+        <span className="tos-footer__powered">
+          Powered by <strong>TravelOS</strong>
+        </span>
       </span>
     </footer>
   );

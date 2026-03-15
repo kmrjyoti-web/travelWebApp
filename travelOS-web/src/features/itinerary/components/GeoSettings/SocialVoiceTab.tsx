@@ -60,6 +60,7 @@ export function SocialVoiceTab({ values, onChange }: SocialVoiceTabProps) {
       <div>
         <TextareaField
           label="Speakable Snippet"
+          size="sm"
           value={values.speakableSnippet}
           onChange={(e) => onChange({ speakableSnippet: e.target.value })}
           placeholder="A short, conversational description read aloud by voice assistants..."

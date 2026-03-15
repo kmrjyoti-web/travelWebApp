@@ -97,10 +97,10 @@ export function SectionPublishSettings() {
         </div>
         {ps.specialOffer && (
           <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <TextField label="Offer Title" variant="outlined" size="sm" placeholder="e.g. Early Bird Special" value={ps.offerTitle} onChange={(e) => set({ offerTitle: e.target.value })} />
-            <TextField label="Offer Heading" variant="outlined" size="sm" placeholder="e.g. Limited Time Deal!" value={ps.offerHeading} onChange={(e) => set({ offerHeading: e.target.value })} />
-            <TextField label="Valid For / Until" variant="outlined" size="sm" type="date" value={ps.offerValidUntil} onChange={(e) => set({ offerValidUntil: e.target.value })} />
-            <TextField label="Offer Tags" variant="outlined" size="sm" placeholder="e.g. newyear, christmas" value={ps.offerTags} onChange={(e) => set({ offerTags: e.target.value })} />
+            <TextField label="Offer Title" variant="outlined" size="xs" placeholder="e.g. Early Bird Special" value={ps.offerTitle} onChange={(e) => set({ offerTitle: e.target.value })} />
+            <TextField label="Offer Heading" variant="outlined" size="xs" placeholder="e.g. Limited Time Deal!" value={ps.offerHeading} onChange={(e) => set({ offerHeading: e.target.value })} />
+            <TextField label="Valid For / Until" variant="outlined" size="xs" type="date" value={ps.offerValidUntil} onChange={(e) => set({ offerValidUntil: e.target.value })} />
+            <TextField label="Offer Tags" variant="outlined" size="xs" placeholder="e.g. newyear, christmas" value={ps.offerTags} onChange={(e) => set({ offerTags: e.target.value })} />
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 4, borderTop: '1px solid #f5c6a060' }}>
               <span style={{ fontWeight: 700, fontSize: '0.82rem', color: '#c2410c' }}>Repeat Offer (Daily Reset)</span>
               <Switch checked={ps.repeatOfferDaily} onChange={(e) => set({ repeatOfferDaily: e.target.checked })} />
@@ -117,7 +117,7 @@ export function SectionPublishSettings() {
         </div>
         {ps.repeatingPackage && (
           <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <SelectField label="Reset Frequency" variant="outlined" size="sm" value={ps.resetFrequency} onChange={(e) => set({ resetFrequency: e.target.value as PublishSettings['resetFrequency'] })}>
+            <SelectField label="Reset Frequency" variant="outlined" size="xs" value={ps.resetFrequency} onChange={(e) => set({ resetFrequency: e.target.value as PublishSettings['resetFrequency'] })}>
               {RESET_FREQS.map((f) => <option key={f} value={f}>{f.charAt(0).toUpperCase() + f.slice(1)}</option>)}
             </SelectField>
             <p style={{ margin: 0, fontSize: '0.78rem', color: '#4f46e5' }}>Package availability will automatically reset based on this frequency.</p>
@@ -144,7 +144,7 @@ export function SectionPublishSettings() {
           </div>
           {/* hidden file input — no shared component for file pickers */}
           <input ref={cardRef} type="file" accept="image/*" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) { const url = URL.createObjectURL(f); set({ cardImageUrl: url }); } }} />
-          <TextField label="Or paste image URL" variant="outlined" size="sm" placeholder="https://..." value={ps.cardImageUrl} onChange={(e) => set({ cardImageUrl: e.target.value })} />
+          <TextField label="Or paste image URL" variant="outlined" size="xs" placeholder="https://..." value={ps.cardImageUrl} onChange={(e) => set({ cardImageUrl: e.target.value })} />
         </div>
       </Block>
 
@@ -177,13 +177,13 @@ export function SectionPublishSettings() {
       {/* ── Publication Config ── */}
       <Block title="Publication Config">
         <div style={{ marginBottom: '0.75rem' }}>
-          <TextField label="URL Slug" variant="outlined" size="sm" value={ps.urlSlug} onChange={(e) => set({ urlSlug: e.target.value })} helperText={`${ps.urlPrefix}${ps.urlSlug}`} />
+          <TextField label="URL Slug" variant="outlined" size="xs" value={ps.urlSlug} onChange={(e) => set({ urlSlug: e.target.value })} helperText={`${ps.urlPrefix}${ps.urlSlug}`} />
         </div>
         <div style={{ marginBottom: '0.75rem' }}>
-          <TextField label="Publish Heading" variant="outlined" size="sm" value={ps.publishHeading} onChange={(e) => set({ publishHeading: e.target.value })} />
+          <TextField label="Publish Heading" variant="outlined" size="xs" value={ps.publishHeading} onChange={(e) => set({ publishHeading: e.target.value })} />
         </div>
         <div>
-          <SelectField label="Content Language" variant="outlined" size="sm" value={ps.contentLanguage} onChange={(e) => set({ contentLanguage: e.target.value })}>
+          <SelectField label="Content Language" variant="outlined" size="xs" value={ps.contentLanguage} onChange={(e) => set({ contentLanguage: e.target.value })}>
             {LANGUAGES.map((l) => <option key={l} value={l}>{l}</option>)}
           </SelectField>
         </div>

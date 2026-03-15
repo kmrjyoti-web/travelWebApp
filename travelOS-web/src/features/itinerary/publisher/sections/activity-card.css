@@ -1,0 +1,163 @@
+/* ── Activity Card ─────────────────────────────────────────────── */
+.act-card {
+  border: 1px solid var(--tos-border, #e5e7eb);
+  border-radius: 8px;
+  background: var(--tos-card-bg, #fff);
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.act-card:hover {
+  border-color: var(--tos-primary-light, #c7d2fe);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.08);
+}
+
+/* ── Left accent bar variant ── */
+.act-card__inner {
+  display: flex;
+  min-height: 0;
+}
+
+.act-card__accent {
+  width: 4px;
+  flex-shrink: 0;
+  border-radius: 8px 0 0 0;
+}
+
+.act-card__accent--sightseeing { background: #4f46e5; }
+.act-card__accent--dining      { background: #f59e0b; }
+.act-card__accent--culture     { background: #8b5cf6; }
+.act-card__accent--outdoor     { background: #10b981; }
+.act-card__accent--shopping    { background: #ec4899; }
+.act-card__accent--transfer    { background: #6b7280; }
+.act-card__accent--adventure   { background: #ef4444; }
+.act-card__accent--rest        { background: #06b6d4; }
+.act-card__accent--other       { background: #9ca3af; }
+
+/* ── Body ── */
+.act-card__body {
+  flex: 1;
+  padding: 0.65rem 0.875rem;
+  min-width: 0;
+}
+
+/* ── Header row: type badge + title ── */
+.act-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.act-card__type {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.act-card__type--sightseeing { background: #4f46e5; }
+.act-card__type--dining      { background: #f59e0b; }
+.act-card__type--culture     { background: #8b5cf6; }
+.act-card__type--outdoor     { background: #10b981; }
+.act-card__type--shopping    { background: #ec4899; }
+.act-card__type--transfer    { background: #6b7280; }
+.act-card__type--adventure   { background: #ef4444; }
+.act-card__type--rest        { background: #06b6d4; }
+.act-card__type--other       { background: #9ca3af; }
+
+.act-card__title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 0.84rem;
+  color: var(--tos-heading, #111827);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Description ── */
+.act-card__desc {
+  margin: 2px 0 0;
+  font-size: 0.76rem;
+  color: var(--tos-muted, #6b7280);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Meta row: location + cost ── */
+.act-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.act-card__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  color: var(--tos-muted, #6b7280);
+}
+
+.act-card__meta-icon {
+  flex-shrink: 0;
+  color: var(--tos-primary, #4f46e5);
+}
+
+.act-card__meta-icon--cost {
+  color: var(--tos-success, #059669);
+}
+
+/* ── Action buttons footer ── */
+.act-card__actions {
+  display: flex;
+  border-top: 1px solid var(--tos-border-light, #f3f4f6);
+}
+
+.act-card__action {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 600;
+  transition: background 0.12s ease;
+}
+
+.act-card__action--edit {
+  color: var(--tos-primary, #4f46e5);
+  border-right: 1px solid var(--tos-border-light, #f3f4f6);
+}
+
+.act-card__action--edit:hover {
+  background: #f0f0ff;
+}
+
+.act-card__action--delete {
+  color: var(--tos-danger, #ef4444);
+}
+
+.act-card__action--delete:hover {
+  background: #fef2f2;
+}

@@ -38,6 +38,25 @@ export type { OTPInputProps } from './OTPInput';
 export { CitySearch } from './CitySearch';
 export type { CitySearchProps } from './CitySearch';
 
+// ── Currency / Phone ─────────────────────────────────────────────────────────
+export { CurrencyInput } from './CurrencyInput';
+export type { CurrencyInputProps } from './CurrencyInput';
+
+export { PhoneInput } from './PhoneInput';
+export type { PhoneInputProps, ISDOption } from './PhoneInput';
+
+// ── Fieldset ─────────────────────────────────────────────────────────────────
+export { Fieldset } from './Fieldset';
+export type { FieldsetProps } from './Fieldset';
+
+// ── Slider ───────────────────────────────────────────────────────────────────
+export { Slider } from './Slider';
+export type { SliderProps } from './Slider';
+
+// ── Color Picker ─────────────────────────────────────────────────────────────
+export { ColorPicker } from './ColorPicker';
+export type { ColorPickerProps } from './ColorPicker';
+
 // ── Layout wrapper ────────────────────────────────────────────────────────────
 export { FormField } from './FormField';
 export type { FormFieldProps } from './FormField';

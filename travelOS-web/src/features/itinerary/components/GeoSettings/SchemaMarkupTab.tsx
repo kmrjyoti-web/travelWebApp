@@ -40,6 +40,7 @@ export function SchemaMarkupTab({ values, onChange }: SchemaMarkupTabProps) {
 
       <SelectField
         label="Schema Type"
+        size="xs"
         value={values.schemaType}
         onChange={(e) => onChange({ schemaType: e.target.value as SchemaType })}
         helperText="Schema.org type used for structured data markup"
@@ -51,6 +52,7 @@ export function SchemaMarkupTab({ values, onChange }: SchemaMarkupTabProps) {
 
       <TextField
         label="Destination Name"
+        size="xs"
         value={values.destinationName}
         onChange={(e) => onChange({ destinationName: e.target.value })}
         placeholder="e.g. Paris, France"
@@ -62,6 +64,7 @@ export function SchemaMarkupTab({ values, onChange }: SchemaMarkupTabProps) {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
         <TextField
           label="Latitude"
+          size="xs"
           type="number"
           value={values.destinationLat ?? ''}
           onChange={(e) => {
@@ -74,6 +77,7 @@ export function SchemaMarkupTab({ values, onChange }: SchemaMarkupTabProps) {
         />
         <TextField
           label="Longitude"
+          size="xs"
           type="number"
           value={values.destinationLng ?? ''}
           onChange={(e) => {
@@ -89,6 +93,7 @@ export function SchemaMarkupTab({ values, onChange }: SchemaMarkupTabProps) {
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 12 }}>
         <TextField
           label="Price Range"
+          size="xs"
           value={values.priceRange}
           onChange={(e) => onChange({ priceRange: e.target.value })}
           placeholder="e.g. $500 - $1200"
@@ -97,6 +102,7 @@ export function SchemaMarkupTab({ values, onChange }: SchemaMarkupTabProps) {
         />
         <TextField
           label="Currency (ISO)"
+          size="xs"
           value={values.currency}
           onChange={(e) => onChange({ currency: e.target.value.toUpperCase().slice(0, 3) })}
           placeholder="USD"
@@ -108,6 +114,7 @@ export function SchemaMarkupTab({ values, onChange }: SchemaMarkupTabProps) {
 
       <TextField
         label="Duration (ISO 8601)"
+        size="xs"
         value={values.durationIso}
         onChange={(e) => onChange({ durationIso: e.target.value })}
         placeholder="e.g. P7D"
@@ -117,6 +124,7 @@ export function SchemaMarkupTab({ values, onChange }: SchemaMarkupTabProps) {
 
       <SelectField
         label="Availability"
+        size="xs"
         value={values.availability}
         onChange={(e) => onChange({ availability: e.target.value as Availability })}
         helperText="Current booking availability status"
@@ -128,6 +136,7 @@ export function SchemaMarkupTab({ values, onChange }: SchemaMarkupTabProps) {
 
       <TextField
         label="Provider Name"
+        size="xs"
         value={values.providerName}
         onChange={(e) => onChange({ providerName: e.target.value })}
         placeholder="e.g. TravelOS DMC"
@@ -137,6 +146,7 @@ export function SchemaMarkupTab({ values, onChange }: SchemaMarkupTabProps) {
 
       <TextField
         label="Provider URL"
+        size="xs"
         type="url"
         value={values.providerUrl}
         onChange={(e) => onChange({ providerUrl: e.target.value })}

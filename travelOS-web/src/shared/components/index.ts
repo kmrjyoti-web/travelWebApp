@@ -80,6 +80,14 @@ export type { OffcanvasProps } from './Offcanvas';
 export { Toast, ToastBody, ToastClose, Toaster } from './Toast';
 export type { ToastProps } from './Toast';
 
+// ── Smart Toast ──────────────────────────────────────────────────────────────
+export { SmartToastRenderer, useToastStore } from './SmartToast';
+export type { ToastItem, ToastType } from './SmartToast';
+
+// ── Smart Error ──────────────────────────────────────────────────────────────
+export { SmartError } from './SmartError';
+export type { SmartErrorProps } from './SmartError';
+
 // Layout Grid
 export { Container, Row, Col } from './Grid';
 export type { ContainerProps, RowProps, ColProps } from './Grid';
@@ -200,6 +208,22 @@ export { ListGroup, ListGroupItem } from './ListGroup';
 
 export { FormRange } from './FormRange';
 export type { FormRangeProps } from './FormRange';
+
+export { SegmentedControl } from './SegmentedControl';
+export type { SegmentedControlProps, SegmentedControlOption } from './SegmentedControl';
+
+// ── Smart wrappers ───────────────────────────────────────────────────────────
+export { SmartDialog } from './SmartDialog';
+export type { SmartDialogProps } from './SmartDialog';
+
+export { SmartDrawer } from './SmartDrawer';
+export type { SmartDrawerProps } from './SmartDrawer';
+
+export { SmartButton } from './SmartButton';
+export type { SmartButtonProps } from './SmartButton';
+
+export { PageToolbar } from './PageToolbar';
+export type { PageToolbarProps, ToolbarButton, ToolbarItem, ToolbarButtonVariant } from './PageToolbar';
 
 // ── Utility / gate components ─────────────────────────────────────────────────
 export { PermissionGate } from './PermissionGate';

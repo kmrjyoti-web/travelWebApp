@@ -7,6 +7,12 @@ export interface NavItem {
   children?: NavItem[];
 }
 
+// Dev-only nav items (only shown when NODE_ENV === 'development')
+const DEV_NAV: NavItem[] =
+  process.env.NODE_ENV === 'development'
+    ? [{ label: 'Developer Tools', icon: 'Code', href: '/developer-tools' }]
+    : [];
+
 // Adapted from UI-KIT Sidebar.tsx MENU_DATA (lines 36-74)
 export const NAVIGATION: NavItem[] = [
   { label: 'Dashboard', icon: 'LayoutDashboard', href: '/dashboard' },
@@ -14,20 +20,30 @@ export const NAVIGATION: NavItem[] = [
     label: 'Master',
     icon: 'Database',
     children: [
-      { label: 'Accounts Master', href: '/master/accounts' },
-      { label: 'Inventory Master', href: '/master/inventory' },
-      { label: 'Rate Master', href: '/master/rate' },
-      { label: 'Discount Master', href: '/master/discount' },
-      { label: 'Opening Balance', href: '/master/opening-balance' },
-      { label: 'Sales Promotions', href: '/master/promotions' },
-      { label: 'Currency', href: '/master/currency' },
+      { label: 'Accounts Master', icon: 'Landmark', href: '/master/accounts' },
+      { label: 'Inventory Master', icon: 'Package', href: '/master/inventory' },
+      { label: 'Rate Master', icon: 'Tag', href: '/master/rate' },
+      { label: 'Discount Master', icon: 'Percent', href: '/master/discount' },
+      { label: 'Opening Balance', icon: 'Wallet', href: '/master/opening-balance' },
+      { label: 'Sales Promotions', icon: 'Gift', href: '/master/promotions' },
+      { label: 'Currency', icon: 'DollarSign', href: '/master/currency' },
       {
         label: 'Other Master',
-        children: [{ label: 'Station', href: '/master/station' }],
+        icon: 'FolderOpen',
+        children: [{ label: 'Station', icon: 'MapPin', href: '/master/station' }],
       },
     ],
   },
-  { label: 'Itinerary', icon: 'Map', href: '/itinerary' },
+  {
+    label: 'Itinerary',
+    icon: 'Map',
+    children: [
+      { label: 'Dashboard',        icon: 'LayoutDashboard', href: '/itinerary' },
+      { label: 'Itinerary Hub',    icon: 'Compass',         href: '/itinerary/hub' },
+      { label: 'My Itinerary',     icon: 'BookMarked',      href: '/itinerary/my' },
+      { label: 'Archive Itinerary',icon: 'Archive',         href: '/itinerary/archive' },
+    ],
+  },
   { label: 'Booking', icon: 'BookOpen', href: '/booking' },
   { label: 'DMC', icon: 'Building', href: '/dmc' },
   { label: 'Agent', icon: 'Users', href: '/agent' },
@@ -40,9 +56,11 @@ export const NAVIGATION: NavItem[] = [
     label: 'Settings',
     icon: 'Settings',
     children: [
-      { label: 'Profile', href: '/settings/profile' },
-      { label: 'Security', href: '/settings/security' },
-      { label: 'Notifications', href: '/settings/notifications' },
+      { label: 'Profile', icon: 'User', href: '/settings/profile' },
+      { label: 'Security', icon: 'Shield', href: '/settings/security' },
+      { label: 'Notifications', icon: 'Bell', href: '/settings/notifications' },
+      { label: 'API Integrations', icon: 'Plug', href: '/settings/api-config' },
     ],
   },
+  ...DEV_NAV,
 ];

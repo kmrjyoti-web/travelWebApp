@@ -27,7 +27,12 @@ module.exports = {
       rules: { 'no-restricted-imports': 'off' },
     },
     {
-      // Allow direct lucide-react imports in UIKitMain-migrated features
+      // Allow direct lucide-react imports in Icon registry
+      files: ['src/icons/icons.ts'],
+      rules: { 'no-restricted-imports': 'off' },
+    },
+    {
+      // Legacy overrides for UIKitMain-migrated features (to be cleaned up)
       files: [
         'src/features/layout/**/*.tsx',
         'src/features/theme/**/*.tsx',

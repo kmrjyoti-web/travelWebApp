@@ -15,15 +15,16 @@
   --tos-header-bg: #1b6563;
   --tos-header-text: #ffffff;
   --tos-header-height: 56px;
-  --tos-header-border: rgba(255, 255, 255, 0.1);
+  --tos-header-border: rgba(255, 255, 255, 0.08);
 
   /* === SIDEBAR (mapped from UI-KIT --sidebar-bg) === */
-  --tos-sidebar-bg: #222d32;
-  --tos-sidebar-text: #d1d5db;
-  --tos-sidebar-text-muted: #9ca3af;
-  --tos-sidebar-active-bg: rgba(255, 255, 255, 0.1);
+  --tos-sidebar-bg: #1a2332;
+  --tos-sidebar-text: #c8cdd3;
+  --tos-sidebar-text-muted: #8b929a;
+  --tos-sidebar-active-bg: rgba(27, 101, 99, 0.25);
+  --tos-sidebar-hover-bg: rgba(27, 101, 99, 0.15);
   --tos-sidebar-active-border: #1b6563;
-  --tos-sidebar-width-open: 256px;
+  --tos-sidebar-width-open: 240px;
   --tos-sidebar-width-closed: 64px;
   --tos-sidebar-bg-image: none;
   --tos-sidebar-bg-opacity: 1;
@@ -60,10 +61,10 @@
   --tos-app-bg-opacity: 1;
 
   /* === FOOTER === */
-  --tos-footer-bg: rgba(255, 255, 255, 0.85);
-  --tos-footer-height: 40px;
+  --tos-footer-bg: #ffffff;
+  --tos-footer-height: 36px;
   --tos-footer-text: #6b7280;
-  --tos-footer-border: #e5e7eb;
+  --tos-footer-border: #e0e4e8;
 
   /* === TOOLTIP / CHART === */
   --tos-tooltip-bg: #ffffff;

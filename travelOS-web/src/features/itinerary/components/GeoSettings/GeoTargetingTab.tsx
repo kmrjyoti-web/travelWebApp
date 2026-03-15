@@ -70,6 +70,7 @@ export function GeoTargetingTab({ values, onChange }: GeoTargetingTabProps) {
       {/* Region Boost */}
       <SelectField
         label="Region Boost"
+        size="xs"
         value={values.regionBoost ?? ''}
         onChange={(e) => {
           const v = e.target.value;
@@ -85,6 +86,7 @@ export function GeoTargetingTab({ values, onChange }: GeoTargetingTabProps) {
       {/* Timezone */}
       <SelectField
         label="Timezone"
+        size="xs"
         value={values.timezone}
         onChange={(e) => onChange({ timezone: e.target.value })}
         helperText="Itinerary's primary timezone — affects date/time structured data"

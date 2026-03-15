@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { useFormContext, useFieldArray, Controller } from 'react-hook-form';
-import { Input, Select, Textarea, Button } from '@/shared/components';
+import { TextField, SelectField, TextareaField, Button } from '@/shared/components';
 import { Icon } from '@/shared/components/Icon';
 import type { IconName } from '@/shared/components/Icon';
 import type { FullItineraryFormData } from '../../types/editor.types';
@@ -63,28 +63,28 @@ export function StepTransport() {
             <div className="tos-form-grid">
               <Controller name={`transportation.${idx}.type`} control={control}
                 render={({ field: f }) => (
-                  <Select icon="Navigation" floatingLabel="Type" value={f.value} onChange={f.onChange}>
+                  <SelectField label="Type" size="xs" value={f.value} onChange={f.onChange}>
                     {TRANSPORT_TYPES.map(t => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
-                  </Select>
+                  </SelectField>
                 )} />
-              <Input icon="Hash" floatingLabel={`Day (1–${days})`} type="number"
+              <TextField startIcon="Hash" label={`Day (1–${days})`} type="number" size="xs"
                 {...register(`transportation.${idx}.day`, { valueAsNumber: true })} />
-              <Input icon="MapPin" floatingLabel="From"
+              <TextField startIcon="MapPin" label="From" size="xs"
                 {...register(`transportation.${idx}.from`)} />
-              <Input icon="MapPin" floatingLabel="To"
+              <TextField startIcon="MapPin" label="To" size="xs"
                 {...register(`transportation.${idx}.to`)} />
-              <Input icon="Clock" floatingLabel="Departure Time" type="time"
+              <TextField startIcon="Clock" label="Departure Time" type="time" size="xs"
                 {...register(`transportation.${idx}.departureTime`)} />
-              <Input icon="Clock" floatingLabel="Arrival Time" type="time"
+              <TextField startIcon="Clock" label="Arrival Time" type="time" size="xs"
                 {...register(`transportation.${idx}.arrivalTime`)} />
-              <Input icon="Building" floatingLabel="Provider / Airline"
+              <TextField startIcon="Building" label="Provider / Airline" size="xs"
                 {...register(`transportation.${idx}.provider`)} />
-              <Input icon="Hash" floatingLabel="Booking Reference"
+              <TextField startIcon="Hash" label="Booking Reference" size="xs"
                 {...register(`transportation.${idx}.bookingRef`)} />
-              <Input icon="DollarSign" floatingLabel="Cost (optional)" type="number"
+              <TextField startIcon="DollarSign" label="Cost (optional)" type="number" size="xs"
                 {...register(`transportation.${idx}.cost`, { valueAsNumber: true })} />
               <div className="tos-form-grid__span3">
-                <Textarea icon="FileText" floatingLabel="Notes"
+                <TextareaField label="Notes" size="sm"
                   {...register(`transportation.${idx}.notes`)} />
               </div>
             </div>

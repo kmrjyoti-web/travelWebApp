@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { useFormContext, useFieldArray, Controller } from 'react-hook-form';
-import { Input, Select, Button } from '@/shared/components';
+import { TextField, SelectField, Button } from '@/shared/components';
 import { Icon } from '@/shared/components/Icon';
 import type { FullItineraryFormData } from '../../types/editor.types';
 import { IMAGE_TYPES } from '../../types/editor.types';
@@ -47,19 +47,19 @@ export function StepImages() {
                 </div>
               )}
               <div className="tos-image-card__fields">
-                <Input icon="Link" floatingLabel="Image URL *"
+                <TextField startIcon="Link" label="Image URL *" size="xs"
                   {...register(`images.${idx}.url`)}
-                  errorMessage={errors.images?.[idx]?.url?.message} />
-                <Input icon="FileText" floatingLabel="Caption"
+                  error={!!errors.images?.[idx]?.url} helperText={errors.images?.[idx]?.url?.message} />
+                <TextField startIcon="FileText" label="Caption" size="xs"
                   {...register(`images.${idx}.caption`)} />
                 <div className="tos-form-grid">
                   <Controller name={`images.${idx}.type`} control={control}
                     render={({ field: f }) => (
-                      <Select icon="Tag" floatingLabel="Type" value={f.value} onChange={f.onChange}>
+                      <SelectField label="Type" size="xs" value={f.value} onChange={f.onChange}>
                         {IMAGE_TYPES.map(t => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
-                      </Select>
+                      </SelectField>
                     )} />
-                  <Input icon="Hash" floatingLabel={`Day (1–${days}, optional)`} type="number"
+                  <TextField startIcon="Hash" label={`Day (1–${days}, optional)`} type="number" size="xs"
                     {...register(`images.${idx}.day`, { valueAsNumber: true, setValueAs: v => v === '' ? null : Number(v) })} />
                 </div>
               </div>

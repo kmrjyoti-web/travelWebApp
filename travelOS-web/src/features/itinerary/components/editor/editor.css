@@ -195,13 +195,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 40px 20px;
+  justify-content: space-between;
+  min-height: 200px;
+  padding: 32px 20px 24px;
   border: 2px dashed var(--tos-border-color);
   border-radius: var(--tos-border-radius);
   color: var(--tos-text-secondary);
   text-align: center;
   font-size: 14px;
+}
+
+.tos-empty-state__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 /* Image grid */

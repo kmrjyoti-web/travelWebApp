@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import { useFormContext, useWatch, Controller } from 'react-hook-form';
-import { Input, Select, Textarea, Checkbox } from '@/shared/components';
+import { TextField, SelectField, TextareaField, Checkbox } from '@/shared/components';
 import { CitySearch } from '@/shared/components';
 import { useCurrencies } from '@/shared/hooks';
 import { NumberStepper } from '../NumberStepper';
@@ -37,7 +37,7 @@ export function StepOverview() {
       <div className="tos-form-section">
         <h6 className="tos-form-section__title">Trip Identity</h6>
         <div className="tos-form-grid tos-form-grid--full">
-          <Input icon="Tag" floatingLabel="Trip Title (optional)" {...register('title')} />
+          <TextField startIcon="Tag" label="Trip Title (optional)" {...register('title')} size="xs" />
         </div>
         <div className="tos-form-grid">
           <Controller name="from" control={control} render={({ field }) => (
@@ -48,10 +48,10 @@ export function StepOverview() {
             <CitySearch value={field.value} onChange={field.onChange} onBlur={field.onBlur}
               icon="MapPin" floatingLabel="To (Destination)" errorMessage={errors.to?.message} />
           )} />
-          <Input icon="Calendar" floatingLabel="Start Date" type="date" {...register('startDate')} errorMessage={errors.startDate?.message} />
-          <Input icon="Calendar" floatingLabel="End Date"   type="date" {...register('endDate')}   errorMessage={errors.endDate?.message} />
+          <TextField startIcon="Calendar" label="Start Date" type="date" {...register('startDate')} error={!!errors.startDate} helperText={errors.startDate?.message} size="xs" />
+          <TextField startIcon="Calendar" label="End Date" type="date" {...register('endDate')} error={!!errors.endDate} helperText={errors.endDate?.message} size="xs" />
           <Controller name="days" control={control} render={({ field }) => (
-            <Input icon="Clock" floatingLabel="Days" type="number" value={field.value || ''} readOnly errorMessage={errors.days?.message} />
+            <TextField startIcon="Clock" label="Days" type="number" value={field.value || ''} readOnly error={!!errors.days} helperText={errors.days?.message} size="xs" />
           )} />
           <div />
           <Controller name="adults"   control={control} render={({ field }) => (
@@ -67,25 +67,25 @@ export function StepOverview() {
       <div className="tos-form-section">
         <h6 className="tos-form-section__title">Travel Preferences</h6>
         <div className="tos-form-grid">
-          <Select icon="Wallet" floatingLabel="Budget" {...register('budget')}>
+          <SelectField label="Budget" {...register('budget')} size="xs">
             {BUDGET_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
-          </Select>
-          <Select icon="DollarSign" floatingLabel="Currency" {...register('currency')} disabled={currLoad}>
+          </SelectField>
+          <SelectField label="Currency" {...register('currency')} disabled={currLoad} size="xs">
             {currLoad && <option value="">Loading…</option>}
             {currencyOpts.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-          </Select>
-          <Select icon="Building" floatingLabel="Accommodation" {...register('accommodationType')}>
+          </SelectField>
+          <SelectField label="Accommodation" {...register('accommodationType')} size="xs">
             {ACCOMMODATION_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
-          </Select>
-          <Select icon="Star" floatingLabel="Star Rating" {...register('starRating')}>
+          </SelectField>
+          <SelectField label="Star Rating" {...register('starRating')} size="xs">
             {STAR_RATING_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
-          </Select>
-          <Select icon="UtensilsCrossed" floatingLabel="Food Preference" {...register('food')}>
+          </SelectField>
+          <SelectField label="Food Preference" {...register('food')} size="xs">
             {FOOD_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
-          </Select>
-          <Select icon="Compass" floatingLabel="Trip Nature" {...register('tripNature')}>
+          </SelectField>
+          <SelectField label="Trip Nature" {...register('tripNature')} size="xs">
             {TRIP_NATURE_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
-          </Select>
+          </SelectField>
 
           <div className="tos-form-grid__full">
             <div className="tos-icon-field">
@@ -109,7 +109,7 @@ export function StepOverview() {
           </div>
 
           <div className="tos-form-grid__full">
-            <Textarea icon="MessageSquare" floatingLabel="Interests & Preferences" {...register('interests')} errorMessage={errors.interests?.message} />
+            <TextareaField label="Interests & Preferences" {...register('interests')} error={!!errors.interests} helperText={errors.interests?.message} size="sm" />
           </div>
         </div>
       </div>
@@ -118,15 +118,15 @@ export function StepOverview() {
       <div className="tos-form-section">
         <h6 className="tos-form-section__title">Transport Preferences</h6>
         <div className="tos-form-grid tos-form-grid--3col">
-          <Select icon="PlaneTakeoff" floatingLabel="Flight Departure" {...register('flightDepartureTime')}>
+          <SelectField label="Flight Departure" {...register('flightDepartureTime')} size="xs">
             {TIME_PREF_OPTIONS.map(o => <option key={o} value={o}>{o === 'any' ? 'Any Time' : o.charAt(0).toUpperCase() + o.slice(1)}</option>)}
-          </Select>
-          <Select icon="PlaneLanding" floatingLabel="Flight Arrival" {...register('flightArrivalTime')}>
+          </SelectField>
+          <SelectField label="Flight Arrival" {...register('flightArrivalTime')} size="xs">
             {TIME_PREF_OPTIONS.map(o => <option key={o} value={o}>{o === 'any' ? 'Any Time' : o.charAt(0).toUpperCase() + o.slice(1)}</option>)}
-          </Select>
-          <Select icon="TrainFront" floatingLabel="Train Preference" {...register('trainPreference')}>
+          </SelectField>
+          <SelectField label="Train Preference" {...register('trainPreference')} size="xs">
             {TRAIN_PREF_OPTIONS.map(o => <option key={o} value={o}>{o === 'any' ? 'Any' : o.toUpperCase()}</option>)}
-          </Select>
+          </SelectField>
         </div>
       </div>
     </div>

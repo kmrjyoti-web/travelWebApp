@@ -40,7 +40,7 @@ export function SectionSEOSettings() {
               {titleLen}/60 chars
             </span>
           </div>
-          <TextField label="SEO Title" variant="outlined" size="sm" startIcon="FileText" value={seo.title}
+          <TextField label="SEO Title" variant="outlined" size="xs" startIcon="FileText" value={seo.title}
             onChange={(e) => update('seoSettings', { ...seo, title: e.target.value })} />
           <p style={hint}>Appears as the clickable heading in Google search results.</p>
         </div>
@@ -66,11 +66,11 @@ export function SectionSEOSettings() {
           </div>
           <div style={{ display: 'flex', gap: 6 }}>
             <div style={{ flex: 1 }}>
-              <TextField label="Add keyword" variant="outlined" size="sm" startIcon="Search" value={kwDraft}
+              <TextField label="Add keyword" variant="outlined" size="xs" startIcon="Search" value={kwDraft}
                 onChange={(e) => setKwDraft(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addKeyword(); } }} />
             </div>
-            <Button size="sm" color="secondary" onClick={addKeyword} type="button"><Icon name="Plus" size={12} /></Button>
+            <Button size="xs" color="secondary" onClick={addKeyword} type="button"><Icon name="Plus" size={12} /></Button>
           </div>
         </div>
       </div>
@@ -79,14 +79,14 @@ export function SectionSEOSettings() {
       <div style={card}>
         <p style={{ fontWeight: 700, fontSize: '0.875rem', marginBottom: '0.875rem' }}>Open Graph (Social Sharing)</p>
         <div style={{ marginBottom: '0.875rem' }}>
-          <TextField label="OG Title" variant="outlined" size="sm" startIcon="FileText" value={seo.ogTitle} onChange={(e) => update('seoSettings', { ...seo, ogTitle: e.target.value })} />
+          <TextField label="OG Title" variant="outlined" size="xs" startIcon="FileText" value={seo.ogTitle} onChange={(e) => update('seoSettings', { ...seo, ogTitle: e.target.value })} />
         </div>
         <div style={{ marginBottom: '0.875rem' }}>
           <TextareaField label="OG Description" variant="outlined" size="sm" minRows={3} value={seo.ogDescription}
             onChange={(e) => update('seoSettings', { ...seo, ogDescription: e.target.value })} />
         </div>
         <div>
-          <TextField label="OG Image URL" variant="outlined" size="sm" startIcon="Link" type="url" value={seo.ogImage} onChange={(e) => update('seoSettings', { ...seo, ogImage: e.target.value })} />
+          <TextField label="OG Image URL" variant="outlined" size="xs" startIcon="Link" type="url" value={seo.ogImage} onChange={(e) => update('seoSettings', { ...seo, ogImage: e.target.value })} />
           {seo.ogImage && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={seo.ogImage} alt="OG preview" style={{ height: 80, marginTop: 6, borderRadius: 4, objectFit: 'cover' }} />
@@ -99,15 +99,15 @@ export function SectionSEOSettings() {
         <p style={{ fontWeight: 700, fontSize: '0.875rem', marginBottom: '0.875rem' }}>Technical SEO</p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
           <div style={{ marginBottom: '0.75rem' }}>
-            <TextField label="Canonical URL" variant="outlined" size="sm" startIcon="Link" type="url" value={seo.canonicalUrl} onChange={(e) => update('seoSettings', { ...seo, canonicalUrl: e.target.value })} />
+            <TextField label="Canonical URL" variant="outlined" size="xs" startIcon="Link" type="url" value={seo.canonicalUrl} onChange={(e) => update('seoSettings', { ...seo, canonicalUrl: e.target.value })} />
           </div>
           <div style={{ marginBottom: '0.75rem' }}>
-            <SelectField label="Robots" variant="outlined" size="sm" value={seo.robots} onChange={(e) => update('seoSettings', { ...seo, robots: e.target.value })}>
+            <SelectField label="Robots" variant="outlined" size="xs" value={seo.robots} onChange={(e) => update('seoSettings', { ...seo, robots: e.target.value })}>
               {ROBOTS_OPTIONS.map((r) => <option key={r} value={r}>{r}</option>)}
             </SelectField>
           </div>
           <div style={{ marginBottom: '0.75rem' }}>
-            <SelectField label="Twitter Card" variant="outlined" size="sm" value={seo.twitterCard} onChange={(e) => update('seoSettings', { ...seo, twitterCard: e.target.value })}>
+            <SelectField label="Twitter Card" variant="outlined" size="xs" value={seo.twitterCard} onChange={(e) => update('seoSettings', { ...seo, twitterCard: e.target.value })}>
               {TWITTER_CARDS.map((t) => <option key={t} value={t}>{t}</option>)}
             </SelectField>
           </div>

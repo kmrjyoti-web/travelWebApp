@@ -2,7 +2,7 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Input, Select, Textarea, Button, Icon } from '@/shared/components';
+import { TextField, SelectField, TextareaField, Button, Icon } from '@/shared/components';
 import { NumberStepper } from './NumberStepper';
 import {
   aiItinerarySchema,
@@ -42,12 +42,13 @@ export function AiItineraryForm({ onSuccess, onCancel }: AiItineraryFormProps) {
         <h6 className="tos-form-section__title">
           <Icon name="Sparkles" size={14} /> Describe Your Trip
         </h6>
-        <Textarea
-          icon="MessageSquare"
-          floatingLabel="e.g., A 7-day romantic honeymoon in Bali focusing on beaches and culture..."
-          rows={4}
+        <TextareaField
+          label="e.g., A 7-day romantic honeymoon in Bali focusing on beaches and culture..."
+          minRows={4}
           {...register('prompt')}
-          errorMessage={errors.prompt?.message}
+          error={!!errors.prompt}
+          helperText={errors.prompt?.message}
+          size="sm"
         />
       </div>
 
@@ -57,31 +58,39 @@ export function AiItineraryForm({ onSuccess, onCancel }: AiItineraryFormProps) {
           <Icon name="Map" size={14} /> Trip Details
         </h6>
         <div className="tos-form-grid">
-          <Input
-            icon="MapPin"
-            floatingLabel="From (Origin City)"
+          <TextField
+            startIcon="MapPin"
+            label="From (Origin City)"
             {...register('from')}
-            errorMessage={errors.from?.message}
+            error={!!errors.from}
+            helperText={errors.from?.message}
+            size="xs"
           />
-          <Input
-            icon="MapPin"
-            floatingLabel="To (Destination)"
+          <TextField
+            startIcon="MapPin"
+            label="To (Destination)"
             {...register('to')}
-            errorMessage={errors.to?.message}
+            error={!!errors.to}
+            helperText={errors.to?.message}
+            size="xs"
           />
-          <Input
-            icon="Calendar"
-            floatingLabel="Start Date"
+          <TextField
+            startIcon="Calendar"
+            label="Start Date"
             type="date"
             {...register('startDate')}
-            errorMessage={errors.startDate?.message}
+            error={!!errors.startDate}
+            helperText={errors.startDate?.message}
+            size="xs"
           />
-          <Input
-            icon="Calendar"
-            floatingLabel="End Date"
+          <TextField
+            startIcon="Calendar"
+            label="End Date"
             type="date"
             {...register('endDate')}
-            errorMessage={errors.endDate?.message}
+            error={!!errors.endDate}
+            helperText={errors.endDate?.message}
+            size="xs"
           />
           <Controller
             name="adults"
@@ -111,26 +120,28 @@ export function AiItineraryForm({ onSuccess, onCancel }: AiItineraryFormProps) {
               />
             )}
           />
-          <Select
-            icon="Wallet"
-            floatingLabel="Budget"
+          <SelectField
+            label="Budget"
             {...register('budget')}
-            errorMessage={errors.budget?.message}
+            error={!!errors.budget}
+            helperText={errors.budget?.message}
+            size="xs"
           >
             {BUDGET_OPTIONS.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
             ))}
-          </Select>
-          <Select
-            icon="Bot"
-            floatingLabel="AI Model"
+          </SelectField>
+          <SelectField
+            label="AI Model"
             {...register('selectedModel')}
-            errorMessage={errors.selectedModel?.message}
+            error={!!errors.selectedModel}
+            helperText={errors.selectedModel?.message}
+            size="xs"
           >
             {AI_MODEL_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>
             ))}
-          </Select>
+          </SelectField>
         </div>
       </div>
 

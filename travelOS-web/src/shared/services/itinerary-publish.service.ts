@@ -56,11 +56,15 @@ const itineraryPublishService = {
   remove: (id: string): Promise<ApiResponse<void>> =>
     api.delete(`${BASE}/${encodeURIComponent(id)}`),
 
-  /** Upload image, returns public URL */
-  uploadImage: (file: File): Promise<ApiResponse<{ url: string }>> => {
+  /** Upload image via storage service, returns public URL */
+  uploadImage: async (file: File): Promise<ApiResponse<{ url: string }>> => {
     const form = new FormData();
     form.append('file', file);
-    return api.post(`${BASE}/upload`, form, { headers: { 'Content-Type': 'multipart/form-data' } });
+    form.append('folder', 'itinerary-images');
+    const res: ApiResponse<any> = await api.post('/storage/upload-image', form, { headers: { 'Content-Type': 'multipart/form-data' } });
+    // Storage returns { original: { url, ... }, thumb?, medium?, large? }
+    const url = res.data?.original?.url ?? res.data?.url ?? '';
+    return { success: res.success, data: { url } };
   },
 };
 

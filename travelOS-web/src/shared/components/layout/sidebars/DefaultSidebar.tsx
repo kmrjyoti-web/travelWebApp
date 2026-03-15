@@ -1,10 +1,12 @@
 'use client';
 import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useUIStore } from '@/shared/stores/ui.store';
+import { useAuthStore } from '@/shared/stores/auth.store';
 import { Input, Button } from '@/shared/components';
 import { Icon } from '@/shared/components/Icon';
+import { Avatar } from '@/shared/components/Avatar';
 import { NAVIGATION } from '@/config/navigation';
 import type { NavItem } from '@/config/navigation';
 
@@ -49,9 +51,17 @@ interface NavItemRowProps {
   pathname: string;
 }
 
+function hasActiveDescendant(items: NavItem[], pathname: string): boolean {
+  return items.some(
+    (c) => c.href === pathname || (c.children ? hasActiveDescendant(c.children, pathname) : false),
+  );
+}
+
 function NavItemRow({ item, depth = 0, searchQuery, isCollapsed, pathname }: NavItemRowProps) {
-  const [expanded, setExpanded] = useState(false);
   const hasChildren = Boolean(item.children && item.children.length > 0);
+  const [expanded, setExpanded] = useState(
+    () => hasChildren && hasActiveDescendant(item.children ?? [], pathname),
+  );
   const isExpanded = searchQuery ? true : expanded;
   const isActive = item.href ? pathname === item.href : false;
 
@@ -65,10 +75,14 @@ function NavItemRow({ item, depth = 0, searchQuery, isCollapsed, pathname }: Nav
     isExpanded && hasChildren ? 'tos-nav-item--expanded' : '',
   ].filter(Boolean).join(' ');
 
+  const iconSize = depth === 0 ? 16 : 13;
+
   const itemContent = (
     <>
-      {depth === 0 && item.icon ? (
-        <Icon name={item.icon} size={16} className="tos-nav-item__icon" />
+      {item.icon ? (
+        <Icon name={item.icon} size={iconSize} className="tos-nav-item__icon" />
+      ) : depth > 0 ? (
+        <span className="tos-nav-item__dot" />
       ) : (
         <span style={{ width: 16, flexShrink: 0 }} />
       )}
@@ -123,11 +137,21 @@ function NavItemRow({ item, depth = 0, searchQuery, isCollapsed, pathname }: Nav
 // ─── DefaultSidebar ────────────────────────────────────────────────────────────
 export function DefaultSidebar() {
   const { isSidebarOpen, isSidebarHovered, setSidebarHovered } = useUIStore();
+  const { user, logout } = useAuthStore();
   const [searchQuery, setSearchQuery] = useState('');
   const pathname = usePathname();
+  const router = useRouter();
 
   const isExpanded = isSidebarOpen || isSidebarHovered;
   const filteredNav = filterNav(NAVIGATION, searchQuery);
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
+
+  const displayName = user?.name ?? 'System Admin';
+  const displayRole = user?.role ?? 'Super Admin';
 
   return (
     <aside
@@ -140,7 +164,7 @@ export function DefaultSidebar() {
           <Input
             icon="Search"
             inputSize="sm"
-            placeholder="Search menu..."
+            placeholder="Type to search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="tos-sidebar__search-input"
@@ -164,6 +188,51 @@ export function DefaultSidebar() {
           />
         ))}
       </nav>
+
+      {/* User Profile Section (bottom) */}
+      <div className="tos-sidebar__user">
+        {isExpanded ? (
+          <>
+            <div className="tos-sidebar__user-info">
+              <Avatar
+                size="sm"
+                color="primary"
+                textColor="white"
+                className="tos-sidebar__user-avatar"
+              >
+                {displayName[0].toUpperCase()}
+              </Avatar>
+              <div className="tos-sidebar__user-details">
+                <div className="tos-sidebar__user-name">{displayName}</div>
+                <div className="tos-sidebar__user-role">{displayRole}</div>
+              </div>
+              <button
+                type="button"
+                className="tos-sidebar__user-logout"
+                onClick={handleLogout}
+                title="Sign Out"
+                aria-label="Sign Out"
+              >
+                <Icon name="LogOut" size={16} />
+              </button>
+            </div>
+            <div className="tos-sidebar__user-footer">
+              TravelOS Admin
+            </div>
+          </>
+        ) : (
+          <div className="tos-sidebar__user-collapsed">
+            <Avatar
+              size="sm"
+              color="primary"
+              textColor="white"
+              className="tos-sidebar__user-avatar"
+            >
+              {displayName[0].toUpperCase()}
+            </Avatar>
+          </div>
+        )}
+      </div>
     </aside>
   );
 }
