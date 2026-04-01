@@ -142,7 +142,8 @@ if (runUi) {
   setTimeout(() => {
     const ui = startProcess("UI", UI_DIR, `npx next dev -p ${UI_PORT}`, {
       PORT: String(UI_PORT),
-      NEXT_PUBLIC_API_URL: `http://localhost:${API_PORT}/api/v1`,
+      NEXT_PUBLIC_API_URL:   `http://localhost:${API_PORT}/api/v1`,
+      NEXT_PUBLIC_TENANT_ID: "588cfa4c-a200-4eb6-b85f-edb08626437c",
     });
     children.push(ui);
   }, runApi ? 2000 : 0);
